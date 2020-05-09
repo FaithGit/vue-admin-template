@@ -87,7 +87,7 @@
               <i class="el-icon-close" />
             </div>
             <el-row>
-              <el-col :span="5" :offset="19">
+              <el-col :span="6" :offset="18">
                 <el-form-item
                   label="工况模块编号"
                   label-width="124px"
@@ -118,7 +118,7 @@
                     <el-select
                       v-model.number="work.ooStatus"
                       placeholder="请选择启用状态"
-                      @change="changeWorkStatus($event,workindex)"
+                      @change="changeWorkStatus(workindex,'ooStatus1','ooStatus2')"
                     >
                       <el-option
                         v-for="_i in optionSwitch"
@@ -131,7 +131,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workmodel`"
+                    :ref="`${workindex}ooStatus1`"
                     label="对应电表模块编号"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].ooToMode`"
@@ -149,7 +149,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workcode`"
+                    :ref="`${workindex}ooStatus2`"
                     label="监测因子"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].ooHbCode`"
@@ -179,7 +179,7 @@
                     <el-select
                       v-model.number="work.otStatus"
                       placeholder="请选择启用状态"
-                      @change="changeWorkStatus($event,workindex)"
+                      @change="changeWorkStatus(workindex,'otStatus1','otStatus2')"
                     >
                       <el-option
                         v-for="_i in optionSwitch"
@@ -192,7 +192,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workmodel`"
+                    :ref="`${workindex}otStatus1`"
                     label="对应电表模块编号"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].otToMode`"
@@ -210,7 +210,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workcode`"
+                    :ref="`${workindex}otStatus2`"
                     label="监测因子"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].otHbCode`"
@@ -240,7 +240,7 @@
                     <el-select
                       v-model.number="work.owStatus"
                       placeholder="请选择启用状态"
-                      @change="changeWorkStatus($event,workindex)"
+                      @change="changeWorkStatus(workindex,'owStatus1','owStatus2')"
                     >
                       <el-option
                         v-for="_i in optionSwitch"
@@ -253,7 +253,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workmodel`"
+                    :ref="`${workindex}owStatus1`"
                     label="对应电表模块编号"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].owToMode`"
@@ -271,7 +271,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workcode`"
+                    :ref="`${workindex}owStatus2`"
                     label="监测因子"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].owHbCode`"
@@ -301,7 +301,7 @@
                     <el-select
                       v-model.number="work.ofStatus"
                       placeholder="请选择启用状态"
-                      @change="changeWorkStatus($event,workindex)"
+                      @change="changeWorkStatus(workindex,'ofStatus1','ofStatus2')"
                     >
                       <el-option
                         v-for="_i in optionSwitch"
@@ -314,7 +314,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workmodel`"
+                    :ref="`${workindex}ofStatus1`"
                     label="对应电表模块编号"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].ofToMode`"
@@ -332,7 +332,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workcode`"
+                    :ref="`${workindex}ofStatus2`"
                     label="监测因子"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].ofHbCode`"
@@ -362,7 +362,7 @@
                     <el-select
                       v-model.number="work.aoStatus"
                       placeholder="请选择启用状态"
-                      @change="changeWorkStatus($event,workindex)"
+                      @change="changeWorkStatus(workindex,'aoStatus1','aoStatus2')"
                     >
                       <el-option
                         v-for="_i in optionSwitch"
@@ -375,7 +375,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workmodel2`"
+                    :ref="`${workindex}aoStatus1`"
                     label="对应电表模块编号"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].aoToModel`"
@@ -393,7 +393,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item
-                    :ref="`${workindex}workmodel3`"
+                    :ref="`${workindex}aoStatus2`"
                     label="监测因子"
                     label-width="134px"
                     :prop="`sysConditions[${workindex}].aoHbCode`"
@@ -634,12 +634,9 @@ export default {
       this.form.sysDevices.splice(index, 1)
       this.$forceUpdate()
     },
-    changeWorkStatus($event, workindex) {
-      const getRef1 = workindex + 'workmodel'
-      const getRef2 = workindex + 'workcode'
-
-      console.log($event)
-      console.log(workindex)
+    changeWorkStatus(workindex, value1, value2) {
+      const getRef1 = workindex + value1
+      const getRef2 = workindex + value2
       this.$refs[getRef1][0].clearValidate()
       this.$refs[getRef2][0].clearValidate()
     }
@@ -682,7 +679,7 @@ export default {
 .card-close {
   font-size: 24px;
   text-align: right;
-  margin: 5px 5px 0 0;
+  margin: 15px 15px 10px 0;
 }
 .card-number {
   font-size: 18px;
