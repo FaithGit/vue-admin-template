@@ -2,39 +2,42 @@
   <div class="app-container">
     <div class="form-head">工况采集仪信息配置</div>
     <el-form ref="form" :model="form" :rules="rules" label-width="120px" status-icon>
-      <el-form-item label="MN号" prop="MN">
-        <el-input v-model="form.MN" placeholder="17位数字不能为空" />
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="mn号" prop="mn" label-width="60px">
+            <el-input v-model="form.mn" placeholder="17位数字不能为空" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="企业名称" prop="comId">
+            <el-select v-model="form.comId" placeholder="请选择企业名称" style="width:100%">
+              <el-option label="Zone one" value="shanghai" />
+              <el-option label="Zone two" value="beijing" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <!-- ######### 设备信息 表单块######### -->
       <div class="form-box">
         <div class="form-box-head">设备信息</div>
         <el-row :gutter="10" class="form-box-comp">
-          <el-col v-for="(item,index) in form.device_info" :key="'device_info'+index" :span="24">
+          <el-col v-for="(item,index) in form.sysDevices" :key="'sysDevices'+index" :span="24">
             <el-col :span="1" class="xuhao" style="  border-left: 4px solid #ff8800;">{{ index +1 }}</el-col>
-            <el-col :span="6">
-              <el-form-item label="企业名称" :prop="`device_info[${index}].com_id`" :rules="{ required: true, message: 'Required', trigger: 'blur' }">
-                <el-select v-model="item.com_id" placeholder="请选择企业名称" style="width:100%">
-                  <el-option label="Zone one" value="shanghai" />
-                  <el-option label="Zone two" value="beijing" />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="设备名称" :prop="`device_info[${index}].device_name`" :rules="{ required: true, message: 'Required', trigger: 'blur' }">
-                <el-input v-model.trim="item.device_name" />
+            <el-col :span="12">
+              <el-form-item label-width="80px" label="设备名称" :prop="`sysDevices[${index}].deviceName`" :rules="{ required: true, message: '此为必填项', trigger: 'blur' }">
+                <el-input v-model.trim="item.deviceName" />
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item label="电表模块编号" :prop="`device_info[${index}].region`" :rules="{ required: true, message: 'Required', trigger: 'blur' }">
+              <el-form-item label="电表模块编号" :prop="`sysDevices[${index}].region`" :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }">
                 <el-select v-model="item.region" placeholder="请选择电表模块编号">
-                  <el-option v-for="(length,_index) in form.device_info" :key="'length'+_index" :label="_index+1" :value="_index+1" />
-
+                  <el-option v-for="(length,_index) in form.sysDevices" :key="'length'+_index" :label="_index+1" :value="_index+1" />
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item label="设备类别" :prop="`device_info[${index}].device_style`" :rules="{ required: true, message: 'Required', trigger: 'blur' }">
-                <el-select v-model="item.device_style" placeholder="请选择设备类别">
+              <el-form-item label="设备类别" :prop="`sysDevices[${index}].deviceStyle`" :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }">
+                <el-select v-model="item.deviceStyle" placeholder="请选择设备类别">
                   <el-option label="生产" value="1" />
                   <el-option label="治理" value="2" />
                 </el-select>
@@ -53,15 +56,15 @@
       <div class="form-box">
         <div class="form-box-head">工况信息</div>
         <el-row :gutter="10" class="form-box-comp" style="padding:0 60px">
-          <el-col v-for="(work,workindex) in form.work_info" :key="'work'+workindex" :span="24" class="card">
+          <el-col v-for="(work,workindex) in form.sysConditions" :key="'work'+workindex" :span="24" class="card">
             <div class="card-close">
               <i class="el-icon-close" />
             </div>
             <el-row>
               <el-col :span="5" :offset="19">
-                <el-form-item label="工况模块编号" label-width="124px">
-                  <el-select v-model="work.model_num" placeholder="请选择对应电表模块编号" style="width:80%">
-                    <el-option v-for="(length,_index) in form.work_info" :key="'lengthModel'+_index" :label="_index+1" :value="_index+1" />
+                <el-form-item label="工况模块编号" label-width="124px" :prop="`sysConditions[${workindex}].modelNum`" :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }">
+                  <el-select v-model="work.modelNum" placeholder="请选择对应电表模块编号" style="width:80%">
+                    <el-option v-for="(length,_index) in form.sysConditions" :key="'lengthModel'+_index" :label="_index+1" :value="_index+1" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -73,25 +76,135 @@
             <div class="card-content">
               <el-row>
                 <el-col :span="6">
-                  <el-form-item label="启用状态" :prop="`work_info[${index}].OO_status`" :rules="{ required: true, message: 'Required', trigger: 'blur' }">
-                    <el-select v-model.number="work.switch1.OO_status" placeholder="请选择启用状态">
+                  <el-form-item label="启用状态" :prop="`sysConditions[${workindex}].switch1.ooStatus`" :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }">
+                    <el-select v-model.number="work.switch1.ooStatus" placeholder="请选择启用状态" @change="changeWorkStatus($event,workindex)">
                       <el-option v-for="_i in optionSwitch" :key="'optionSwitch'+_i.value" :label="_i.label" :value="_i.value" />
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                  <el-form-item label="对应电表模块编号" label-width="124px" :prop="`work_info[${index}].OO_to_model`" :rules="{ required: true, message: 'Required', trigger: 'blur' }">
-                    <el-select v-model="work.OO_to_model" placeholder="请选择对应电表模块编号">
-                      <el-option v-for="(length,_index) in form.device_info" :key="'lengthDui'+_index" :label="_index+1" :value="_index+1" />
-
+                  <el-form-item :ref="`${workindex}workmodel`" label="对应电表模块编号" label-width="134px" :prop="`sysConditions[${workindex}].switch1.ooToMode `" :rules="work.switch1.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch1.ooToMode " clearable placeholder="请选择对应电表模块编号">
+                      <el-option v-for="(length,_index) in form.sysDevices" :key="'lengthDui'+_index" :label="_index+1" :value="_index+1" />
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                  <el-form-item label="检测因子">
-                    <el-select v-model="form.MN" placeholder="请选择设备类别">
-                      <el-option label="生产" value="1" />
-                      <el-option label="治理" value="2" />
+                  <el-form-item :ref="`${workindex}workcode`" label="监测因子" label-width="134px" :prop="`sysConditions[${workindex}].switch1.ooHbCode`" :rules="work.switch1.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch1.ooHbCode" clearable placeholder="请选择对应监测因子">
+                      <el-option v-for="(hbcode,hbcodeIndex) in hb_code_list" :key="'hb_code_list'+hbcodeIndex" :label="hbcode.label" :value="hbcode.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="card-title">
+              开关量2
+            </div>
+            <div class="card-content">
+              <el-row>
+                <el-col :span="6">
+                  <el-form-item label="启用状态" :prop="`sysConditions[${workindex}].switch2.ooStatus`" :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }">
+                    <el-select v-model.number="work.switch2.ooStatus" placeholder="请选择启用状态" @change="changeWorkStatus($event,workindex)">
+                      <el-option v-for="_i in optionSwitch" :key="'optionSwitch'+_i.value" :label="_i.label" :value="_i.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item :ref="`${workindex}workmodel`" label="对应电表模块编号" label-width="134px" :prop="`sysConditions[${workindex}].switch2.ooToMode `" :rules="work.switch2.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch2.ooToMode " clearable placeholder="请选择对应电表模块编号">
+                      <el-option v-for="(length,_index) in form.sysDevices" :key="'lengthDui'+_index" :label="_index+1" :value="_index+1" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item :ref="`${workindex}workcode`" label="监测因子" label-width="134px" :prop="`sysConditions[${workindex}].switch2.ooHbCode`" :rules="work.switch2.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch2.ooHbCode" clearable placeholder="请选择对应监测因子">
+                      <el-option v-for="(hbcode,hbcodeIndex) in hb_code_list" :key="'hb_code_list'+hbcodeIndex" :label="hbcode.label" :value="hbcode.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="card-title">
+              开关量3
+            </div>
+            <div class="card-content">
+              <el-row>
+                <el-col :span="6">
+                  <el-form-item label="启用状态" :prop="`sysConditions[${workindex}].switch3.ooStatus`" :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }">
+                    <el-select v-model.number="work.switch3.ooStatus" placeholder="请选择启用状态" @change="changeWorkStatus($event,workindex)">
+                      <el-option v-for="_i in optionSwitch" :key="'optionSwitch'+_i.value" :label="_i.label" :value="_i.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item :ref="`${workindex}workmodel`" label="对应电表模块编号" label-width="134px" :prop="`sysConditions[${workindex}].switch3.ooToMode `" :rules="work.switch3.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch3.ooToMode " clearable placeholder="请选择对应电表模块编号">
+                      <el-option v-for="(length,_index) in form.sysDevices" :key="'lengthDui'+_index" :label="_index+1" :value="_index+1" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item :ref="`${workindex}workcode`" label="监测因子" label-width="134px" :prop="`sysConditions[${workindex}].switch3.ooHbCode`" :rules="work.switch3.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch3.ooHbCode" clearable placeholder="请选择对应监测因子">
+                      <el-option v-for="(hbcode,hbcodeIndex) in hb_code_list" :key="'hb_code_list'+hbcodeIndex" :label="hbcode.label" :value="hbcode.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="card-title">
+              开关量4
+            </div>
+            <div class="card-content">
+              <el-row>
+                <el-col :span="6">
+                  <el-form-item label="启用状态" :prop="`sysConditions[${workindex}].switch4.ooStatus`" :rules="{ required: true, message: '此为必填项', trigger: ['blur','change']}">
+                    <el-select v-model.number="work.switch4.ooStatus" placeholder="请选择启用状态" @change="changeWorkStatus($event,workindex)">
+                      <el-option v-for="_i in optionSwitch" :key="'optionSwitch'+_i.value" :label="_i.label" :value="_i.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item :ref="`${workindex}workmodel`" label="对应电表模块编号" label-width="134px" :prop="`sysConditions[${workindex}].switch4.ooToMode `" :rules="work.switch4.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch4.ooToMode " clearable placeholder="请选择对应电表模块编号">
+                      <el-option v-for="(length,_index) in form.sysDevices" :key="'lengthDui'+_index" :label="_index+1" :value="_index+1" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item :ref="`${workindex}workcode`" label="监测因子" label-width="134px" :prop="`sysConditions[${workindex}].switch4.ooHbCode`" :rules="work.switch4.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch4.ooHbCode" clearable placeholder="请选择对应监测因子">
+                      <el-option v-for="(hbcode,hbcodeIndex) in hb_code_list" :key="'hb_code_list'+hbcodeIndex" :label="hbcode.label" :value="hbcode.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="card-title">
+              模拟量1
+            </div>
+            <div class="card-content">
+              <el-row>
+                <el-col :span="6">
+                  <el-form-item label="启用状态" :prop="`sysConditions[${workindex}].switch4.ooStatus`" :rules="{ required: true, message: '此为必填项', trigger: ['blur','change']}">
+                    <el-select v-model.number="work.switch4.ooStatus" placeholder="请选择启用状态" @change="changeWorkStatus($event,workindex)">
+                      <el-option v-for="_i in optionSwitch" :key="'optionSwitch'+_i.value" :label="_i.label" :value="_i.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item :ref="`${workindex}workmodel`" label="对应电表模块编号" label-width="134px" :prop="`sysConditions[${workindex}].switch4.ooToMode `" :rules="work.switch4.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch4.ooToMode " clearable placeholder="请选择对应电表模块编号">
+                      <el-option v-for="(length,_index) in form.sysDevices" :key="'lengthDui'+_index" :label="_index+1" :value="_index+1" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item :ref="`${workindex}workcode`" label="监测因子" label-width="134px" :prop="`sysConditions[${workindex}].switch4.ooHbCode`" :rules="work.switch4.ooStatus!=0? requiredRules: NorequiredRules">
+                    <el-select v-model="work.switch4.ooHbCode" clearable placeholder="请选择对应监测因子">
+                      <el-option v-for="(hbcode,hbcodeIndex) in hb_code_list" :key="'hb_code_list'+hbcodeIndex" :label="hbcode.label" :value="hbcode.value" />
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -112,8 +225,8 @@
 <script>
 export default {
   data() {
-    // 检测MN
-    var checkMN = (rule, value, callback) => {
+    // 检测mn
+    var checkmn = (rule, value, callback) => {
       var reg = new RegExp('^[0-9]*$') // 纯数字
       console.log(reg.test(value))
       if (!(value.length === 17)) {
@@ -125,36 +238,35 @@ export default {
         callback()
       }
     }
-
     return {
       form: {
-        MN: '',
-        device_info: [
-          { com_id: '', device_name: '', meter_num: '', device_style: '' },
-          { com_id: '', device_name: '', meter_num: '', device_style: '' }
+        mn: '',
+        comId: '',
+        sysDevices: [
+          { deviceName: '', modelName: '', deviceStyle: '' }
         ],
-        work_info: [
+        sysConditions: [
           {
-            model_num: 1,
+            modelNum: '',
             switch1: {
-              OO_status: 0,
-              OO_to_model: '',
-              OO_hb_code: ''
+              ooStatus: 0,
+              ooToMode: '',
+              ooHbCode: ''
             },
             switch2: {
-              OO_status: 0,
-              OO_to_model: '',
-              OO_hb_code: ''
+              ooStatus: 0,
+              ooToMode: '',
+              ooHbCode: ''
             },
             switch3: {
-              OO_status: 0,
-              OO_to_model: '',
-              OO_hb_code: ''
+              ooStatus: 0,
+              ooToMode: '',
+              ooHbCode: ''
             },
             switch4: {
-              OO_status: 0,
-              OO_to_model: '',
-              OO_hb_code: ''
+              ooStatus: 0,
+              ooToMode: '',
+              ooHbCode: ''
             },
             simulation1: {
               AO_status: 0,
@@ -196,7 +308,14 @@ export default {
         ]
       },
       rules: {
-        MN: [{ validator: checkMN, required: true, trigger: 'blur' }]
+        mn: [{ validator: checkmn, required: true, trigger: 'blur' }],
+        comId: [{ validator: checkmn, required: true, trigger: 'blur' }]
+      },
+      requiredRules: {
+        required: true, message: '此为必填项', trigger: ['blur', 'change']
+      },
+      NorequiredRules: {
+        required: false, message: '此为必填项', trigger: ['blur', 'change']
       },
       optionSwitch: [{
         value: 1,
@@ -204,6 +323,13 @@ export default {
       }, {
         value: 0,
         label: '关闭'
+      }],
+      hb_code_list: [{
+        value: 1,
+        label: '生产'
+      }, {
+        value: 2,
+        label: '治理'
       }]
     }
   },
@@ -225,11 +351,17 @@ export default {
       })
     },
     addDeviceList() {
-      const _obj = { com_id: '', device_name: '', meter_num: '', device_style: '' }
-      this.form.device_info.push(_obj)
+      const _obj = { comId: '', deviceName: '', modelName: '', deviceStyle: '' }
+      this.form.sysDevices.push(_obj)
     },
     DelDeviceList(index) {
-      this.form.device_info.splice(index, 1)
+      this.form.sysDevices.splice(index, 1)
+    },
+    changeWorkStatus($event, workindex) {
+      const getRefs = workindex + 'workmodel'
+      // console.log($event)
+      // console.log(workindex)
+      this.$refs[getRefs][0].clearValidate()
     }
   }
 }
@@ -247,7 +379,7 @@ export default {
 .form-box {
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 .form-box-head {
   font-size: 20px;
