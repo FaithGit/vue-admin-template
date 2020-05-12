@@ -11,7 +11,7 @@
         <el-col :span="12">
           <el-form-item label="企业名称" prop="comId">
             <el-select v-model="form.comId" placeholder="请选择企业名称" style="width:100%">
-              <el-option v-for="com in com_list" :key="com.id" :label="com.comName" :value="com.comName" />
+              <el-option v-for="com in com_list" :key="com.id" :label="com.comName" :value="com.id" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -35,12 +35,12 @@
             </el-col>
             <el-col :span="5">
               <el-form-item
-                :key="'region'+index"
+                :key="'modelNum'+index"
                 label="电表模块编号"
-                :prop="`sysDevices[${index}].region`"
+                :prop="`sysDevices[${index}].modelNum`"
                 :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
               >
-                <el-select v-model="item.region" placeholder="请选择电表模块编号">
+                <el-select v-model="item.modelNum" placeholder="请选择电表模块编号">
                   <el-option
                     v-for="(length,_index) in form.sysDevices"
                     :key="'length'+_index"
@@ -58,8 +58,7 @@
                 :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
               >
                 <el-select v-model="item.deviceStyle" placeholder="请选择设备类别">
-                  <el-option label="生产" value="1" />
-                  <el-option label="治理" value="2" />
+                  <el-option v-for="(decice,deciceIndex) in deviceStyle_list" :key="'device'+deciceIndex" :label="decice.label" :value="decice.value" />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -799,7 +798,7 @@ export default {
       form: {
         mn: '',
         comId: '',
-        sysDevices: [{ deviceName: '', modelName: '', deviceStyle: '' }],
+        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '' }],
         sysConditions: [
           {
             modelNum: '',
@@ -850,7 +849,7 @@ export default {
       },
       rules: {
         mn: [{ validator: checkmn, required: true, trigger: 'blur' }],
-        comId: [{ required: true, trigger: 'blur' }]
+        comId: [{ required: true, trigger: 'blur', message: '此为必填项' }]
       },
       requiredRules: {
         required: true,
@@ -882,6 +881,16 @@ export default {
           label: '治理'
         }
       ],
+      deviceStyle_list: [
+        {
+          value: 1,
+          label: '生产'
+        },
+        {
+          value: 2,
+          label: '治理'
+        }
+      ],
       com_list: []
     }
   },
@@ -902,10 +911,19 @@ export default {
         if (valid) {
           // alert('submit!')
           testJson(this.form).then(res => {
+            this.$notify({
+              title: '成功',
+              message: res.retMsg,
+              type: 'success'
+            })
             console.log(res)
           })
         } else {
           // console.log('error submit!!')
+          this.$notify.error({
+            title: '错误',
+            message: '请检查无错误项后再次提交'
+          })
           return false
         }
       })
@@ -920,7 +938,7 @@ export default {
       const _obj = {
         comId: '',
         deviceName: '',
-        modelName: '',
+        modelNum: '',
         deviceStyle: ''
       }
       this.form.sysDevices.push(_obj)
