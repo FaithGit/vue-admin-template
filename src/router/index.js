@@ -89,6 +89,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/map',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Map',
+        component: () => import('@/views/map/index'),
+        meta: { title: 'map', icon: 'form' }
+      }
+    ]
+  },
 
   {
     path: '/nested',

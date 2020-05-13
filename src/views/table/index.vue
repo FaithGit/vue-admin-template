@@ -1,37 +1,93 @@
 <template>
   <div class="app-container">
     <el-table border :data="tableData" :span-method="arraySpanMethod">
-      <el-table-column label="ID" align="center">
+      <el-table-column
+        type="index"
+        width="50"
+        label="#"
+        align="center"
+      />
+      <!-- <el-table-column label="ID" align="center">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="公司" align="center">
         <template slot-scope="scope">
-          {{ scope.row.company }}
+          {{ scope.row.comName }}
         </template>
       </el-table-column>
       <el-table-column label="组号" align="center">
         <template slot-scope="scope">
-          {{ scope.row.groupNumber }}
+          {{ scope.row.groupName }}
+        </template>
+      </el-table-column>
+      <el-table-column label="是否使用" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.isUse==true?'使用':'暂停' }}
+        </template>
+      </el-table-column>
+      <el-table-column label="生产设备开关" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.switch_data==true?'开启':'关闭' }}
         </template>
       </el-table-column>
       <el-table-column label="治理设施" align="center">
         <template slot-scope="scope">
-          {{ scope.row.govern }}
+          {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column label="对应生产设施" align="center">
+      <el-table-column label="设备名称" align="center">
         <template slot-scope="scope">
-          {{ scope.row.create }}
+          {{ scope.row.device_name }}
         </template>
       </el-table-column>
-      <el-table-column label="异常类型" align="center">
+      <el-table-column label="设备id" align="center">
         <template slot-scope="scope">
-          {{ scope.row.abnormal }}
+          {{ scope.row.device_id }}
         </template>
       </el-table-column>
-      <el-table-column label="异常时长" align="center">
+      <el-table-column label="数据时间" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.data_time }}
+        </template>
+      </el-table-column>
+      <el-table-column label="风量" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.fans_volume }}
+        </template>
+      </el-table-column>
+      <el-table-column label="净化温度" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.emission_tem_in }}
+        </template>
+      </el-table-column>
+      <el-table-column label="风机负荷" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.fans_load }}
+        </template>
+      </el-table-column>
+      <el-table-column label="净化电流" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.purifier_current }}
+        </template>
+      </el-table-column>
+      <el-table-column label="排放口温度" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.emission_tem_out }}
+        </template>
+      </el-table-column>
+      <el-table-column label="净化负荷" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.purifier_load }}
+        </template>
+      </el-table-column>
+      <el-table-column label="风机负荷" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.fans_current }}
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="异常时长" align="center">
         <el-table-column label="时" align="center">
           <template slot-scope="scope">
             {{ scope.row.m }}
@@ -42,14 +98,14 @@
             {{ scope.row.m }}
           </template>
         </el-table-column>
-      </el-table-column>
+      </el-table-column> -->
 
     </el-table>
   </div>
 </template>
 
 <script>
-// import { getList } from '@/api/table'
+import { findData } from '@/api/table'
 
 export default {
   filters: {
@@ -66,57 +122,29 @@ export default {
     return {
       list: null,
       listLoading: true,
-      tableData: [{
-        id: 1,
-        company: '海宁长沁丰纺织有限公司',
-        type: [{
-          groupNumber: '1#线',
-          govern: '（印刷1，2）治理设施2#	',
-          create: '1901090-西印刷机1#,1901094-东印刷机2#	',
-          sortList: [{
-            abnormal: '风机异常',
-            h: 1,
-            m: 30
-          }, {
-            abnormal: '静电电流异常	',
-            h: 0,
-            m: 25
-          }]
-        }, {
-          groupNumber: '4#线',
-          govern: '（复合机）治理设施1#	',
-          create: '1901062-复合机1#',
-          sortList: [{
-            abnormal: '软件1'
-          }, {
-            abnormal: '软件2'
-          }, {
-            abnormal: '软件3'
-          }]
-        }]
-      }, {
-        id: 2,
-        company: '海宁飞溢纺织有限公司',
-        type: [{
-          groupNumber: '3#线',
-          govern: '器械',
-          sortList: [{
-            abnormal: '器械1'
-          }]
-        }, {
-          groupNumber: '9#线',
-          govern: '软件',
-          sortList: [{
-            abnormal: '软件1'
-          }, {
-            abnormal: '软件2'
-          }]
-        }]
-      }]
+      tableData: []
     }
   },
   mounted() {
-    this.init()
+    findData().then(res => {
+      const obj = res.retData
+      for (var i = 0; i < obj.length; i++) {
+        for (var j = 0; j < obj[i].groups.length; j++) {
+          for (var z = 0; z < obj[i].groups[j].zlData.length; z++) {
+            obj[i].groups[j].zlData[z]['title'] = '治理设备'
+            obj[i].groups[j].scData.push(obj[i].groups[j].zlData[z])
+          }
+          for (var y = 0; y < obj[i].groups[j].scData.length; y++) {
+            if (obj[i].groups[j].scData[y]['title'] === undefined) {
+              obj[i].groups[j].scData[y]['title'] = '生产设备'
+            }
+          }
+        }
+      }
+      console.dir(obj)
+      this.tableData = obj
+      this.init()
+    })
   },
   methods: {
   // 表格合并方法
@@ -143,11 +171,11 @@ export default {
       const nameIndex = [0] // 保存类型需要合并的值
       let a // id,地区需要合并的行是所有类型的长度
       this.tableData.forEach((v, index) => {
-        if (v.type && v.type.length) {
+        if (v.groups && v.groups.length) {
           a = 0
-          v.type.forEach((subV, i, typeData) => {
-            if (subV.sortList && subV.sortList.length) {
-              subV.sortList.forEach((ss, k, data) => {
+          v.groups.forEach((subV, i, typeData) => {
+            if (subV.scData && subV.scData.length) {
+              subV.scData.forEach((ss, k, data) => {
                 if (k === data.length - 1) {
                   typeIndex.push(data.length) // 把每一个类型下面数据长度存起来
                   a += data.length // 把所有类型下面的数据长度相加
@@ -155,15 +183,26 @@ export default {
                     nameIndex.push(a) // 类型循环完成后把数据长度存起来
                   }
                 }
-                getDate.push({
-                  id: v.id,
-                  company: v.company,
+                getDate.push({ // 这里是表格得展示数据
+                  // id: v.id,
+                  comName: v.comName,
                   govern: subV.govern,
                   create: subV.create,
-                  groupNumber: subV.groupNumber,
+                  groupName: subV.groupName,
+                  isUse: subV.isUse,
                   abnormal: ss.abnormal,
-                  h: ss.h,
-                  m: ss.m
+                  switch_data: ss.switch_data, // 生产设备开关
+                  title: ss.title, // 设备名称
+                  device_name: ss.device_name, // 设备名称
+                  device_id: ss.device_id,
+                  data_time: ss.data_time,
+                  fans_volume: ss.fans_volume,
+                  emission_tem_in: ss.emission_tem_in,
+                  fans_load: ss.fans_load,
+                  purifier_current: ss.purifier_current,
+                  emission_tem_out: ss.emission_tem_out,
+                  purifier_load: ss.purifier_load,
+                  fans_current: ss.fans_current
                 })
               })
             }
