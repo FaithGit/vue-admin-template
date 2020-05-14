@@ -18,8 +18,8 @@ export default {
     MapLoader().then(AMap => {
       console.log('地图加载成功')
       that.map = new AMap.Map('container', {
-        center: [117.000923, 36.675807],
-        zoom: 11
+        center: [120.680757, 30.510659],
+        zoom: 12
       })
     }, e => {
       console.log('地图加载失败', e)
