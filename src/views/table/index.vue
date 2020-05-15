@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
-    <el-table border :data="tableData" :span-method="arraySpanMethod">
+    <div>
+      <el-input v-model="search1" style="width:280px;margin:10px 0 15px 0" placeholder="请输入企业名" @keyup.enter.native="searchClick" />
+      <el-button type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
+    </div>
+
+    <el-table v-loading="loadable" border :data="tableData" :span-method="arraySpanMethod">
       <el-table-column
         type="index"
         width="50"
@@ -85,6 +90,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      :current-page="pageIndex"
+      :page-sizes="[10,20,30,50]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      class="paginationStyle"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
@@ -106,29 +121,17 @@ export default {
     return {
       list: null,
       listLoading: true,
-      tableData: []
+      tableData: [],
+      pageIndex: 1,
+      pageSize: 10,
+      total: 0,
+      search1: '',
+      search: '',
+      loadable: true
     }
   },
   mounted() {
-    findData().then(res => {
-      const obj = res.retData
-      // for (var i = 0; i < obj.length; i++) {
-      //   obj[i].scList = []
-      //   obj[i].zlList = []
-      //   for (var j = 0; j < obj[i].groups.length; j++) {
-      //     for (var z = 0; z < obj[i].groups[j].zlData.length; z++) {
-      //       obj[i].zlList.push(obj[i].groups[j].zlData[z])
-      //     }
-
-      //     for (var y = 0; y < obj[i].groups[j].scData.length; y++) {
-      //       obj[i].scList.push(obj[i].groups[j].scData[y])
-      //     }
-      //   }
-      // }
-      // console.dir(obj)
-      this.tableData = obj
-      this.init()
-    })
+    this.findData()
   },
   methods: {
   // 表格合并方法
@@ -230,6 +233,32 @@ export default {
       })
       this.tableData = getDate
       console.log(getDate)
+    },
+    handleSizeChange(val) {
+      this.pageSize = val
+      this.findData()
+    },
+    handleCurrentChange(val) {
+      this.pageIndex = val
+      this.findData()
+    },
+    findData(seach1, pageIndex, pageSize) {
+      this.loadable = true
+      findData({
+        comName: seach1 || this.search,
+        pageIndex: pageIndex || this.pageIndex,
+        pageSize: pageSize || this.pageSize
+      }).then(res => {
+        const obj = res.retData.data
+        this.tableData = obj
+        this.total = res.retData.total
+        this.init()
+        this.loadable = false
+      })
+    },
+    searchClick() {
+      this.search = this.search1
+      this.findData(this.search, 1, this.pageSize)
     }
   }
 }
@@ -242,5 +271,9 @@ export default {
 .greenSvg{
   color: green;
   font-size: 20px;
+}
+.paginationStyle{
+ text-align: center;
+ margin: 15px 0;
 }
 </style>
