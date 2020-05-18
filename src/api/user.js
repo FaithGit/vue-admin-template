@@ -2,17 +2,17 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: 'api/user/login',
+    url: 'http://47.96.147.99:8081/hbjk/login',
     method: 'post',
     data
   })
 }
 
-export function getInfo(token) {
+export function getInfo(data) {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: 'http://47.96.147.99:8081/hbjk/getUserByToken',
+    method: 'post',
+    data
   })
 }
 

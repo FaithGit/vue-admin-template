@@ -42,6 +42,17 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
+  {
+    path: '/redirect', // 跳转页
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
 
   {
     path: '/',
@@ -51,7 +62,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
     }]
   },
 
