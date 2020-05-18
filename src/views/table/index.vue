@@ -3,6 +3,7 @@
     <div>
       <el-input v-model="search1" style="width:280px;margin:10px 0 15px 0" placeholder="请输入企业名" @keyup.enter.native="searchClick" />
       <el-button type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
+      <el-button type="primary" icon="el-icon-refresh-right" @click="searchClickReset">重置</el-button>
     </div>
 
     <el-table v-loading="loadable" border :data="tableData" :span-method="arraySpanMethod">
@@ -258,6 +259,10 @@ export default {
     },
     searchClick() {
       this.search = this.search1
+      this.findData(this.search, 1, this.pageSize)
+    },
+    searchClickReset() {
+      this.search = this.search1 = ''
       this.findData(this.search, 1, this.pageSize)
     }
   }
