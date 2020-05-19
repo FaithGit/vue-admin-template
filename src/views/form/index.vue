@@ -780,6 +780,7 @@
 import { findAllCom, findAllCode, testJson } from '@/api/table'
 
 export default {
+  name: 'Form',
   data() {
     // 检测mn
     var checkmn = (rule, value, callback) => {

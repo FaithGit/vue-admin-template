@@ -36,7 +36,12 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
+  {
+    path: '/pandect',
+    name: 'Pandect',
+    component: () => import('@/views/pandect/index'),
+    meta: { title: '总览一张图', icon: 'pandect' }
+  },
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -53,7 +58,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/',
     component: Layout,
@@ -62,32 +66,22 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+      meta: { title: '总控制台', icon: 'dashboard', affix: true }
     }]
   },
 
   {
-    path: '/example',
+    path: '/table',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
     children: [
       {
-        path: 'table',
+        path: 'index',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: { title: '数据列表', icon: 'table' }
       }
     ]
   },
-
   {
     path: '/form',
     component: Layout,

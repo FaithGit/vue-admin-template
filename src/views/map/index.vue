@@ -21,6 +21,7 @@ export default {
         center: [120.680757, 30.510659],
         zoom: 11
       })
+
       AMap.plugin('AMap.DistrictSearch', function() {
         var opts = {
           subdistrict: 0, // 获取边界不需要返回下级行政区
@@ -40,14 +41,22 @@ export default {
               fillColor: '#6e3fc8',
               strokeColor: '#6e3fc8',
               extData: {
-                IDname: '郑州',
+                IDname: '海宁',
                 Center: '传递内容'
               }
             })
+
             that.map.add(polygonbox)
+            var marker = new AMap.Marker({
+              position: new AMap.LngLat(120.678043, 30.492398), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              title: '汽车北站'
+            })
+            // 将创建的点标记添加到已有的地图实例：
+            that.map.add(marker)
           }
         })
-      })
+      }
+      )
     }, e => {
       console.log('地图加载失败', e)
     })
