@@ -22,15 +22,15 @@ export default {
       const color = ['#0E7CE2', '#FF8352', '#E271DE', '#F8456B', '#00FFFF', '#4AEAB0']
       const echartData = [{
         name: 'A类',
-        value: '3720'
+        value: '372'
       },
       {
         name: 'B类',
-        value: '2920'
+        value: '292'
       },
       {
         name: 'C类',
-        value: '2200'
+        value: '220'
       },
       {
         name: 'D类',
@@ -85,7 +85,7 @@ export default {
         ],
         series: [{
           type: 'pie',
-          radius: ['45%', '60%'],
+          radius: ['40%', '50%'],
           center: ['50%', '50%'],
           data: echartData,
           hoverAnimation: false,

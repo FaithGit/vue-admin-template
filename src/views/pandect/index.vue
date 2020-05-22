@@ -249,8 +249,8 @@ export default {
       console.log('地图加载成功')
       that.map = new AMap.Map('container1', {
         center: [120.680757, 30.510659],
-        zoom: 11
-        // mapStyle: 'amap://styles/light'
+        zoom: 11,
+        mapStyle: 'amap://styles/darkblue'
       })
 
       AMap.plugin('AMap.DistrictSearch', function() {
