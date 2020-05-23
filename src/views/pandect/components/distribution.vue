@@ -21,20 +21,24 @@ export default {
       const title = '总量'
       const color = ['#0E7CE2', '#FF8352', '#E271DE', '#F8456B', '#00FFFF', '#4AEAB0']
       const echartData = [{
-        name: 'A类',
+        name: '静电电流',
         value: '372'
       },
       {
-        name: 'B类',
+        name: '风机异常',
         value: '292'
       },
       {
-        name: 'C类',
+        name: '排放温度',
         value: '220'
       },
       {
-        name: 'D类',
+        name: '水喷淋',
         value: '1420'
+      },
+      {
+        name: '生产温度',
+        value: '256'
       }
       ]
 
@@ -49,23 +53,28 @@ export default {
       var option = {
         backgroundColor: bgColor,
         color: color,
-        // tooltip: {
-        //     trigger: 'item'
-        // },
+        legend: {
+          // orient: 'vertical', // 'vertical'
+          x: 'left', // 'center' | 'left' | {number},
+          y: '10', // 'center' | 'bottom' | {number}
+          padding: 15, // [5, 10, 15, 20]
+          itemGap: 3,
+          textStyle: { color: '#c3cad9' }
+        },
         title: [{
           text: '{name|' + title + '}\n{val|' + formatNumber(total) + '}',
-          top: 'center',
+          top: '45%',
           left: 'center',
           textStyle: {
             rich: {
               name: {
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: 'normal',
                 color: '#ffffff',
                 padding: [10, 0]
               },
               val: {
-                fontSize: 32,
+                fontSize: 18,
                 fontWeight: 'bold',
                 color: '#ffffff'
               }
@@ -85,8 +94,8 @@ export default {
         ],
         series: [{
           type: 'pie',
-          radius: ['40%', '50%'],
-          center: ['50%', '50%'],
+          radius: ['30%', '40%'],
+          center: ['50%', '55%'],
           data: echartData,
           hoverAnimation: false,
           itemStyle: {
@@ -97,8 +106,8 @@ export default {
           },
           labelLine: {
             normal: {
-              length: 20,
-              length2: 120,
+              length: 15,
+              length2: 90,
               lineStyle: {
                 color: '#e6e6e6'
               }

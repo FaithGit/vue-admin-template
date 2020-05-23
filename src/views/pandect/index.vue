@@ -43,7 +43,7 @@
                 <div v-for="(itemList,index) in list" :key="itemList.company" class="kuang-body-ui">
                   {{ index+1 }}
                   <span style="width:30%;display:inline-block;text-align:center;word-wrap: break-word">{{ itemList.company }}  </span>
-                  <span style="width:30%;display:inline-block;text-align:center;word-wrap: break-word">{{ itemList.time }}  </span>
+                  <span style="width:30%;display:inline-block;text-align:center;word-wrap: break-word;font-size:14px">{{ itemList.time }}  </span>
                   <span style="width:30%;display:inline-block;text-align:center;word-wrap: break-word">{{ itemList.message }}  </span>
                 </div>
               </div>
@@ -79,16 +79,20 @@
               <div class="kuang-body-flex">
                 <table class="mian-table" style="  border: 1px solid #094198; width:94%">
                   <tr>
-                    <td class="main-td">监测点位数</td>
-                    <td class="main-td">监测企业数</td>
-                    <td class="main-td">异常企业数</td>
-                    <td class="main-td">限产企业数</td>
+                    <td class="main-td">今日用电量峰值</td>
+                    <td class="main-td">今日用电功率峰值</td>
+
                   </tr>
                   <tr>
-                    <td class="main-tdNum">1</td>
-                    <td class="main-tdNum">2</td>
-                    <td class="main-tdNum">3</td>
-                    <td class="main-tdNum">4</td>
+                    <td class="main-tdNums">
+                      <svg-icon icon-class="power" />
+                      100W
+                    </td>
+                    <td class="main-tdNums">
+                      <svg-icon icon-class="powers" />
+                      200W
+                    </td>
+
                   </tr>
                 </table>
               </div>
@@ -145,37 +149,37 @@ export default {
         },
         {
           company: 'yyyy',
-          time: '2011,12,11,03,15',
+          time: '2020-04-24 12:00',
           message: 'yyy未达标'
         },
         {
           company: 'zzz1',
-          time: '2012,20,16,42,15',
+          time: '2020-04-25 13:00',
           message: 'zzz达标'
         },
         {
           company: 'zzz2',
-          time: '2012,20,16,42,15',
+          time: '2020-04-26 14:00',
           message: 'zzz达标'
         },
         {
           company: 'zzz3',
-          time: '2012,20,16,42,15',
+          time: '2020-04-26 16:00',
           message: 'zzz达标'
         },
         {
           company: 'zzz4',
-          time: '2012,20,16,42,15',
+          time: '2020-04-27 14:00',
           message: 'zzz达标'
         },
         {
           company: 'zzz5',
-          time: '2012,20,16,42,15',
+          time: '2020-04-28 13:00',
           message: 'zzz达标'
         },
         {
           company: 'zzz6',
-          time: '2012,20,16,42,15',
+          time: '2020-05-17 16:00',
           message: 'zzz达标'
         }
       ]
@@ -248,7 +252,7 @@ export default {
       }
       console.log('地图加载成功')
       that.map = new AMap.Map('container1', {
-        center: [120.680757, 30.510659],
+        center: [121.087157, 30.71595],
         zoom: 11,
         mapStyle: 'amap://styles/darkblue'
       })
@@ -260,7 +264,7 @@ export default {
           level: 'city' // 查询行政级别为 市
         }
         var district = new AMap.DistrictSearch(opts)
-        district.search('海宁市', function(status, result) {
+        district.search('平湖市', function(status, result) {
           // 查询成功时，result即为对应的行政区信息
           var bounds = result.districtList[0].boundaries
 
@@ -281,7 +285,7 @@ export default {
             that.map.add(polygonbox)
 
             var marker = new AMap.Marker({
-              position: new AMap.LngLat(120.678043, 30.492398), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              position: new AMap.LngLat(121.046085, 30.706451), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
               title: '汽车北站'
             })
             AMap.event.addListener(marker, 'click', function() {
@@ -437,6 +441,10 @@ padding: 40px 0px 30px 0px;
 .main-tdNum{
   padding: 30px;
   font-size: 22px;
+}
+.main-tdNums{
+  padding: 30px;
+  font-size: 30px;
 }
 .kuang-body-ui{
   margin: 15px;
