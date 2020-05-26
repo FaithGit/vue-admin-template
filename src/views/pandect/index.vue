@@ -2,8 +2,8 @@
   <div class="dashboard-container">
     <div class="dashboardHead">
       <img src="@img/hs_logo.png" style="height:56px;margin:7px">
-      <span class="hs_headTitle">嘉兴环保系统</span>
-      <span class="hs_headTitle" style="float:right;margin-right:20px;font-size:18px">
+      <span class="hs_headTitle">平湖市环保系统</span>
+      <span class="hs_headTitle" style="float:right;margin-right:20px;font-size:18px" @click="gotoHome">
         返回首页
       </span>
     </div>
@@ -18,18 +18,34 @@
               <div class="kuang-body-flex">
                 <table class="mian-table" style="  border: 1px solid #094198; width:94%">
                   <tr>
-                    <td class="main-td">监测点位数</td>
-                    <td class="main-td">监测企业数</td>
-                    <td class="main-td">异常企业数</td>
-                    <td class="main-td">限产企业数</td>
+                    <td class="main-td">监测<br>点位数</td>
+                    <td class="main-td">监测<br>企业数</td>
+                    <td class="main-td">异常<br>企业数</td>
+                    <td class="main-td">限产<br>企业数</td>
                   </tr>
                   <tr>
-                    <td class="main-tdNum">1</td>
-                    <td class="main-tdNum">2</td>
-                    <td class="main-tdNum">3</td>
-                    <td class="main-tdNum">4</td>
+                    <td class="main-tdNum">
+                      <countTo :start-val="startVal1" :end-val="deviceNum" :duration="3000" />
+                    </td>
+                    <td class="main-tdNum">
+                      <countTo :start-val="startVal2" :end-val="comNum" :duration="3000" />
+                    </td>
+                    <td class="main-tdNum">
+                      <countTo :start-val="startVal3" :end-val="warComNum" :duration="3000" />
+                    </td>
+                    <td class="main-tdNum">
+                      <countTo :start-val="startVal4" :end-val="susComNum" :duration="3000" />
+                    </td>
                   </tr>
                 </table>
+              </div>
+              <div class="four-jiao">
+                <img src="@img/02-1.png" class="jiao">
+                <img src="@img/02-1.png" class="jiao2">
+                <img src="@img/02-1.png" class="jiao3">
+                <img src="@img/02-1.png" class="jiao4">
+                <!-- <div class="left-line" />
+                <div class="right-line" /> -->
               </div>
             </div>
           </div>
@@ -47,6 +63,13 @@
                   <span style="width:30%;display:inline-block;text-align:center;word-wrap: break-word">{{ itemList.message }}  </span>
                 </div>
               </div>
+              <div class="four-jiao">
+                <img src="@img/02-1.png" class="jiao">
+                <img src="@img/02-1.png" class="jiao2">
+                <img src="@img/02-1.png" class="jiao3">
+                <img src="@img/02-1.png" class="jiao4">
+
+              </div>
             </div>
           </div>
           <div class="kuang height4 kuangEnd">
@@ -56,6 +79,12 @@
               </div>
               <div class="kuang-body">
                 <userPower />
+              </div>
+              <div class="four-jiao">
+                <img src="@img/02-1.png" class="jiao">
+                <img src="@img/02-1.png" class="jiao2">
+                <img src="@img/02-1.png" class="jiao3">
+                <img src="@img/02-1.png" class="jiao4">
               </div>
             </div>
           </div>
@@ -67,6 +96,12 @@
                 地图
               </div>
               <div id="container1" style="width:100&;height:100%;" />
+              <div class="four-jiao">
+                <img src="@img/02-1.png" class="jiao">
+                <img src="@img/02-1.png" class="jiao2">
+                <img src="@img/02-1.png" class="jiao3">
+                <img src="@img/02-1.png" class="jiao4">
+              </div>
             </div>
           </div>
         </el-col>
@@ -86,15 +121,21 @@
                   <tr>
                     <td class="main-tdNums">
                       <svg-icon icon-class="power" />
-                      100W
+                      <countTo :start-val="startVal4" :end-val="todayMaxEle" :duration="3000" />W
                     </td>
                     <td class="main-tdNums">
                       <svg-icon icon-class="powers" />
-                      200W
+                      <countTo :start-val="startVal4" :end-val="todayMaxPower" :duration="3000" />W
                     </td>
 
                   </tr>
                 </table>
+              </div>
+              <div class="four-jiao">
+                <img src="@img/02-1.png" class="jiao">
+                <img src="@img/02-1.png" class="jiao2">
+                <img src="@img/02-1.png" class="jiao3">
+                <img src="@img/02-1.png" class="jiao4">
               </div>
             </div>
           </div>
@@ -105,7 +146,13 @@
                 当月异常告警趋势变化
               </div>
               <div class="kuang-body">
-                <error />
+                <error :city="city" :num="num" />
+              </div>
+              <div class="four-jiao">
+                <img src="@img/02-1.png" class="jiao">
+                <img src="@img/02-1.png" class="jiao2">
+                <img src="@img/02-1.png" class="jiao3">
+                <img src="@img/02-1.png" class="jiao4">
               </div>
             </div>
           </div>
@@ -115,10 +162,19 @@
                 当月异常分布
               </div>
               <distribution />
+              <div class="four-jiao">
+                <img src="@img/02-1.png" class="jiao">
+                <img src="@img/02-1.png" class="jiao2">
+                <img src="@img/02-1.png" class="jiao3">
+                <img src="@img/02-1.png" class="jiao4">
+              </div>
             </div>
           </div>
         </el-col>
       </el-row>
+    </div>
+    <div style="display:none">
+      <infowindow ref="infowindows" :device-infos="deviceInfo" />
     </div>
 
   </div>
@@ -130,13 +186,16 @@ import MapLoader from '@/utils/map'
 import userPower from './components/userPower'
 import error from './components/error'
 import distribution from './components/distribution'
-
+import infowindow from './components/infoWindow'
+import { findComMap, findMapDataDetail, findIndexTotalData, warMonthSort } from '@/api/table'
+import { getToken } from '@/utils/auth'
 export default {
   name: 'Pandect',
   components: {
     userPower,
     error,
-    distribution
+    distribution,
+    infowindow
   },
   data() {
     return {
@@ -182,127 +241,140 @@ export default {
           time: '2020-05-17 16:00',
           message: 'zzz达标'
         }
-      ]
+      ],
+      markList: [
+        {
+          name: '第一人民医院',
+          position: '121.043789,30.699662',
+          type: 1
+        }, {
+          name: '平湖中学',
+          position: '121.039841,30.688639',
+          type: 1
+        }
+      ],
+      deviceInfo: {
+
+      },
+      deviceNum: 0,
+      todayMaxPower: 0,
+      warComNum: 0,
+      todayMaxEle: 0,
+      susComNum: 0,
+      comNum: 0,
+      startVal1: 0,
+      startVal2: 0,
+      startVal3: 0,
+      startVal4: 0,
+      city: [],
+      num: []
 
     }
   },
-  // computed: {
-  //   ...mapGetters([
-  //     'name'
-  //   ])
-  // }
   mounted() {
-    const that = this
-    MapLoader().then(AMap => {
-      // 实例化信息窗体
-      var title = '方恒假日酒店<span style="font-size:11px;color:#F00;">价格:318</span>'
-      var content = []
-      content.push("<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：北京市朝阳区阜通东大街6号院3号楼东北8.3公里")
-      content.push('电话：010-64733333')
-      content.push("<a href='https://ditu.amap.com/detail/B000A8URXB?citycode=110105'>详细信息</a>")
+    // 拿取点位
+    findComMap({ token: getToken }).then(res => {
+      this.markList = res.retData
+      const that = this
+      MapLoader().then(AMap => {
+        // 添加地图边界
+        function addPolygonbox() {
+          AMap.plugin('AMap.DistrictSearch', function() {
+            var opts = {
+              subdistrict: 0, // 获取边界不需要返回下级行政区
+              extensions: 'all', // 返回行政区边界坐标组等具体信息
+              level: 'city' // 查询行政级别为 市
+            }
+            var district = new AMap.DistrictSearch(opts)
+            district.search('平湖市', function(status, result) {
+              // 查询成功时，result即为对应的行政区信息
+              var bounds = result.districtList[0].boundaries
 
-      var infoWindow = new AMap.InfoWindow({
-        isCustom: true, // 使用自定义窗体
-        content: createInfoWindow(title, content.join('<br/>')),
-        offset: new AMap.Pixel(16, -45)
-      })
+              for (var i = 0, l = bounds.length; i < l; i++) {
+                var polygonbox = new AMap.Polygon({
+                  strokeWeight: 1,
+                  path: bounds[i],
+                  fillOpacity: 0.3,
+                  fillColor: '#1047ab',
+                  strokeColor: '#1047ab',
+                  strokeOpacity: 0.3,
+                  extData: {
+                    IDname: '海宁',
+                    Center: '传递内容'
+                  }
+                })
 
-      function closeInfoWindow() {
-        that.map.clearInfoWindow()
-      }
-      // 构建自定义信息窗体
-      function createInfoWindow(title, content) {
-        var info = document.createElement('div')
-        info.className = 'custom-info input-card content-window-card'
-        info.style.backgroundColor = 'white'
-
-        // 可以通过下面的方式修改自定义窗体的宽高
-        // info.style.width = "400px";
-        // 定义顶部标题
-        var top = document.createElement('div')
-        var titleD = document.createElement('div')
-        var closeX = document.createElement('img')
-        top.className = 'info-top'
-        titleD.innerHTML = title
-        closeX.src = 'https://webapi.amap.com/images/close2.gif'
-        closeX.onclick = closeInfoWindow
-
-        top.appendChild(titleD)
-        top.appendChild(closeX)
-        info.appendChild(top)
-
-        // 定义中部内容
-        var middle = document.createElement('div')
-        middle.className = 'info-middle'
-        middle.style.backgroundColor = 'white'
-        middle.innerHTML = content
-        info.appendChild(middle)
-
-        // 定义底部内容
-        var bottom = document.createElement('div')
-        bottom.className = 'info-bottom'
-        bottom.style.position = 'relative'
-        bottom.style.top = '0px'
-        bottom.style.margin = '0 auto'
-        var sharp = document.createElement('img')
-        sharp.src = 'https://webapi.amap.com/images/sharp.png'
-        bottom.appendChild(sharp)
-        info.appendChild(bottom)
-        return info
-      }
-      console.log('地图加载成功')
-      that.map = new AMap.Map('container1', {
-        center: [121.087157, 30.71595],
-        zoom: 11,
-        mapStyle: 'amap://styles/darkblue'
-      })
-
-      AMap.plugin('AMap.DistrictSearch', function() {
-        var opts = {
-          subdistrict: 0, // 获取边界不需要返回下级行政区
-          extensions: 'all', // 返回行政区边界坐标组等具体信息
-          level: 'city' // 查询行政级别为 市
-        }
-        var district = new AMap.DistrictSearch(opts)
-        district.search('平湖市', function(status, result) {
-          // 查询成功时，result即为对应的行政区信息
-          var bounds = result.districtList[0].boundaries
-
-          for (var i = 0, l = bounds.length; i < l; i++) {
-            var polygonbox = new AMap.Polygon({
-              strokeWeight: 1,
-              path: bounds[i],
-              fillOpacity: 0.3,
-              fillColor: '#1047ab',
-              strokeColor: '#1047ab',
-              strokeOpacity: 0.3,
-              extData: {
-                IDname: '海宁',
-                Center: '传递内容'
+                that.map.add(polygonbox)
               }
             })
-
-            that.map.add(polygonbox)
-
-            var marker = new AMap.Marker({
-              position: new AMap.LngLat(121.046085, 30.706451), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-              title: '汽车北站'
-            })
-            AMap.event.addListener(marker, 'click', function() {
-              infoWindow.open(that.map, marker.getPosition())
-            })
-
-            // 将创建的点标记添加到已有的地图实例：
-            that.map.add(marker)
           }
+          )
+        }
+        // 点击获取table信息
+        function markerClick(e) {
+          findMapDataDetail({
+            comId: e.target.comId
+          }).then(res => {
+            that.deviceInfo = res.retData[0]
+            infoWindow.setContent(e.target.content)
+            infoWindow.open(that.map, e.target.getPosition())
+          })
+        }
+
+        that.map = new AMap.Map('container1', {
+          center: [121.087157, 30.71595],
+          zoom: 11,
+          mapStyle: 'amap://styles/darkblue'
         })
+        addPolygonbox() // 添加行政区
+
+        var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) })
+
+        for (var j = 0; j < this.markList.length; j++) {
+          var marker = new AMap.Marker({
+            position: this.markList[j].lon_lat.split(','),
+            map: that.map,
+            title: this.markList[j].com_short_name
+          })
+          marker.content = this.$refs.infowindows.$el
+          marker.comId = this.markList[j].id
+          marker.on('click', markerClick)
+        // marker.emit('click', { target: marker })
+        }
+
+      // that.map.setFitView()
+      }, e => {
+        console.log('地图加载失败', e)
+      })
+    })
+
+    findIndexTotalData().then(res => {
+      this.deviceNum = res.retData.deviceNum
+      this.todayMaxPower = res.retData.todayMaxPower
+      this.warComNum = res.retData.warComNum
+      this.todayMaxEle = res.retData.todayMaxEle
+      this.susComNum = res.retData.susComNum
+      this.comNum = res.retData.comNum
+    })
+    warMonthSort().then(res => {
+      var _city = res.retData.date
+      this.num = res.retData.value
+      for (var i = 0; i < _city.length; i++) {
+        _city[i] = _city[i].slice(5, _city[i].length)
       }
-      )
-    }, e => {
-      console.log('地图加载失败', e)
+      this.city = _city
     })
   },
+  destroyed() {
+    this.map = null
+  },
   methods: {
+    gotoHome() {
+      this.$router.push('/')
+    },
+    closeInfoWindow() {
+      this.map.clearInfoWindow()
+    }
   }
 }
 </script>
@@ -436,15 +508,15 @@ padding: 40px 0px 30px 0px;
   margin: 0 auto;
 }
 .main-td{
-  padding: 10px;
+  padding: 15px 10px 10px 10px;
 }
 .main-tdNum{
   padding: 30px;
   font-size: 22px;
 }
 .main-tdNums{
-  padding: 30px;
-  font-size: 30px;
+  padding: 30px 0px;
+  font-size: 24px;
 }
 .kuang-body-ui{
   margin: 15px;
@@ -487,4 +559,47 @@ padding: 40px 0px 30px 0px;
            ::-webkit-scrollbar-resizer {/*定义右下角拖动块的样式*/
                background: rgb(200,200,200);
            }
+
+.jiao,.jiao2,.jiao3,.jiao4{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+  }
+  .jiao{
+    top:0;
+    left:0;
+  }
+  .jiao2{
+    top:0;
+    right:0;
+    transform: rotate(90deg)
+  }
+  .jiao3{
+      bottom: 0;
+      right: 0;
+      transform: rotate(180deg)
+  }
+  .jiao4{
+      bottom: 0;
+      left: 0;
+      transform: rotate(270deg)
+  }
+  .left-line{
+     position: absolute;
+     width: 15%;
+     height:3px;
+     background: #01bfff;
+     top: -1px;
+     left: 15%;
+
+  }
+  .right-line{
+     position: absolute;
+     width: 15%;
+     height:3px;
+     background: #01bfff;
+     top: -1px;
+     right: 15%;
+
+  }
 </style>

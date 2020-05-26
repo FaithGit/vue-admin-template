@@ -33,3 +33,31 @@ export function findData(data) { // 复杂表格
     data
   })
 }
+export function findComMap(data) { // 拿取点位
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findComMap',
+    method: 'POST',
+    data
+  })
+}
+export function findMapDataDetail(data) { // 拿取点位
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findMapDataDetail',
+    method: 'POST',
+    data
+  })
+}
+export function findIndexTotalData(data) { // 首页的6个数据
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findIndexTotalData',
+    method: 'POST',
+    data
+  })
+}
+export function warMonthSort(data) { // 异常数据
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/warMonthSort',
+    method: 'POST',
+    data
+  })
+}

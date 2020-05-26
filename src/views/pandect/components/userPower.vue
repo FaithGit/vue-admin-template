@@ -96,7 +96,7 @@ export default {
       console.log('xData', xData)
       console.log('yData', yData)
 
-      const myChart = echarts.init(document.getElementById('powerEcharts'))
+      const myChart2 = echarts.init(document.getElementById('powerEcharts'))
 
       var option = {
         backgroundColor: '#041a51',
@@ -248,8 +248,8 @@ export default {
         ]
       }
 
-      myChart.setOption(option)
-      window.onresize = myChart.resize
+      myChart2.setOption(option)
+      window.onresize = myChart2.resize
     }
   }
 }

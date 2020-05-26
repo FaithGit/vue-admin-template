@@ -5,21 +5,64 @@
 <script>
 var echarts = require('echarts')
 export default {
+  props: {
+    city: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    num: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
+  },
   data() {
     return {
-      city: ['4-01', '4-02', '4-03', '4-04', '4-05', '4-06  '],
-      num: ['40', '60', '22', '85', '50', '40']
+
+    }
+  },
+  watch: {
+    city: {
+      deep: true,
+      handler(nv) {
+        this.drawChart()
+      }
     }
   },
   mounted() {
-    this.drawChart()
+
   },
   methods: {
     drawChart() {
-      const myChart = echarts.init(document.getElementById('errEcharts'))
+      const myChart1 = echarts.init(document.getElementById('errEcharts'))
 
       var option = {
         backgroundColor: '#041a51',
+        dataZoom: [
+          {
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 100,
+            handleStyle: {
+              color: '#094198'
+            },
+            textStyle: {
+              color: 'rgba(255,255,255,1)'
+            },
+            fillerColor: 'rgba(67,55,160,0.4)',
+            borderColor: 'rgba(204,187,225,0.5)'
+          },
+          {
+            type: 'inside',
+            realtime: true,
+            start: 65,
+            end: 85
+          }
+        ],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -50,7 +93,7 @@ export default {
           top: '10%',
           left: '10%',
           right: '5%',
-          bottom: '10%'
+          bottom: '30%'
         // containLabel: true
         },
         xAxis: [{
@@ -166,8 +209,8 @@ export default {
         }]
       }
 
-      myChart.setOption(option)
-      window.onresize = myChart.resize
+      myChart1.setOption(option)
+      window.onresize = myChart1.resize
     }
   }
 }

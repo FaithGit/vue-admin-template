@@ -7,8 +7,6 @@ var echarts = require('echarts')
 export default {
   data() {
     return {
-      city: ['4-01', '4-02', '4-03', '4-04', '4-05', '4-06  '],
-      num: ['40', '60', '22', '85', '50', '40']
     }
   },
   mounted() {
@@ -16,29 +14,29 @@ export default {
   },
   methods: {
     drawChart() {
-      const myChart = echarts.init(document.getElementById('distribution'))
+      const myChart3 = echarts.init(document.getElementById('distribution'))
       const bgColor = '#041a51'
       const title = '总量'
       const color = ['#0E7CE2', '#FF8352', '#E271DE', '#F8456B', '#00FFFF', '#4AEAB0']
       const echartData = [{
         name: '静电电流',
-        value: '372'
+        value: '0'
       },
       {
         name: '风机异常',
-        value: '292'
+        value: '0'
       },
       {
         name: '排放温度',
-        value: '220'
+        value: '0'
       },
       {
         name: '水喷淋',
-        value: '1420'
+        value: '0'
       },
       {
         name: '生产温度',
-        value: '256'
+        value: '0'
       }
       ]
 
@@ -142,8 +140,8 @@ export default {
         }]
       }
 
-      myChart.setOption(option)
-      window.onresize = myChart.resize
+      myChart3.setOption(option)
+      window.onresize = myChart3.resize
     }
   }
 }

@@ -20,6 +20,9 @@
       <div class="form-box">
         <div class="form-box-head">设备信息</div>
         <el-row :gutter="10" class="form-box-comp">
+          <div v-show="!form.sysDevices.length>0" style="text-align:center">
+            <img src="@img/none.png" style="width:150px;margin:10px">
+          </div>
           <el-col v-for="(item,index) in form.sysDevices" :key="'sysDevices'+index" :span="24">
             <el-col :span="1" class="xuhao" style="  border-left: 4px solid #ff8800;">{{ index +1 }}</el-col>
             <el-col :span="12">
@@ -75,6 +78,9 @@
       <div class="form-box">
         <div class="form-box-head">工况信息</div>
         <el-row :gutter="10" class="form-box-comp" style="padding:0 60px">
+          <div v-show="!form.sysConditions.length>0" style="text-align:center">
+            <img src="@img/none.png" style="width:150px;margin:10px">
+          </div>
           <el-col
             v-for="(work,workindex) in form.sysConditions"
             :key="'work'+workindex"
@@ -768,9 +774,9 @@
           </div>
         </el-row>
       </div>
-      <el-form-item>
+      <el-form-item style="text-align:center">
         <el-button type="primary" @click="onSubmit">提交</el-button>
-        <el-button @click="onCancel">Cancel</el-button>
+        <el-button @click="onCancel">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -931,9 +937,62 @@ export default {
     },
     onCancel() {
       this.$message({
-        message: 'cancel!',
-        type: 'warning'
+        message: '重置成功!',
+        type: 'success'
       })
+      this.form = {
+        mn: '',
+        comId: '',
+        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '' }],
+        sysConditions: [
+          {
+            modelNum: '',
+            ooStatus: 0,
+            ooToModel: '',
+            ooHbCode: '',
+            otStatus: 0,
+            otToModel: '',
+            otHbCode: '',
+            owStatus: 0,
+            owToModel: '',
+            owHbCode: '',
+            ofStatus: 0,
+            ofToModel: '',
+            ofHbCode: '',
+            aoStatus: 0,
+            aoToModel: '',
+            aoHbCode: '',
+            aoAcquisitionRangeMax: '',
+            aoAcquisitionRangeMin: '',
+            aoRealRangeMax: '',
+            aoRealRangeMin: '',
+            aoCriticalValue: '',
+            aoLoadCoefficient: 1,
+            aoAir: '',
+            atStatus: 0,
+            atToModel: '',
+            atHbCode: '',
+            atAcquisitionRangeMax: '',
+            atAcquisitionRangeMin: '',
+            atRealRangeMax: '',
+            atRealRangeMin: '',
+            atCriticalValue: '',
+            atLoadCoefficient: 1,
+            atAir: '',
+            awStatus: 0,
+            awToModel: '',
+            awHbCode: '',
+            awAcquisitionRangeMax: '',
+            awAcquisitionRangeMin: '',
+            awRealRangeMax: '',
+            awRealRangeMin: '',
+            awCriticalValue: '',
+            awLoadCoefficient: 1,
+            awAir: ''
+          }
+        ]
+      }
+      this.$refs.form.clearValidate()
     },
     addDeviceList() {
       const _obj = {
@@ -1057,7 +1116,8 @@ export default {
 }
 .card-title {
   width: 120px;
-  background: rgb(255, 136, 0);
+  background: #0292ff;
+  color:white;
   text-align: center;
   font-size: 16px;
   padding: 5px;
