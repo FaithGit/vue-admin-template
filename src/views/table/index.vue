@@ -32,7 +32,7 @@
               :title="sc.device_name"
               width="200"
               trigger="hover"
-              :content="'ID:'+sc.device_id"
+              :content="'生产设备开关:'+(sc.switch_data ==true?'开':'关')"
             >
               <svg-icon slot="reference" icon-class="create" :class="[sc.device_name!==true?'redSvg':'greenSvg']" style="margin:0 5px" />
             </el-popover>
@@ -57,37 +57,67 @@
       </el-table-column>
       <el-table-column label="水喷淋" align="center">
         <template slot-scope="scope">
-          <svg-icon icon-class="water_switch" :class="[scope.row.water_spray!==true?'redSvg':'greenSvg']" />
+          <div v-if="scope.row.water_spray">
+            <svg-icon icon-class="water_switch" :class="[scope.row.water_spray!==true?'redSvg':'greenSvg']" />
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="风机电流" align="center">
         <template slot-scope="scope">
-          <svg-icon icon-class="anpei" />
-          {{ scope.row.fans_current }}
+          <div v-if="scope.row.fans_current">
+            <svg-icon icon-class="anpei" />
+            {{ scope.row.fans_current }}
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="风机负荷" align="center">
         <template slot-scope="scope">
-          <svg-icon icon-class="fuhe" />
-          {{ scope.row.fans_load }}
+          <div v-if="scope.row.fans_load">
+            <svg-icon icon-class="fuhe" />
+            {{ scope.row.fans_load }}
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="净化器电流" align="center">
         <template slot-scope="scope">
-          <svg-icon icon-class="anpei" />
-          {{ scope.row.purifier_current }}
+          <div v-if="scope.row.purifier_current">
+            <svg-icon icon-class="anpei" />
+            {{ scope.row.purifier_current }}
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="净化负荷" align="center">
         <template slot-scope="scope">
-          <svg-icon icon-class="fuhe" />
-          {{ scope.row.purifier_load }}
+          <div v-if="scope.row.purifier_load">
+            <svg-icon icon-class="fuhe" />
+            {{ scope.row.purifier_load }}
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="风量" align="center">
         <template slot-scope="scope">
-          <svg-icon icon-class="fan" />
-          {{ scope.row.fans_volume }}
+          <div v-if="scope.row.fans_volume">
+            <svg-icon icon-class="fan" />
+            {{ scope.row.fans_volume }}
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
     </el-table>

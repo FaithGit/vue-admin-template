@@ -28,7 +28,7 @@
                 :title="sc.device_name"
                 width="200"
                 trigger="hover"
-                :content="'ID:'+sc.device_id"
+                :content="'生产设备开关:'+(sc.switch_data ==true?'开':'关')"
               >
                 <svg-icon slot="reference" icon-class="create" :class="[sc.device_name!==true?'redSvg':'greenSvg']" style="margin:0 5px" />
               </el-popover>

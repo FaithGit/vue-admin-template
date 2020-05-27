@@ -104,7 +104,7 @@ export default {
           },
           labelLine: {
             normal: {
-              length: 15,
+              length: 19,
               length2: 90,
               lineStyle: {
                 color: '#e6e6e6'

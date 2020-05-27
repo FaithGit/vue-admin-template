@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="dashboardHead">
       <img src="@img/hs_logo.png" style="height:56px;margin:7px">
-      <span class="hs_headTitle">平湖市环保系统</span>
+      <span class="hs_headTitle">平湖市环保工况（电量）监测系统</span>
       <span class="hs_headTitle" style="float:right;margin-right:20px;font-size:18px" @click="gotoHome">
         返回首页
       </span>
@@ -56,6 +56,10 @@
                 动态栏
               </div>
               <div class="kuang-body">
+                <div v-show="!list.length>0" style="display:flex;justify-content: center;align-items: center;width: 100%;height: 100%;">
+                  <div><img src="@img/goodList.png" style="width:180px"></div>
+                  <div style="color:white;position: absolute;bottom: 8%;">无异常</div>
+                </div>
                 <div v-for="(itemList,index) in list" :key="itemList.company" class="kuang-body-ui">
                   {{ index+1 }}
                   <span style="width:30%;display:inline-block;text-align:center;word-wrap: break-word">{{ itemList.company }}  </span>
@@ -142,7 +146,7 @@
 
           <div class="kuang kuangMiddle">
             <div class="kuang-content">
-              <div class="left-title" style="width:50%">
+              <div class="left-title left-title-small" style="width:50%">
                 当月异常告警趋势变化
               </div>
               <div class="kuang-body">
@@ -200,48 +204,7 @@ export default {
   data() {
     return {
       map: null,
-      list: [
-        {
-          company: 'xxxxx',
-          time: '2020-04-23 12:00',
-          message: 'xxx未达标'
-        },
-        {
-          company: 'yyyy',
-          time: '2020-04-24 12:00',
-          message: 'yyy未达标'
-        },
-        {
-          company: 'zzz1',
-          time: '2020-04-25 13:00',
-          message: 'zzz达标'
-        },
-        {
-          company: 'zzz2',
-          time: '2020-04-26 14:00',
-          message: 'zzz达标'
-        },
-        {
-          company: 'zzz3',
-          time: '2020-04-26 16:00',
-          message: 'zzz达标'
-        },
-        {
-          company: 'zzz4',
-          time: '2020-04-27 14:00',
-          message: 'zzz达标'
-        },
-        {
-          company: 'zzz5',
-          time: '2020-04-28 13:00',
-          message: 'zzz达标'
-        },
-        {
-          company: 'zzz6',
-          time: '2020-05-17 16:00',
-          message: 'zzz达标'
-        }
-      ],
+      list: [],
       markList: [
         {
           name: '第一人民医院',
@@ -600,6 +563,5 @@ padding: 40px 0px 30px 0px;
      background: #01bfff;
      top: -1px;
      right: 15%;
-
   }
 </style>
