@@ -16,6 +16,11 @@ import '@/icons' // icon
 import '@/permission' // permission control
 import countTo from 'vue-count-to'
 Vue.component('countTo', countTo)
+
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
+
+Vue.use(VueAwesomeSwiper) // 使用插件
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

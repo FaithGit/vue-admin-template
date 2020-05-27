@@ -1,47 +1,75 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
+    <div class="wrapper">
+      <swiper ref="swiperQX" :options="swiperOption" style="width:100vw;height:100vh;position: absolute;z-index: 2;">
+        <swiper-slide>
+          <img src=" http://47.96.147.99:8080/MQJK/images/login/p15.jpg" style="width:100%;height:100%">
+        </swiper-slide>
+        <swiper-slide>
+          <img src="@img/background1.jpg" style="width:100%;height:100%">
+        </swiper-slide>
+      </swiper>
+    </div>
+    <div class="left">
       <div class="title-container">
-        <h3 class="title">平湖市环保工况（电量）监测系统</h3>
+        <!-- <img src="@img/icon1.png" style="width:70px"> -->
+        <img src="@img/icon2.png" style="width:70px;margin:20px">
+        <div style="width:100%;height:100vh;display:flex;align-items:center;position: absolute;top: 0;justify-content: center;">
+          <h3 class="centerTitle">平湖市环保工况（电量）监测系统</h3>
+          <div style="position: absolute;bottom: 15px;left:20px;display:flex;align-items:center;">
+            <img src="@img/hs_logo.png" style="height:42px;margin:0px 0px 5px 0px;">
+            <span style="color:white;margin:0px 10px">Copyright © www.sea-splendor.com 版权所有 </span><span style="color:white;margin:0px 10px">海晟科技官方网站：<a href="http://www.sea-splendor.com">http://www.sea-splendor.com</a></span>
+          </div>
+        </div>
+
       </div>
 
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+    </div>
+    <div class="right">
+      <div class="weatherPostiton">
+        <div class="bkWeather" />
+        <div id="he-plugin-standard" />
+      </div>
 
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="Password"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
-      </el-form-item>
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-    </el-form>
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+        <div style="    color: white;margin-bottom: 10px;">用户登录</div>
+        <el-form-item prop="username">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="username"
+            v-model="loginForm.username"
+            placeholder="用户名"
+            name="username"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
+
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="密码"
+            name="password"
+            tabindex="2"
+            auto-complete="on"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
+        </el-form-item>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -75,7 +103,13 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      swiperOption: {
+        autoplay: 5000,
+        autoplayDisableOnInteraction: false,
+        loop: true,
+        speed: 1000
+      }
     }
   },
   watch: {
@@ -85,6 +119,30 @@ export default {
       },
       immediate: true
     }
+  },
+  created() {
+    window.WIDGET = {
+      CONFIG: {
+        'layout': 1,
+        'width': '450',
+        'height': '150',
+        'background': 1,
+        'dataColor': 'FFFFFF',
+        'borderRadius': 5,
+        'city': 'CN101210305',
+        'key': '24990edf2cef4a9ab7598682f12d5e52'
+      }
+    };
+    (function(d) {
+      var cs = d.createElement('link')
+      cs.rel = 'stylesheet'
+      cs.href = 'https://apip.weatherdt.com/view/static/css/tqw_widget_view.css?v=0101'
+      var s = d.createElement('script')
+      s.src = 'https://widget.heweather.net/standard/static/js/he-standard-common.js?v=1.1'
+      var sn = d.getElementsByTagName('script')[0]
+      sn.parentNode.insertBefore(cs, sn)
+      sn.parentNode.insertBefore(s, sn)
+    })(document)
   },
   methods: {
     showPwd() {
@@ -215,6 +273,11 @@ $light_gray:#eee;
       font-weight: bold;
     }
   }
+  .centerTitle{
+      font-size: 38px;
+      color: $light_gray;
+      text-align: center;
+  }
 
   .show-pwd {
     position: absolute;
@@ -224,6 +287,35 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+  .right{
+    position: absolute;
+    width: 30%;
+    min-width: 680px;
+    height:100vh;
+    z-index: 6;
+    right:0px;
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .left{
+    position: absolute;
+    width: 70%;
+    height:100vh;
+    z-index: 5;
+    left:0px;
+  }
+  .weatherPostiton{
+   display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30vh;
+  }
+  .bkWeather{
+    width: 450px;
+    height: 150px;
+    background: #0b0d20;
+    position: absolute;
+    border-radius: .4em;
   }
 }
 </style>

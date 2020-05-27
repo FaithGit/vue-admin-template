@@ -48,7 +48,7 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.retCode !== 1) {
       Message({
-        message: res.message || 'retCodeError',
+        message: res.retMsg || 'retCodeError',
         type: 'error',
         duration: 5 * 1000
       })

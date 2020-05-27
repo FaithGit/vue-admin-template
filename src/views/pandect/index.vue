@@ -1,8 +1,9 @@
 <template>
-  <div class="dashboard-container">
+  <div class="dashboard-container" @dblclick="buttoncli">
     <div class="dashboardHead">
       <img src="@img/hs_logo.png" style="height:56px;margin:7px">
       <span class="hs_headTitle">平湖市环保工况（电量）监测系统</span>
+
       <span class="hs_headTitle" style="float:right;margin-right:20px;font-size:18px" @click="gotoHome">
         返回首页
       </span>
@@ -193,6 +194,7 @@ import distribution from './components/distribution'
 import infowindow from './components/infoWindow'
 import { findComMap, findMapDataDetail, findIndexTotalData, warMonthSort } from '@/api/table'
 import { getToken } from '@/utils/auth'
+import screenfull from 'screenfull'
 export default {
   name: 'Pandect',
   components: {
@@ -337,6 +339,9 @@ export default {
     },
     closeInfoWindow() {
       this.map.clearInfoWindow()
+    },
+    buttoncli() {
+      screenfull.toggle()
     }
   }
 }

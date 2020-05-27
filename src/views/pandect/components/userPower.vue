@@ -249,7 +249,9 @@ export default {
       }
 
       myChart2.setOption(option)
-      window.onresize = myChart2.resize
+      // window.onresize = myChart3.resize
+      // 注意：如果是一个页面中插入多个echarts图，那么需要用第一种方式来监听resize事件，即：window.addEventListener，若选用第二种方法只能监听一个echarts图的自适应。区别在于addEventListener与on上，有兴趣可以自行查阅。
+      window.addEventListener('resize', () => { myChart2.resize() })
     }
   }
 }
