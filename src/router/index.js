@@ -109,6 +109,7 @@ export const constantRoutes = [
   {
     path: '/craft',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',

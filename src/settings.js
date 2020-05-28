@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '平湖市环保工况（电量）监测系统',
+  title: '平湖市治理设施工况（电量）监测系统',
 
   /**
    * @type {boolean} true | false

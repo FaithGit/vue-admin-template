@@ -3,19 +3,20 @@
     <div class="wrapper">
       <swiper ref="swiperQX" :options="swiperOption" style="width:100vw;height:100vh;position: absolute;z-index: 2;">
         <swiper-slide>
-          <img src=" http://47.96.147.99:8080/MQJK/images/login/p15.jpg" style="width:100%;height:100%">
+          <img src="@img/background1.jpg" style="width:100%;height:100%">
         </swiper-slide>
         <swiper-slide>
-          <img src="@img/background1.jpg" style="width:100%;height:100%">
+          <img src="@img/background2.jpg" style="width:100%;height:100%">
         </swiper-slide>
       </swiper>
     </div>
     <div class="left">
       <div class="title-container">
         <!-- <img src="@img/icon1.png" style="width:70px"> -->
-        <img src="@img/icon2.png" style="width:70px;margin:20px">
+
         <div style="width:100%;height:100vh;display:flex;align-items:center;position: absolute;top: 0;justify-content: center;">
-          <h3 class="centerTitle">平湖市环保工况（电量）监测系统</h3>
+          <img src="@img/icon2.png" style="width:70px;margin-right:20px">
+          <h3 class="centerTitle">  平湖市治理设施工况（电量）监测系统</h3>
           <div style="position: absolute;bottom: 15px;left:20px;display:flex;align-items:center;">
             <img src="@img/hs_logo.png" style="height:42px;margin:0px 0px 5px 0px;">
             <span style="color:white;margin:0px 10px">Copyright © www.sea-splendor.com 版权所有 </span><span style="color:white;margin:0px 10px">海晟科技官方网站：<a href="http://www.sea-splendor.com">http://www.sea-splendor.com</a></span>
@@ -275,7 +276,7 @@ $light_gray:#eee;
   }
   .centerTitle{
       font-size: 38px;
-      color: $light_gray;
+      color: #7d7d7d;
       text-align: center;
   }
 
@@ -291,7 +292,6 @@ $light_gray:#eee;
   .right{
     position: absolute;
     width: 30%;
-    min-width: 680px;
     height:100vh;
     z-index: 6;
     right:0px;

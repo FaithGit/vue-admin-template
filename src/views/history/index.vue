@@ -266,13 +266,46 @@ export default {
     }
   },
   mounted() {
-    this.findData()
+    findData({
+      comName: '',
+      pageIndex: 1,
+      pageSize: 9999
+    }).then(res => {
+      // console.log(res.retData.data)
+      var arr = res.retData.data
+      var temp = []
+      for (var i = 0; i < arr.length; i++) {
+        temp.push({
+          label: arr[i].comShortName,
+          value: arr[i].id
+        })
+      }
+      this.comList = temp
+      this.com = this.comList[0].value
+      selectByComId({
+        comId: this.com
+      }).then(res => {
+        // console.log(res)
+        var arr = res.retData
+        var temp = []
+        for (var i = 0; i < arr.length; i++) {
+          temp.push({
+            label: arr[i].deviceName,
+            value: arr[i].deviceId,
+            deviceStyle: arr[i].deviceStyle
+          })
+        }
+        this.deviceList = temp
+        this.device = this.deviceList[0]
+        this.time = [new Date() - 3600 * 1000 * 24 * 7, new Date()]
+        this.findDataHistory()
+      })
+    })
   },
   methods: {
 
     handleSizeChange(val) {
       this.pageSize = val
-      this.findDataHistory
       this.findDataHistory()
     },
     handleCurrentChange(val) {
