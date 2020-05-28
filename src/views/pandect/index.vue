@@ -4,7 +4,7 @@
       <img src="@img/hs_logo.png" style="height:56px;margin:7px">
       <span class="hs_headTitle">平湖市环保工况（电量）监测系统</span>
 
-      <span class="hs_headTitle" style="float:right;margin-right:20px;font-size:18px" @click="gotoHome">
+      <span class="hs_headTitle" style="float:right;margin-right:20px;font-size:18px;cursor: pointer;" @click="gotoHome">
         返回首页
       </span>
     </div>

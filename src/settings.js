@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: '平湖市环保工况（电量）监测系统',
 
   /**
    * @type {boolean} true | false

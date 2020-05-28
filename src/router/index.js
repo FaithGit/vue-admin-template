@@ -94,6 +94,30 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/history',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'History',
+        component: () => import('@/views/history/index'),
+        meta: { title: '历史数据', icon: 'history' }
+      }
+    ]
+  },
+  {
+    path: '/craft',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Craft',
+        component: () => import('@/views/craft/index'),
+        meta: { title: '工艺图', icon: 'craft' }
+      }
+    ]
+  },
   // {
   //   path: '/map',
   //   component: Layout,

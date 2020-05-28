@@ -7,71 +7,37 @@ var echarts = require('echarts')
 export default {
   data() {
     return {
-      powerList: [{
-        month: '1月',
-        value: 2500
-      },
-      {
-        month: '2月',
-        value: 2800
-      },
-      {
-        month: '3月',
-        value: 3000
-      },
+      powerList: [
 
-      {
-        month: '4月',
-        value: 2600
-      },
+        {
+          month: '5-23',
+          value: 2800
+        },
+        {
+          month: '5-24',
+          value: 3000
+        },
 
-      {
-        month: '5月',
-        value: 3500
-      },
-
-      {
-        month: '6月',
-        value: 2500
-      },
-      {
-        month: '7月',
-        value: 3200
-      },
-      {
-        month: '8月',
-        value: 3100
-      },
-      {
-        month: '9月',
-        value: 2900,
-        ratio: 87.3
-      },
-      {
-        month: '10月',
-        value: 2500
-      },
-      {
-        month: '11月',
-        value: 3600
-      },
-      {
-        month: '12月',
-        value: 3400,
-        ratio: 87.3
-      },
-      {
-        month: '1月',
-        value: 2800
-      },
-      {
-        month: '2月',
-        value: 3000
-      },
-      {
-        month: '3月',
-        value: 2400
-      }
+        {
+          month: '5-25',
+          value: 2600
+        },
+        {
+          month: '5-26',
+          value: 3500
+        },
+        {
+          month: '5-27',
+          value: 3300
+        },
+        {
+          month: '5-28',
+          value: 2800
+        },
+        {
+          month: '5-28',
+          value: 800
+        }
 
       ]
     }
@@ -113,7 +79,7 @@ export default {
             if (prams[0].data === min) {
               return '用电量：0W'
             } else {
-              return '用电量：' + prams[0].data + 'W'
+              return prams[0].axisValue + '号：' + prams[0].data + 'W'
             }
           }
         },

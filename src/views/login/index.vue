@@ -295,7 +295,7 @@ $light_gray:#eee;
     height:100vh;
     z-index: 6;
     right:0px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.5);
   }
   .left{
     position: absolute;
