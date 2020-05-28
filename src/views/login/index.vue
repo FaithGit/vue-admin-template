@@ -311,7 +311,7 @@ $light_gray:#eee;
     height: 30vh;
   }
   .bkWeather{
-    width: 450px;
+    max-width: 450px;
     height: 150px;
     background: #0b0d20;
     position: absolute;
