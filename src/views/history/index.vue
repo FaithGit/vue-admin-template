@@ -34,7 +34,7 @@
       <el-button type="primary" icon="el-icon-refresh-right" @click="searchClickReset">重置</el-button>
     </div>
 
-    <el-table v-loading="loadable" border :data="tableData">
+    <el-table v-loading="loadable" border :data="tableData" style="margin:10px 0px 0px 0px">
       <el-table-column
         type="index"
         width="50"
