@@ -297,7 +297,9 @@ export default {
         }
         this.deviceList = temp
         this.device = this.deviceList[0]
-        this.time = [new Date() - 3600 * 1000 * 24 * 7, new Date()]
+        this.deviceStyles = this.device.deviceStyle
+        console.log('this.deviceStyles', this.deviceStyles)
+        this.time = [new Date(new Date() - 3600 * 1000 * 24 * 7), new Date()]
         this.findDataHistory()
       })
     })
@@ -392,11 +394,11 @@ export default {
         'deviceId': this.device.value,
         'startTime': this.time[0],
         'endTime': this.time[1],
-        'deviceStyle': this.deviceStyle
+        'deviceStyle': this.deviceStyles
       }).then(res => {
         console.log(res)
-        this.tableData = res.retData
-        this.total = this.tableData.length
+        this.tableData = res.retData.data
+        this.total = res.retData.total
         this.loadable = false
       })
     },

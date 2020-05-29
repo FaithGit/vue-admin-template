@@ -127,11 +127,11 @@
                   <tr>
                     <td class="main-tdNums">
                       <svg-icon icon-class="power" />
-                      <countTo :start-val="startVal4" :end-val="todayMaxEle" :duration="3000" />W
+                      <countTo :start-val="startVal4" :end-val="todayMaxEle" :duration="3000" />kw/h
                     </td>
                     <td class="main-tdNums">
                       <svg-icon icon-class="powers" />
-                      <countTo :start-val="startVal4" :end-val="todayMaxPower" :duration="3000" />W
+                      <countTo :start-val="startVal4" :end-val="todayMaxPower" :duration="3000" />kw
                     </td>
 
                   </tr>

@@ -28,8 +28,9 @@
     </div>
     <div class="right">
       <div class="weatherPostiton">
-        <div class="bkWeather" />
-        <div id="he-plugin-standard" />
+        <iframe allowtransparency="true" frameborder="0" width="410" height="96" scrolling="no" src="//tianqi.2345.com/plugin/widget/index.htm?s=2&z=3&t=0&v=0&d=3&bd=0&k=&f=ffffff&ltf=009944&htf=cc0000&q=1&e=0&a=0&c=60160&w=450&h=96&align=center" />
+        <!-- <div class="bkWeather" />
+        <div id="he-plugin-standard" /> -->
       </div>
 
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
@@ -308,7 +309,8 @@ $light_gray:#eee;
    display: flex;
     align-items: center;
     justify-content: center;
-    height: 30vh;
+    height: 20vh;
+    margin-top: 10vh;
   }
   .bkWeather{
     max-width: 450px;
