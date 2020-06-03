@@ -235,6 +235,9 @@ export default {
       com: '',
       deviceList: [],
       device: '',
+      deviceValue: '',
+      startTime: '',
+      endTime: '',
       time: [],
       pickerOptions: {
         shortcuts: [{
@@ -298,8 +301,13 @@ export default {
         this.deviceList = temp
         this.device = this.deviceList[0]
         this.deviceStyles = this.device.deviceStyle
+        this.deviceStyle = this.device.deviceStyle
+        this.deviceValue = this.device.value
+
         console.log('this.deviceStyles', this.deviceStyles)
         this.time = [new Date(new Date() - 3600 * 1000 * 24 * 7), new Date()]
+        this.startTime = this.time[0]
+        this.endTime = this.time[1]
         this.findDataHistory()
       })
     })
@@ -354,6 +362,10 @@ export default {
       }
       this.deviceStyles = this.deviceStyle
       console.log(this.deviceStyles)
+      this.pageIndex = 1
+      this.deviceValue = this.device.value
+      this.startTime = this.time[0]
+      this.endTime = this.time[1]
       this.findDataHistory()
     },
     searchClickReset() {
@@ -391,9 +403,9 @@ export default {
       findDataHistory({
         'pageIndex': this.pageIndex || pageIndex,
         'pageSize': this.pageSize || pageSize,
-        'deviceId': this.device.value,
-        'startTime': this.time[0],
-        'endTime': this.time[1],
+        'deviceId': this.deviceValue,
+        'startTime': this.startTime,
+        'endTime': this.endTime,
         'deviceStyle': this.deviceStyles
       }).then(res => {
         console.log(res)

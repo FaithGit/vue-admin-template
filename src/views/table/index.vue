@@ -34,7 +34,7 @@
               trigger="hover"
               :content="'生产设备开关:'+(sc.switch_data ==true?'开':'关')"
             >
-              <svg-icon slot="reference" icon-class="create" :class="[sc.device_name!==true?'redSvg':'greenSvg']" style="margin:0 5px" />
+              <svg-icon slot="reference" icon-class="create" :class="[sc.device_name==true?'redSvgCreate':'greenSvgCreate']" style="margin:0 5px" class="hoverHref" @click="gotoHistory(sc,scope.row)" />
             </el-popover>
 
           </span>
@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column label="治理设施名称" align="center">
         <template slot-scope="scope">
-          {{ scope.row.device_name }}
+          <span class="gotoZL">  {{ scope.row.device_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="工艺名称" align="center">
@@ -295,21 +295,53 @@ export default {
     searchClickReset() {
       this.search = this.search1 = ''
       this.findData(this.search, 1, this.pageSize)
+    },
+    gotoHistory(item, all) {
+      console.log(item)
+      console.log(all)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .redSvg{
-  color: red;
+  color: red !important;
   font-size: 20px;
+  fill: red !important;
 }
 .greenSvg{
-  color: green;
+  color: green !important;
   font-size: 20px;
+    fill: green !important;
+}
+.redSvgCreate{
+  color: red !important;
+  font-size: 20px;
+  fill: red !important;
+}
+.greenSvgCreate{
+  color: green !important;
+  font-size: 20px;
+    fill: green !important;
+}
+.greenSvgCreate:hover{
+color: #9100ff !important;
+ fill: #9100ff !important;
+ cursor: pointer;
+}
+.redSvgCreate:hover{
+color: #9100ff !important;
+ fill: #9100ff !important;
+  cursor: pointer;
+}
+.gotoZL:hover{
+color: #9100ff !important;
+ fill: #9100ff !important;
+  cursor: pointer;
 }
 .paginationStyle{
  text-align: center;
  margin: 15px 0;
 }
+
 </style>

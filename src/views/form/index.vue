@@ -138,10 +138,10 @@
                     :ref="`${workindex}ooStatus1`"
                     label="对应电表模块编号"
                     label-width="134px"
-                    :prop="`sysConditions[${workindex}].ooToMode`"
+                    :prop="`sysConditions[${workindex}].ooToModel`"
                     :rules="work.ooStatus!=0? requiredRules: NorequiredRules"
                   >
-                    <el-select v-model="work.ooToMode " clearable placeholder="请选择对应电表模块编号">
+                    <el-select v-model="work.ooToModel " clearable placeholder="请选择对应电表模块编号">
                       <el-option
                         v-for="(length,_index) in form.sysDevices"
                         :key="'lengthDui'+_index"
@@ -164,7 +164,7 @@
                         v-for="(hbcode,hbcodeIndex) in hb_code_list"
                         :key="'hb_code_list'+hbcodeIndex"
                         :label="hbcode.codeName"
-                        :value="hbcode.hsCode"
+                        :value="hbcode.hbCode"
                       />
                     </el-select>
                   </el-form-item>
@@ -199,10 +199,10 @@
                     :ref="`${workindex}otStatus1`"
                     label="对应电表模块编号"
                     label-width="134px"
-                    :prop="`sysConditions[${workindex}].otToMode`"
+                    :prop="`sysConditions[${workindex}].otToModel`"
                     :rules="work.otStatus!=0? requiredRules: NorequiredRules"
                   >
-                    <el-select v-model="work.otToMode " clearable placeholder="请选择对应电表模块编号">
+                    <el-select v-model="work.otToModel " clearable placeholder="请选择对应电表模块编号">
                       <el-option
                         v-for="(length,_index) in form.sysDevices"
                         :key="'lengthDui'+_index"
@@ -225,7 +225,7 @@
                         v-for="(hbcode,hbcodeIndex) in hb_code_list"
                         :key="'hb_code_list'+hbcodeIndex"
                         :label="hbcode.codeName"
-                        :value="hbcode.hsCode"
+                        :value="hbcode.hbCode"
                       />
                     </el-select>
                   </el-form-item>
@@ -260,10 +260,10 @@
                     :ref="`${workindex}owStatus1`"
                     label="对应电表模块编号"
                     label-width="134px"
-                    :prop="`sysConditions[${workindex}].owToMode`"
+                    :prop="`sysConditions[${workindex}].owToModel`"
                     :rules="work.owStatus!=0? requiredRules: NorequiredRules"
                   >
-                    <el-select v-model="work.owToMode " clearable placeholder="请选择对应电表模块编号">
+                    <el-select v-model="work.owToModel " clearable placeholder="请选择对应电表模块编号">
                       <el-option
                         v-for="(length,_index) in form.sysDevices"
                         :key="'lengthDui'+_index"
@@ -286,7 +286,7 @@
                         v-for="(hbcode,hbcodeIndex) in hb_code_list"
                         :key="'hb_code_list'+hbcodeIndex"
                         :label="hbcode.codeName"
-                        :value="hbcode.hsCode"
+                        :value="hbcode.hbCode"
                       />
                     </el-select>
                   </el-form-item>
@@ -321,10 +321,10 @@
                     :ref="`${workindex}ofStatus1`"
                     label="对应电表模块编号"
                     label-width="134px"
-                    :prop="`sysConditions[${workindex}].ofToMode`"
+                    :prop="`sysConditions[${workindex}].ofToModel`"
                     :rules="work.ofStatus!=0? requiredRules: NorequiredRules"
                   >
-                    <el-select v-model="work.ofToMode " clearable placeholder="请选择对应电表模块编号">
+                    <el-select v-model="work.ofToModel " clearable placeholder="请选择对应电表模块编号">
                       <el-option
                         v-for="(length,_index) in form.sysDevices"
                         :key="'lengthDui'+_index"
@@ -347,7 +347,7 @@
                         v-for="(hbcode,hbcodeIndex) in hb_code_list"
                         :key="'hb_code_list'+hbcodeIndex"
                         :label="hbcode.codeName"
-                        :value="hbcode.hsCode"
+                        :value="hbcode.hbCode"
                       />
                     </el-select>
                   </el-form-item>
@@ -408,7 +408,7 @@
                         v-for="(hbcode,hbcodeIndex) in hb_code_list"
                         :key="'hb_code_list'+hbcodeIndex"
                         :label="hbcode.codeName"
-                        :value="hbcode.hsCode"
+                        :value="hbcode.hbCode"
                       />
                     </el-select>
                   </el-form-item>
@@ -546,7 +546,7 @@
                         v-for="(hbcode,hbcodeIndex) in hb_code_list"
                         :key="'hb_code_list'+hbcodeIndex"
                         :label="hbcode.codeName"
-                        :value="hbcode.hsCode"
+                        :value="hbcode.hbCode"
                       />
                     </el-select>
                   </el-form-item>
@@ -684,7 +684,7 @@
                         v-for="(hbcode,hbcodeIndex) in hb_code_list"
                         :key="'hb_code_list'+hbcodeIndex"
                         :label="hbcode.codeName"
-                        :value="hbcode.hsCode"
+                        :value="hbcode.hbCode"
                       />
                     </el-select>
                   </el-form-item>
@@ -764,6 +764,144 @@
                     :rules="work.awStatus!=0? requiredRules: NorequiredRules"
                   >
                     <el-input-number v-model.number="work.awAir" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="card-title">模拟量4</div>
+            <div class="card-content">
+              <el-row>
+                <el-col :span="6">
+                  <el-form-item
+                    label="启用状态"
+                    :prop="`sysConditions[${workindex}].afStatus`"
+                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                  >
+                    <el-select
+                      v-model.number="work.afStatus"
+                      placeholder="请选择启用状态"
+                      @change="changeWorkStatus(workindex,'afStatus1','afStatus2')"
+                    >
+                      <el-option
+                        v-for="_i in optionSwitch"
+                        :key="'optionSwitch'+_i.value"
+                        :label="_i.label"
+                        :value="_i.value"
+                      />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    :ref="`${workindex}afStatus1`"
+                    label="对应电表模块编号"
+                    label-width="134px"
+                    :prop="`sysConditions[${workindex}].afToModel`"
+                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                  >
+                    <el-select v-model="work.afToModel" clearable placeholder="请选择对应电表模块编号">
+                      <el-option
+                        v-for="(length,_index) in form.sysDevices"
+                        :key="'lengthDui'+_index"
+                        :label="_index+1"
+                        :value="_index+1"
+                      />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    :ref="`${workindex}afStatus2`"
+                    label="监测因子"
+                    label-width="134px"
+                    :prop="`sysConditions[${workindex}].afHbCode`"
+                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                  >
+                    <el-select v-model="work.afHbCode" clearable placeholder="请选择对应监测因子">
+                      <el-option
+                        v-for="(hbcode,hbcodeIndex) in hb_code_list"
+                        :key="'hb_code_list'+hbcodeIndex"
+                        :label="hbcode.codeName"
+                        :value="hbcode.hbCode"
+                      />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    :ref="`${workindex}workmodel3`"
+                    label="电气量程低"
+                    label-width="134px"
+                    :prop="`sysConditions[${workindex}].afAcquisitionRangeMin`"
+                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                  >
+                    <el-input-number v-model.number="work.afAcquisitionRangeMin" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    :ref="`${workindex}workmodel3`"
+                    label="电气量程高"
+                    label-width="134px"
+                    :prop="`sysConditions[${workindex}].afAcquisitionRangeMax`"
+                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                  >
+                    <el-input-number v-model.number="work.afAcquisitionRangeMax" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    :ref="`${workindex}workmodel3`"
+                    label="监测量程低"
+                    label-width="134px"
+                    :prop="`sysConditions[${workindex}].afRealRangeMin`"
+                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                  >
+                    <el-input-number v-model.number="work.afRealRangeMin" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    :ref="`${workindex}workmodel3`"
+                    label="监测量程高"
+                    label-width="134px"
+                    :prop="`sysConditions[${workindex}].afRealRangeMax`"
+                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                  >
+                    <el-input-number v-model.number="work.afRealRangeMax" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    :ref="`${workindex}workmodel3`"
+                    label="临界值"
+                    label-width="134px"
+                    :prop="`sysConditions[${workindex}].afCriticalValue`"
+                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                  >
+                    <el-input-number v-model.number="work.afCriticalValue" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    :ref="`${workindex}workmodel3`"
+                    label="负荷系数"
+                    label-width="134px"
+                    :prop="`sysConditions[${workindex}].afLoadCoefficient`"
+                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                  >
+                    <el-input-number v-model.number="work.afLoadCoefficient" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    :ref="`${workindex}workmodel3`"
+                    label="风量"
+                    label-width="134px"
+                    :prop="`sysConditions[${workindex}].afAir`"
+                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                  >
+                    <el-input-number v-model.number="work.afAir" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -850,7 +988,17 @@ export default {
             awRealRangeMin: '',
             awCriticalValue: '',
             awLoadCoefficient: 1,
-            awAir: ''
+            awAir: '',
+            afStatus: 0,
+            afToModel: '',
+            afHbCode: '',
+            afAcquisitionRangeMax: '',
+            afAcquisitionRangeMin: '',
+            afRealRangeMax: '',
+            afRealRangeMin: '',
+            afCriticalValue: '',
+            afLoadCoefficient: 1,
+            afAir: ''
           }
         ]
       },
@@ -988,7 +1136,17 @@ export default {
             awRealRangeMin: '',
             awCriticalValue: '',
             awLoadCoefficient: 1,
-            awAir: ''
+            awAir: '',
+            afStatus: 0,
+            afToModel: '',
+            afHbCode: '',
+            afAcquisitionRangeMax: '',
+            afAcquisitionRangeMin: '',
+            afRealRangeMax: '',
+            afRealRangeMin: '',
+            afCriticalValue: '',
+            afLoadCoefficient: 1,
+            afAir: ''
           }
         ]
       }
@@ -1047,7 +1205,17 @@ export default {
         awRealRangeMin: '',
         awCriticalValue: '',
         awLoadCoefficient: 1,
-        awAir: ''
+        awAir: '',
+        afStatus: 0,
+        afToModel: '',
+        afHbCode: '',
+        afAcquisitionRangeMax: '',
+        afAcquisitionRangeMin: '',
+        afRealRangeMax: '',
+        afRealRangeMin: '',
+        afCriticalValue: '',
+        afLoadCoefficient: 1,
+        afAir: ''
       }
       this.form.sysConditions.push(_obj)
     },
