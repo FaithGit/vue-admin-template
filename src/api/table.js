@@ -68,9 +68,16 @@ export function selectByComId(data) { // 拿设备
     data
   })
 }
-export function findDataHistory(data) { // 拿设备
+export function findDataHistory(data) { // 历史数据
   return request({
     url: 'http://47.96.147.99:8081/hbjk/findDataHistory',
+    method: 'POST',
+    data
+  })
+}
+export function selectAllGroups(data) { // 查询所有生产线组
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/selectAllGroups',
     method: 'POST',
     data
   })

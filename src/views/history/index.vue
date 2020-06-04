@@ -268,49 +268,18 @@ export default {
       }
     }
   },
-  mounted() {
-    findData({
-      comName: '',
-      pageIndex: 1,
-      pageSize: 9999
-    }).then(res => {
-      // console.log(res.retData.data)
-      var arr = res.retData.data
-      var temp = []
-      for (var i = 0; i < arr.length; i++) {
-        temp.push({
-          label: arr[i].comShortName,
-          value: arr[i].id
-        })
+  watch: {
+    '$route'(to, from) {
+      // console.log(to)
+      // console.log(from)
+      if (JSON.stringify(to.params) !== '{}') {
+        this.init()
       }
-      this.comList = temp
-      this.com = this.comList[0].value
-      selectByComId({
-        comId: this.com
-      }).then(res => {
-        // console.log(res)
-        var arr = res.retData
-        var temp = []
-        for (var i = 0; i < arr.length; i++) {
-          temp.push({
-            label: arr[i].deviceName,
-            value: arr[i].deviceId,
-            deviceStyle: arr[i].deviceStyle
-          })
-        }
-        this.deviceList = temp
-        this.device = this.deviceList[0]
-        this.deviceStyles = this.device.deviceStyle
-        this.deviceStyle = this.device.deviceStyle
-        this.deviceValue = this.device.value
-
-        console.log('this.deviceStyles', this.deviceStyles)
-        this.time = [new Date(new Date() - 3600 * 1000 * 24 * 7), new Date()]
-        this.startTime = this.time[0]
-        this.endTime = this.time[1]
-        this.findDataHistory()
-      })
-    })
+    }
+  },
+  mounted() {
+    console.log(this.$route.params.comId, this.$route.params.device_id)
+    this.init()
   },
   methods: {
 
@@ -418,6 +387,93 @@ export default {
       console.log(val)
       if (val === null) {
         this.time = []
+      }
+    },
+    init() {
+      if (this.$route.params.comId && this.$route.params.device_id && this.$route.params.device_name && this.$route.params.style) {
+        findData({
+          comName: '',
+          pageIndex: 1,
+          pageSize: 9999
+        }).then(res => {
+          // console.log(res.retData.data)
+          var arr = res.retData.data
+          var temp = []
+          for (var i = 0; i < arr.length; i++) {
+            temp.push({
+              label: arr[i].comShortName,
+              value: arr[i].id
+            })
+          }
+          this.comList = temp
+          this.com = this.$route.params.comId
+          selectByComId({
+            comId: this.com
+          }).then(res => {
+            // console.log(res)
+            var arr = res.retData
+            var temp = []
+            for (var i = 0; i < arr.length; i++) {
+              temp.push({
+                label: arr[i].deviceName,
+                value: arr[i].deviceId,
+                deviceStyle: arr[i].deviceStyle
+              })
+            }
+            this.deviceList = temp
+            this.device = this.$route.params.device_name
+            this.deviceValue = this.$route.params.device_id
+            this.deviceStyles = this.$route.params.style
+            this.deviceStyle = this.$route.params.style
+            this.time = [new Date(new Date() - 3600 * 1000 * 24 * 7), new Date()]
+            this.startTime = this.time[0]
+            this.endTime = this.time[1]
+            this.findDataHistory()
+          })
+        })
+      } else {
+        findData({
+          comName: '',
+          pageIndex: 1,
+          pageSize: 9999
+        }).then(res => {
+          // console.log(res.retData.data)
+          var arr = res.retData.data
+          var temp = []
+          for (var i = 0; i < arr.length; i++) {
+            temp.push({
+              label: arr[i].comShortName,
+              value: arr[i].id
+            })
+          }
+          this.comList = temp
+          this.com = this.comList[0].value
+          selectByComId({
+            comId: this.com
+          }).then(res => {
+            // console.log(res)
+            var arr = res.retData
+            var temp = []
+            for (var i = 0; i < arr.length; i++) {
+              temp.push({
+                label: arr[i].deviceName,
+                value: arr[i].deviceId,
+                deviceStyle: arr[i].deviceStyle
+              })
+            }
+            this.deviceList = temp
+            this.device = this.deviceList[0]
+            this.deviceStyles = this.device.deviceStyle
+            this.deviceStyle = this.device.deviceStyle
+            this.deviceValue = this.device.value
+
+            console.log('this.deviceStyles', this.deviceStyles)
+            this.time = [new Date(new Date() - 3600 * 1000 * 24 * 7), new Date()]
+            this.startTime = this.time[0]
+            this.endTime = this.time[1]
+            this.findDataHistory()
+          })
+        })
       }
     }
   }

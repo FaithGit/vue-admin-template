@@ -107,6 +107,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/lineList',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'LineList',
+        component: () => import('@/views/lineList/index'),
+        meta: { title: '检测仪管理', icon: 'craft' }
+      }
+    ]
+  },
+  {
     path: '/craft',
     component: Layout,
     hidden: true,

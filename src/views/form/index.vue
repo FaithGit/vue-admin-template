@@ -43,12 +43,13 @@
                 :prop="`sysDevices[${index}].modelNum`"
                 :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
               >
-                <el-select v-model="item.modelNum" placeholder="请选择电表模块编号">
+                <el-select v-model="item.modelNum" placeholder="请选择电表模块编号" clearable @change="changeListDisable" @clear="clearListDisable">
                   <el-option
                     v-for="(length,_index) in form.sysDevices"
                     :key="'length'+_index"
                     :label="_index+1"
                     :value="_index+1"
+                    :disabled="length.listDisabled==1"
                   />
                 </el-select>
               </el-form-item>
@@ -943,10 +944,10 @@ export default {
       form: {
         mn: '',
         comId: '',
-        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '' }],
+        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '' }],
         sysConditions: [
           {
-            modelNum: '',
+            modelNum: 1,
             ooStatus: 0,
             ooToModel: '',
             ooHbCode: '',
@@ -962,9 +963,9 @@ export default {
             aoStatus: 0,
             aoToModel: '',
             aoHbCode: '',
-            aoAcquisitionRangeMax: '',
+            aoAcquisitionRangeMax: 1,
             aoAcquisitionRangeMin: '',
-            aoRealRangeMax: '',
+            aoRealRangeMax: 1,
             aoRealRangeMin: '',
             aoCriticalValue: '',
             aoLoadCoefficient: 1,
@@ -972,9 +973,9 @@ export default {
             atStatus: 0,
             atToModel: '',
             atHbCode: '',
-            atAcquisitionRangeMax: '',
+            atAcquisitionRangeMax: 1,
             atAcquisitionRangeMin: '',
-            atRealRangeMax: '',
+            atRealRangeMax: 1,
             atRealRangeMin: '',
             atCriticalValue: '',
             atLoadCoefficient: 1,
@@ -982,9 +983,9 @@ export default {
             awStatus: 0,
             awToModel: '',
             awHbCode: '',
-            awAcquisitionRangeMax: '',
+            awAcquisitionRangeMax: 1,
             awAcquisitionRangeMin: '',
-            awRealRangeMax: '',
+            awRealRangeMax: 1,
             awRealRangeMin: '',
             awCriticalValue: '',
             awLoadCoefficient: 1,
@@ -992,9 +993,9 @@ export default {
             afStatus: 0,
             afToModel: '',
             afHbCode: '',
-            afAcquisitionRangeMax: '',
+            afAcquisitionRangeMax: 1,
             afAcquisitionRangeMin: '',
-            afRealRangeMax: '',
+            afRealRangeMax: 1,
             afRealRangeMin: '',
             afCriticalValue: '',
             afLoadCoefficient: 1,
@@ -1091,7 +1092,7 @@ export default {
       this.form = {
         mn: '',
         comId: '',
-        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '' }],
+        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '' }],
         sysConditions: [
           {
             modelNum: '',
@@ -1112,7 +1113,7 @@ export default {
             aoHbCode: '',
             aoAcquisitionRangeMax: '',
             aoAcquisitionRangeMin: '',
-            aoRealRangeMax: '',
+            aoRealRangeMax: 1,
             aoRealRangeMin: '',
             aoCriticalValue: '',
             aoLoadCoefficient: 1,
@@ -1122,7 +1123,7 @@ export default {
             atHbCode: '',
             atAcquisitionRangeMax: '',
             atAcquisitionRangeMin: '',
-            atRealRangeMax: '',
+            atRealRangeMax: 1,
             atRealRangeMin: '',
             atCriticalValue: '',
             atLoadCoefficient: 1,
@@ -1132,7 +1133,7 @@ export default {
             awHbCode: '',
             awAcquisitionRangeMax: '',
             awAcquisitionRangeMin: '',
-            awRealRangeMax: '',
+            awRealRangeMax: 1,
             awRealRangeMin: '',
             awCriticalValue: '',
             awLoadCoefficient: 1,
@@ -1142,7 +1143,7 @@ export default {
             afHbCode: '',
             afAcquisitionRangeMax: '',
             afAcquisitionRangeMin: '',
-            afRealRangeMax: '',
+            afRealRangeMax: 1,
             afRealRangeMin: '',
             afCriticalValue: '',
             afLoadCoefficient: 1,
@@ -1157,13 +1158,14 @@ export default {
         comId: '',
         deviceName: '',
         modelNum: '',
-        deviceStyle: ''
+        deviceStyle: '',
+        listDisabled: ''
       }
       this.form.sysDevices.push(_obj)
     },
     addModelList() {
       const _obj = {
-        modelNum: '',
+        modelNum: this.form.sysConditions.length + 1,
         ooStatus: 0,
         ooToModel: '',
         ooHbCode: '',
@@ -1179,9 +1181,9 @@ export default {
         aoStatus: 0,
         aoToModel: '',
         aoHbCode: '',
-        aoAcquisitionRangeMax: '',
+        aoAcquisitionRangeMax: 1,
         aoAcquisitionRangeMin: '',
-        aoRealRangeMax: '',
+        aoRealRangeMax: 1,
         aoRealRangeMin: '',
         aoCriticalValue: '',
         aoLoadCoefficient: 1,
@@ -1189,9 +1191,9 @@ export default {
         atStatus: 0,
         atToModel: '',
         atHbCode: '',
-        atAcquisitionRangeMax: '',
+        atAcquisitionRangeMax: 1,
         atAcquisitionRangeMin: '',
-        atRealRangeMax: '',
+        atRealRangeMax: 1,
         atRealRangeMin: '',
         atCriticalValue: '',
         atLoadCoefficient: 1,
@@ -1199,9 +1201,9 @@ export default {
         awStatus: 0,
         awToModel: '',
         awHbCode: '',
-        awAcquisitionRangeMax: '',
+        awAcquisitionRangeMax: 1,
         awAcquisitionRangeMin: '',
-        awRealRangeMax: '',
+        awRealRangeMax: 1,
         awRealRangeMin: '',
         awCriticalValue: '',
         awLoadCoefficient: 1,
@@ -1209,9 +1211,9 @@ export default {
         afStatus: 0,
         afToModel: '',
         afHbCode: '',
-        afAcquisitionRangeMax: '',
+        afAcquisitionRangeMax: 1,
         afAcquisitionRangeMin: '',
-        afRealRangeMax: '',
+        afRealRangeMax: 1,
         afRealRangeMin: '',
         afCriticalValue: '',
         afLoadCoefficient: 1,
@@ -1232,7 +1234,28 @@ export default {
       const getRef2 = workindex + value2
       this.$refs[getRef1][0].clearValidate()
       this.$refs[getRef2][0].clearValidate()
+    },
+    changeListDisable(val) {
+      if (val != null && val !== '') {
+        console.log(val)
+        this.form.sysDevices[val - 1].listDisabled = 1
+      } else {
+        console.log('没有值')
+      }
+    },
+    clearListDisable() {
+      console.log(this.form.sysDevices)
+      this.form.sysDevices.forEach((value) => {
+        value.listDisabled = 0
+      })
+      for (var i = 0; i < this.form.sysDevices.length; i++) {
+        if (this.form.sysDevices[i].modelNum !== '') {
+          const temp = this.form.sysDevices[i].modelNum - 1
+          this.form.sysDevices[temp].listDisabled = 1
+        }
+      }
     }
+
   }
 }
 </script>

@@ -34,7 +34,7 @@
               trigger="hover"
               :content="'生产设备开关:'+(sc.switch_data ==true?'开':'关')"
             >
-              <svg-icon slot="reference" icon-class="create" :class="[sc.device_name==true?'redSvgCreate':'greenSvgCreate']" style="margin:0 5px" class="hoverHref" @click="gotoHistory(sc,scope.row)" />
+              <svg-icon slot="reference" icon-class="create" :class="[sc.device_name==true?'redSvgCreate':'greenSvgCreate']" style="margin:0 5px" class="hoverHref" @click="gotoHistory(sc,scope.row,1)" />
             </el-popover>
 
           </span>
@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column label="治理设施名称" align="center">
         <template slot-scope="scope">
-          <span class="gotoZL">  {{ scope.row.device_name }}</span>
+          <span class="gotoZL" @click="gotoHistoryZL(scope.row,2)">  {{ scope.row.device_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="工艺名称" align="center">
@@ -211,6 +211,8 @@ export default {
                 getDate.push({ // 这里是表格得展示数据
                   // id: v.id,
                   comName: v.comName,
+                  comShortName: v.comShortName,
+                  id: v.id,
                   govern: subV.govern,
                   create: subV.create,
                   groupName: subV.groupName,
@@ -296,9 +298,14 @@ export default {
       this.search = this.search1 = ''
       this.findData(this.search, 1, this.pageSize)
     },
-    gotoHistory(item, all) {
-      console.log(item)
+    gotoHistory(item, all, style) {
+      // console.log(item)
+      // console.log(all)
+      this.$router.push({ name: 'History', params: { comId: all.id, device_id: item.device_id, device_name: item.device_name, style: style }})
+    },
+    gotoHistoryZL(all, style) {
       console.log(all)
+      this.$router.push({ name: 'History', params: { comId: all.id, device_id: all.device_id, device_name: all.device_name, style: style }})
     }
   }
 }
