@@ -114,7 +114,19 @@ export const constantRoutes = [
         path: 'index',
         name: 'LineList',
         component: () => import('@/views/lineList/index'),
-        meta: { title: '检测仪管理', icon: 'craft' }
+        meta: { title: '检测仪管理', icon: 'line' }
+      }
+    ]
+  },
+  {
+    path: '/company',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Company',
+        component: () => import('@/views/company/index'),
+        meta: { title: '企业管理', icon: 'company' }
       }
     ]
   },

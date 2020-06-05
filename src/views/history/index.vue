@@ -295,7 +295,7 @@ export default {
       findData({
         comName: '',
         pageIndex: 1,
-        pageSize: 9999
+        pageSize: 100
       }).then(res => {
         // console.log(res.retData.data)
         var arr = res.retData.data
@@ -394,7 +394,7 @@ export default {
         findData({
           comName: '',
           pageIndex: 1,
-          pageSize: 9999
+          pageSize: 100
         }).then(res => {
           // console.log(res.retData.data)
           var arr = res.retData.data
@@ -435,7 +435,7 @@ export default {
         findData({
           comName: '',
           pageIndex: 1,
-          pageSize: 9999
+          pageSize: 100
         }).then(res => {
           // console.log(res.retData.data)
           var arr = res.retData.data

@@ -24,27 +24,47 @@
       />
       <el-table-column label="企业名称" align="center">
         <template slot-scope="scope">
-          {{ scope.row.com_name }}
+          {{ scope.row.comName }}
         </template>
       </el-table-column>
-      <el-table-column label="生产线组名称" align="center">
+      <el-table-column label="企业地址" align="center">
         <template slot-scope="scope">
-          {{ scope.row.group_name }}
+          {{ scope.row.adress }}
         </template>
       </el-table-column>
-      <el-table-column label="组号" align="center">
+      <el-table-column label="经纬度" align="center">
         <template slot-scope="scope">
-          {{ scope.row.group_no }}
+          {{ scope.row.lonLat }}
         </template>
       </el-table-column>
-      <el-table-column label="是否使用中" align="center">
+      <el-table-column label="企业所在行政编码" align="center">
         <template slot-scope="scope">
-          {{ scope.row.is_use == true ?'是':'否' }}
+          {{ scope.row.comAreaCode }}
         </template>
       </el-table-column>
-      <el-table-column label="是否测试数据" align="center">
+      <el-table-column label="社会统一信征编码" align="center">
         <template slot-scope="scope">
-          {{ scope.row.is_test== true ?'是':'否' }}
+          {{ scope.row.socialCreditCode }}
+        </template>
+      </el-table-column>
+      <el-table-column label="环保负责人" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.envPerson }}
+        </template>
+      </el-table-column>
+      <el-table-column label="环保负责人电话" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.envPersonTel }}
+        </template>
+      </el-table-column>
+      <el-table-column label="行业类型" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.busName }}
+        </template>
+      </el-table-column>
+      <el-table-column label="短信是否开通" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.smsStatus }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
@@ -120,9 +140,9 @@
   </div>
 </template>
 <script>
-import { findData, selectAllGroups, addGroup, deleteGroup, updateGroup } from '@/api/table'
+import { findData, selectAllCom, addGroup, deleteGroup, updateGroup } from '@/api/table'
 export default {
-  name: 'LineList',
+  name: 'Company',
   data() {
     return {
       com: '',
@@ -156,13 +176,14 @@ export default {
   },
   mounted() {
     this.findData()
-    this.selectAllGroups()
+    this.selectAllCom()
   },
   methods: {
-    selectAllGroups() {
+    selectAllCom() {
       this.loadable = true
-      selectAllGroups({
-        comId: this.searchReal,
+      selectAllCom({
+        comName: this.searchReal,
+        comAreaCode: this.comAreaCode,
         pageIndex: this.pageIndex,
         pageSize: this.pageSize
       }).then(res => {
@@ -176,12 +197,12 @@ export default {
       console.log(val)
       this.pageSize = val
       this.pageIndex = 1
-      this.selectAllGroups()
+      this.selectAllCom()
     },
     handleCurrentChange(val) {
       console.log(val)
       this.pageIndex = val
-      this.selectAllGroups()
+      this.selectAllCom()
     },
     addLineList() { // 添加
       this.addVisible = true
@@ -196,13 +217,13 @@ export default {
     searchClick() {
       this.searchReal = this.com
       this.pageIndex = 1
-      this.selectAllGroups()
+      this.selectAllCom()
     },
     restClick() {
       this.com = ''
       this.searchReal = ''
       this.pageIndex = 1
-      this.selectAllGroups()
+      this.selectAllCom()
     },
     findData() {
       findData({
@@ -238,7 +259,7 @@ export default {
       }).then(res => {
         console.log(res)
         this.addVisible = false
-        this.selectAllGroups()
+        this.selectAllCom()
       })
     },
     handleEdit(index, item) {
@@ -264,7 +285,7 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
-          this.selectAllGroups()
+          this.selectAllCom()
         })
       }).catch(() => {
       })
@@ -283,7 +304,7 @@ export default {
           message: '更新成功!'
         })
         this.addVisible = false
-        this.selectAllGroups()
+        this.selectAllCom()
       })
     }
 

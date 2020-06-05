@@ -11,7 +11,7 @@
         <el-col :span="12">
           <el-form-item label="企业名称" prop="comId">
             <el-select v-model="form.comId" placeholder="请选择企业名称" style="width:100%">
-              <el-option v-for="com in com_list" :key="com.id" :label="com.comName" :value="com.id" />
+              <el-option v-for="com in com_list" :key="com.id" :label="com.com_name" :value="com.id" />
             </el-select>
           </el-form-item>
         </el-col>

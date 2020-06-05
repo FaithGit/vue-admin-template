@@ -82,3 +82,31 @@ export function selectAllGroups(data) { // 查询所有生产线组
     data
   })
 }
+export function addGroup(data) { // 添加生产线组
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/addGroup',
+    method: 'POST',
+    data
+  })
+}
+export function deleteGroup(data) { // 删除生产线组
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/deleteGroup',
+    method: 'POST',
+    data
+  })
+}
+export function updateGroup(data) { // 更新生产线组
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/updateGroup',
+    method: 'POST',
+    data
+  })
+}
+export function selectAllCom(data) { // 查询企业信息列表
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/selectAllCom',
+    method: 'POST',
+    data
+  })
+}
