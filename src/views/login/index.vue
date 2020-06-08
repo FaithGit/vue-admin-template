@@ -34,7 +34,7 @@
       </div>
 
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-        <div style="    color: white;margin-bottom: 10px;">用户登录</div>
+        <div style=" color: white;margin-bottom: 10px;">用户登录</div>
         <el-form-item prop="username">
           <span class="svg-container">
             <svg-icon icon-class="user" />

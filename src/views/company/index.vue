@@ -93,9 +93,9 @@
     <el-dialog
       :title="lineTitle"
       :visible.sync="addVisible"
-      width="60%"
+      width="70%"
     >
-      <el-form ref="addCompanyForm" :model="companyForm" :rules="rules" label-width="140px">
+      <el-form ref="addCompanyForm" :model="companyForm" :rules="rules" label-width="180px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="企业名称" prop="comName">
@@ -167,6 +167,30 @@
               />
             </el-form-item>
           </el-col>
+          <transition
+            enter-active-class="animate__fadeIn"
+            leave-active-class="animate__fadeOut"
+          >
+            <el-col v-if="companyForm.smsStatus" class="animate__animated" :span="24">
+              <el-form-item label="短信报警通知人及电话号码">
+                <el-row v-for="(item,index) in companyForm.sysSmsPersons" :key="'xxx'+index" style="text-align: center;margin-bottom:10px">
+                  <el-col :span="4">短信报警通知人</el-col>
+                  <el-col :span="6">
+                    <el-input v-model="item.smsPerson" />
+                  </el-col>
+                  <el-col :span="4">电话号码</el-col>
+                  <el-col :span="6">
+                    <el-input v-model="item.smsPersonTel" />
+                  </el-col>
+                  <el-col :span="4">  <el-button type="danger" icon="el-icon-delete" circle size="small" /></el-col>
+                </el-row>
+                <div style="text-align: center;margin-bottom:10px">
+                  <el-button type="success" icon="el-icon-plus" circle size="small" />
+                </div>
+              </el-form-item>
+            </el-col>
+          </transition>
+
         </el-row>
 
       </el-form>
@@ -219,7 +243,10 @@ export default {
         }
       ],
       companyForm: {
-
+        sysSmsPersons: [{
+          smsPerson: '',
+          smsPersonTel: ''
+        }]
       },
       rules: {
         comName: '',
@@ -276,7 +303,7 @@ export default {
     },
     addLineList() { // 添加
       this.addVisible = true
-      this.lineTitle = '新增生产线信息表'
+      this.lineTitle = '新增企业'
       this.comId = ''
       this.groupName = ''
       this.groupNo = ''

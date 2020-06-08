@@ -19,6 +19,8 @@ Vue.component('countTo', countTo)
 
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import animate from 'animate.css'
+Vue.use(animate)
 
 Vue.use(VueAwesomeSwiper) // 使用插件
 /**
