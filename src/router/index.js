@@ -114,7 +114,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'LineList',
         component: () => import('@/views/lineList/index'),
-        meta: { title: '检测仪管理', icon: 'line' }
+        meta: { title: '生产线管理', icon: 'line' }
       }
     ]
   },

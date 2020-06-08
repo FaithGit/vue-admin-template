@@ -27,14 +27,14 @@
           {{ scope.row.comName }}
         </template>
       </el-table-column>
+      <el-table-column label="行业类型" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.busName }}
+        </template>
+      </el-table-column>
       <el-table-column label="企业地址" align="center">
         <template slot-scope="scope">
           {{ scope.row.adress }}
-        </template>
-      </el-table-column>
-      <el-table-column label="经纬度" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.lonLat }}
         </template>
       </el-table-column>
       <el-table-column label="企业所在行政编码" align="center">
@@ -42,9 +42,9 @@
           {{ scope.row.comAreaCode }}
         </template>
       </el-table-column>
-      <el-table-column label="社会统一信征编码" align="center">
+      <el-table-column label="经纬度" align="center">
         <template slot-scope="scope">
-          {{ scope.row.socialCreditCode }}
+          {{ scope.row.lonLat }}
         </template>
       </el-table-column>
       <el-table-column label="环保负责人" align="center">
@@ -52,21 +52,13 @@
           {{ scope.row.envPerson }}
         </template>
       </el-table-column>
+
       <el-table-column label="环保负责人电话" align="center">
         <template slot-scope="scope">
           {{ scope.row.envPersonTel }}
         </template>
       </el-table-column>
-      <el-table-column label="行业类型" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.busName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="短信是否开通" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.smsStatus }}
-        </template>
-      </el-table-column>
+
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button
@@ -96,45 +88,74 @@
     <el-dialog
       :title="lineTitle"
       :visible.sync="addVisible"
-      width="700px"
+      width="60%"
     >
-      <el-row :gutter="20">
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          企业：
-          <el-select v-model="comId" placeholder="请选择">
-            <el-option
-              v-for="item in comList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            /></el-select>
-        </el-col>
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          <span>生产线组名称：</span>
-          <el-input v-model="groupName" style="width:60%" />
-        </el-col>
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          <span>组号：</span>
-          <el-input v-model="groupNo" style="width:70%" />
-        </el-col>
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          <span>是否使用中：</span>
-          <el-select v-model="isUse" placeholder="请选择" style="width:70%">
-            <el-option v-for="(isItem,index) in isList" :key="'key1'+index" :label="isItem.label" :value="isItem.value" />
-          </el-select>
-        </el-col>
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          <span>是否测试数据：</span>
-          <el-select v-model="isTest" placeholder="请选择" style="width:60%">
-            <el-option v-for="(isItem,index) in isList" :key="'key2'+index" :label="isItem.label" :value="isItem.value" />
-          </el-select>
-        </el-col>
-      </el-row>
+      <el-form ref="addCompanyForm" :model="companyForm" :rules="rules" label-width="140px">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="企业名称" prop="comName">
+              <el-input v-model="companyForm.comName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="企业简称" prop="comShortName">
+              <el-input v-model="companyForm.comShortName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="企业地址" prop="adress">
+              <el-input v-model="companyForm.adress" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="经纬度" prop="lonLat">
+              <el-input v-model="companyForm.lonLat" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="企业所属行政区" prop="comAreaCode">
+              <el-select v-model="companyForm.comAreaCode">
+                <el-option label="南湖区" value="3304020" />
+                <el-option label="秀洲区" value="3304110" />
+                <el-option label="嘉善县" value="3304210" />
+                <el-option label="海盐县" value="3304240" />
+                <el-option label="海宁市" value="3304810" />
+                <el-option label="海盐县" value="3304240" />
+                <el-option label="平湖市" value="3304820" />
+                <el-option label="桐乡市" value="3304830" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="统一社会信用代码" prop="socialCreditCode">
+              <el-input v-model="companyForm.socialCreditCode" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="环保负责人" prop="envPerson">
+              <el-input v-model="companyForm.envPerson" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="环保负责人电话" prop="envPersonTel">
+              <el-input v-model="companyForm.envPersonTel" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="行业类型" prop="busName">
+              <el-input v-model="companyForm.busName" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+      </el-form>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="addVisible = false">取 消</el-button>
         <el-button v-if="showUpdata" type="primary" icon="el-icon-refresh" @click="upSure">更 新</el-button>
         <el-button v-else type="primary" @click="addSure">确 定</el-button>
       </span>
+
     </el-dialog>
 
   </div>
@@ -171,7 +192,21 @@ export default {
           label: '否',
           value: false
         }
-      ]
+      ],
+      companyForm: {
+
+      },
+      rules: {
+        comName: '',
+        comShortName: '',
+        adress: '',
+        lonLat: '',
+        comAreaCode: '',
+        socialCreditCode: '',
+        envPerson: '',
+        envPersonTel: '',
+        busName: ''
+      }
     }
   },
   mounted() {
