@@ -58,6 +58,11 @@
           {{ scope.row.envPersonTel }}
         </template>
       </el-table-column>
+      <el-table-column label="是否开启短信报警通知" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.envPersonTel }}
+        </template>
+      </el-table-column>
 
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
@@ -143,7 +148,23 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="行业类型" prop="busName">
-              <el-input v-model="companyForm.busName" />
+              <el-select-tree
+                v-model="value"
+                width="120px"
+                placeholder="请选择内容"
+                :data="treeData"
+                :disabled-values="disabledValues"
+              />
+
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否开启短信报警通知" prop="smsStatus ">
+              <el-switch
+                v-model="companyForm.smsStatus"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -161,9 +182,13 @@
   </div>
 </template>
 <script>
-import { findData, selectAllCom, addGroup, deleteGroup, updateGroup } from '@/api/table'
+import { findData, selectAllCom, addGroup, deleteGroup, updateGroup, findSysBus } from '@/api/table'
+import ElSelectTree from 'el-select-tree'
 export default {
   name: 'Company',
+  components: {
+    ElSelectTree
+  },
   data() {
     return {
       com: '',
@@ -205,13 +230,23 @@ export default {
         socialCreditCode: '',
         envPerson: '',
         envPersonTel: '',
-        busName: ''
-      }
+        busName: '',
+        smsStatus: ''
+      },
+      treeData: [
+
+      ],
+      disabledValues: [3],
+      value: 2
     }
   },
+
   mounted() {
     this.findData()
     this.selectAllCom()
+    findSysBus().then(res => {
+      this.treeData = res.retData
+    })
   },
   methods: {
     selectAllCom() {

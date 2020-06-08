@@ -117,3 +117,10 @@ export function deleteCom(data) { // 删除公司
     data
   })
 }
+export function findSysBus(data) { // 行业列表
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findSysBus',
+    method: 'POST',
+    data
+  })
+}
