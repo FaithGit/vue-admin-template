@@ -117,6 +117,27 @@ export function deleteCom(data) { // 删除公司
     data
   })
 }
+export function addCom(data) { // 添加公司
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/addCom',
+    method: 'POST',
+    data
+  })
+}
+export function updateCom(data) { // 更新公司
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/updateCom',
+    method: 'POST',
+    data
+  })
+}
+export function deleteSmsPerson(data) { // 删除短信人
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/deleteSmsPerson',
+    method: 'POST',
+    data
+  })
+}
 export function findSysBus(data) { // 行业列表
   return request({
     url: 'http://47.96.147.99:8081/hbjk/findSysBus',

@@ -2,12 +2,12 @@
   <div class="app-container">
     <div>
       <span>企业：</span>
-      <el-select v-model="com" placeholder="请选择" @change="changeCom">
+      <el-select v-model="com" placeholder="请选择" clearable @change="changeCom">
         <el-option
           v-for="item in comList"
           :key="item.value"
           :label="item.label"
-          :value="item.value"
+          :value="item.label"
         />
       </el-select>
       <el-button type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
@@ -27,11 +27,18 @@
           {{ scope.row.comName }}
         </template>
       </el-table-column>
-      <el-table-column label="行业类型" align="center">
+      <!-- <el-table-column label="行业类型" align="center">
         <template slot-scope="scope">
           {{ scope.row.busName }}
+          <el-select-tree
+            v-model="scope.row.busName"
+            width="120px"
+            placeholder="请选择内容"
+            :data="treeData"
+            :disabled-values="disabledValues"
+          />
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="企业地址" align="center">
         <template slot-scope="scope">
           {{ scope.row.adress }}
@@ -147,15 +154,28 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="是否停限产">
+              <el-select v-model="companyForm.isSuspend">
+                <el-option v-for="(isitem,index) in isList" :key="'xxxx1'+index" :label="isitem.label" :value="isitem.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否测试数据">
+              <el-select v-model="companyForm.isTest">
+                <el-option v-for="(isitem,index) in isList" :key="'xxxx2'+index" :label="isitem.label" :value="isitem.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="行业类型" prop="busName">
               <el-select-tree
-                v-model="value"
+                v-model="companyForm.busName"
                 width="120px"
                 placeholder="请选择内容"
                 :data="treeData"
                 :disabled-values="disabledValues"
               />
-
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -167,29 +187,29 @@
               />
             </el-form-item>
           </el-col>
-          <transition
-            enter-active-class="animate__fadeIn"
-            leave-active-class="animate__fadeOut"
-          >
-            <el-col v-if="companyForm.smsStatus" class="animate__animated" :span="24">
-              <el-form-item label="短信报警通知人及电话号码">
-                <el-row v-for="(item,index) in companyForm.sysSmsPersons" :key="'xxx'+index" style="text-align: center;margin-bottom:10px">
-                  <el-col :span="4">短信报警通知人</el-col>
-                  <el-col :span="6">
-                    <el-input v-model="item.smsPerson" />
-                  </el-col>
-                  <el-col :span="4">电话号码</el-col>
-                  <el-col :span="6">
-                    <el-input v-model="item.smsPersonTel" />
-                  </el-col>
-                  <el-col :span="4">  <el-button type="danger" icon="el-icon-delete" circle size="small" /></el-col>
-                </el-row>
-                <div style="text-align: center;margin-bottom:10px">
-                  <el-button type="success" icon="el-icon-plus" circle size="small" />
-                </div>
-              </el-form-item>
-            </el-col>
-          </transition>
+
+          <el-col :span="24">
+            <el-form-item label="短信报警通知人及电话号码">
+              <el-row v-for="(item,index) in companyForm.sysSmsPersons" :key="'xxx'+index" style="text-align: center;margin-bottom:10px">
+                <el-col :span="4">短信报警通知人</el-col>
+                <el-col :span="6">
+                  <el-input v-model="item.smsPerson" />
+                </el-col>
+                <el-col :span="2">电话号码</el-col>
+                <el-col :span="4">
+                  <el-input v-model="item.smsPersonTel" />
+                </el-col>
+                <el-col :span="2">备注</el-col>
+                <el-col :span="4">
+                  <el-input v-model="item.remark" />
+                </el-col>
+                <el-col :span="2">  <el-button type="danger" icon="el-icon-delete" circle size="small" @click="removeMessageList(index,item)" /></el-col>
+              </el-row>
+              <div style="text-align: center;margin-bottom:10px">
+                <el-button type="success" icon="el-icon-plus" circle size="small" @click="addMessageList" />
+              </div>
+            </el-form-item>
+          </el-col>
 
         </el-row>
 
@@ -206,7 +226,8 @@
   </div>
 </template>
 <script>
-import { findData, selectAllCom, addGroup, deleteGroup, updateGroup, findSysBus } from '@/api/table'
+import { findData, selectAllCom, addCom, deleteCom, updateCom, deleteSmsPerson } from '@/api/table'
+import hyType from '@/utils/type.json'
 import ElSelectTree from 'el-select-tree'
 export default {
   name: 'Company',
@@ -214,6 +235,13 @@ export default {
     ElSelectTree
   },
   data() {
+    var moblie = (rule, value, callback) => {
+      if (value.length !== 11) {
+        callback(new Error('请输入11位手机号'))
+      } else {
+        callback()
+      }
+    }
     return {
       com: '',
       comList: [],
@@ -243,37 +271,56 @@ export default {
         }
       ],
       companyForm: {
+        smsStatus: false,
         sysSmsPersons: [{
           smsPerson: '',
-          smsPersonTel: ''
+          smsPersonTel: '',
+          remark: ''
         }]
       },
+      temp: {},
       rules: {
-        comName: '',
-        comShortName: '',
-        adress: '',
-        lonLat: '',
-        comAreaCode: '',
-        socialCreditCode: '',
-        envPerson: '',
-        envPersonTel: '',
+        comName: [
+          { required: true, message: '请输入企业名称', trigger: 'blur' }
+        ],
+        comShortName: [
+          { required: true, message: '请输入企业简称', trigger: 'blur' }
+        ],
+        adress: [
+          { required: true, message: '请输入企业地址', trigger: 'blur' }
+        ],
+        lonLat: [
+          { required: true, message: '请输入经纬度', trigger: 'blur' }
+        ],
+        comAreaCode: [
+          { required: true, message: '请输入企业所属行政区', trigger: 'blur' }
+        ],
+        socialCreditCode: [
+          { required: true, message: '请输入统一社会信用代码', trigger: 'blur' }
+        ],
+        envPerson: [
+          { required: true, message: '请输入环保负责人', trigger: 'blur' }
+        ],
+        envPersonTel: [
+          { required: true, validator: moblie, trigger: 'blur' }
+        ],
         busName: '',
         smsStatus: ''
       },
       treeData: [
 
       ],
-      disabledValues: [3],
-      value: 2
+      disabledValues: []
     }
   },
 
   mounted() {
+    // console.log(hyType)
     this.findData()
     this.selectAllCom()
-    findSysBus().then(res => {
-      this.treeData = res.retData
-    })
+    // findSysBus().then(res => {
+    this.treeData = hyType
+    // })
   },
   methods: {
     selectAllCom() {
@@ -304,11 +351,25 @@ export default {
     addLineList() { // 添加
       this.addVisible = true
       this.lineTitle = '新增企业'
-      this.comId = ''
-      this.groupName = ''
-      this.groupNo = ''
-      this.isTest = true
-      this.isUse = true
+      this.companyForm = {
+        comName: '',
+        isSuspend: false,
+        isTest: false,
+        comShortName: '',
+        adress: '',
+        lonLat: '',
+        comAreaCode: '',
+        socialCreditCode: '',
+        envPerson: '',
+        envPersonTel: '',
+        busName: '',
+        smsStatus: false,
+        sysSmsPersons: [{
+          smsPerson: '',
+          smsPersonTel: '',
+          remark: ''
+        }]
+      }
       this.showUpdata = false
     },
     searchClick() {
@@ -345,39 +406,46 @@ export default {
       this.com = val
     },
     addSure() {
-      if (this.comId === '' && this.groupName === '' && this.groupNo === '' && this.isTest === '' && this.isUse === '') {
-        this.$message({
-          type: 'info',
-          message: '还有未填项'
-        })
-        return
-      }
-      addGroup({ comId: this.comId, groupName: this.groupName, groupNo: this.groupNo, isTest: this.isTest, isUse: this.isUse
-      }).then(res => {
-        console.log(res)
-        this.addVisible = false
-        this.selectAllCom()
+      this.$refs['addCompanyForm'].validate((valid) => {
+        if (valid) {
+          addCom(this.companyForm).then(res => {
+
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
       })
     },
     handleEdit(index, item) {
       console.log(index, item)
       this.addVisible = true
-      this.lineTitle = '编辑生产线'
-      this.comId = item.com_id
-      this.groupName = item.group_name
-      this.groupNo = item.group_no
-      this.isTest = item.is_test
-      this.isUse = item.is_use
+      this.lineTitle = '编辑企业信息'
       this.showUpdata = true
-      this.groupId = item.group_id
+      this.companyForm = {
+        id: item.id,
+        comName: item.comName,
+        isSuspend: item.isSuspend,
+        isTest: item.isTest,
+        comShortName: item.comShortName,
+        adress: item.adress,
+        lonLat: item.lonLat,
+        comAreaCode: item.comAreaCode,
+        socialCreditCode: item.socialCreditCode,
+        envPerson: item.envPerson,
+        envPersonTel: item.envPersonTel,
+        busName: item.busName,
+        smsStatus: item.smsStatus,
+        sysSmsPersons: item.sysSmsPersons
+      }
     },
     handleDelete(index, item) {
-      this.$confirm('此操作将永久删除该生产线, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该企业, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteGroup({ groupId: item.group_id }).then(res => {
+        deleteCom({ id: item.id }).then(res => {
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -388,14 +456,7 @@ export default {
       })
     },
     upSure() {
-      updateGroup({
-        comId: this.comId,
-        groupName: this.groupName,
-        groupNo: this.groupNo,
-        isTest: this.isTest,
-        isUse: this.isUse,
-        groupId: this.groupId
-      }).then(res => {
+      updateCom(this.companyForm).then(res => {
         this.$message({
           type: 'success',
           message: '更新成功!'
@@ -403,6 +464,31 @@ export default {
         this.addVisible = false
         this.selectAllCom()
       })
+    },
+    addMessageList() {
+      if (this.companyForm.sysSmsPersons.length >= 3) {
+        this.$message({ type: 'info', message: '最多添加3个' })
+        return
+      }
+      this.companyForm.sysSmsPersons.push({
+        smsPerson: '',
+        smsPersonTel: ''
+      })
+    },
+    removeMessageList(index, item) {
+      if (this.companyForm.sysSmsPersons.length === 1) {
+        this.$message({ type: 'info', message: '短信联系最少一个' })
+        return
+      }
+      this.companyForm.sysSmsPersons.splice(index, 1)
+      console.log(item)
+      if (item.id) {
+        deleteSmsPerson({
+          id: item.id
+        }).then(res => {
+
+        })
+      }
     }
 
   }
