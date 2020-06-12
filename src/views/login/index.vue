@@ -16,10 +16,10 @@
 
         <div style="width:100%;height:100vh;display:flex;align-items:center;position: absolute;top: 0;justify-content: center;">
           <img src="@img/icon2.png" style="width:70px;margin-right:20px">
-          <h3 class="centerTitle">  平湖市治理设施工况（电量）监测系统</h3>
+          <h3 class="centerTitle">  嘉兴市治理设施工况（电量）监测系统</h3>
           <div style="position: absolute;bottom: 15px;left:20px;display:flex;align-items:center;">
             <img src="@img/hs_logo.png" style="height:42px;margin:0px 0px 5px 0px;">
-            <span style="color:white;margin:0px 10px">Copyright © www.sea-splendor.com 版权所有 </span><span style="color:white;margin:0px 10px">海晟科技官方网站：<a href="http://www.sea-splendor.com">http://www.sea-splendor.com</a></span>
+            <span style="color:white;margin:0px 10px">Copyright © 2018-2020 版权所有 </span><span style="color:white;margin:0px 10px">海晟科技官方网站：<a href="http://www.sea-splendor.com">http://www.sea-splendor.com</a></span>
           </div>
         </div>
 
@@ -96,12 +96,12 @@ export default {
     // }
     return {
       loginForm: {
-        username: 'fth',
-        password: '123456'
+        username: '',
+        password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur' }]
+        username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+        password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
       },
       loading: false,
       passwordType: 'password',

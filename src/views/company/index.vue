@@ -101,6 +101,7 @@
       :title="lineTitle"
       :visible.sync="addVisible"
       width="70%"
+      :before-close="handleClose"
     >
       <el-form ref="addCompanyForm" :model="companyForm" :rules="rules" label-width="180px">
         <el-row :gutter="20">
@@ -324,7 +325,7 @@ export default {
   },
   methods: {
     selectAllCom() {
-      this.loadable = true
+      // this.loadable = true
       selectAllCom({
         comName: this.searchReal,
         comAreaCode: this.comAreaCode,
@@ -409,7 +410,14 @@ export default {
       this.$refs['addCompanyForm'].validate((valid) => {
         if (valid) {
           addCom(this.companyForm).then(res => {
-
+            if (res.retCode === 1) {
+              this.$message({
+                type: 'success',
+                message: '添加成功'
+              })
+              this.selectAllCom()
+              this.addVisible = false
+            }
           })
         } else {
           console.log('error submit!!')
@@ -486,9 +494,13 @@ export default {
         deleteSmsPerson({
           id: item.id
         }).then(res => {
-
+          this.$message({ type: 'success', message: '已从服务器中删除' })
         })
       }
+    },
+    handleClose() {
+      this.addVisible = false
+      this.selectAllCom()
     }
 
   }

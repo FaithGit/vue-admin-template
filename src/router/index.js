@@ -72,6 +72,7 @@ export const constantRoutes = [
 
   {
     path: '/table',
+    // hidden: true,
     component: Layout,
     children: [
       {
@@ -84,6 +85,7 @@ export const constantRoutes = [
   },
   {
     path: '/form',
+    // hidden: true,
     component: Layout,
     children: [
       {
@@ -96,6 +98,7 @@ export const constantRoutes = [
   },
   {
     path: '/history',
+    // hidden: true,
     component: Layout,
     children: [
       {
@@ -108,6 +111,7 @@ export const constantRoutes = [
   },
   {
     path: '/lineList',
+    // hidden: true,
     component: Layout,
     children: [
       {
@@ -120,6 +124,7 @@ export const constantRoutes = [
   },
   {
     path: '/company',
+    // hidden: true,
     component: Layout,
     children: [
       {
@@ -133,7 +138,7 @@ export const constantRoutes = [
   {
     path: '/craft',
     component: Layout,
-    hidden: true,
+    // hidden: true,
     children: [
       {
         path: 'index',

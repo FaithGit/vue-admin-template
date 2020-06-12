@@ -2,7 +2,7 @@
   <div class="dashboard-container" @dblclick="buttoncli">
     <div class="dashboardHead">
       <img src="@img/hs_logo.png" style="height:56px;margin:7px">
-      <span class="hs_headTitle">平湖市治理设施工况（电量）监测系统</span>
+      <span class="hs_headTitle">海宁罗诗妮治理设施工况（电量）监测系统</span>
       <span class="hs_headTitle" style="float:right;margin-right:20px;font-size:18px;cursor: pointer;" @click="gotoHome">
         返回首页
       </span>
@@ -241,7 +241,7 @@ export default {
   },
   mounted() {
     // 拿取点位
-    findComMap({ token: getToken }).then(res => {
+    findComMap({ token: getToken() }).then(res => {
       this.markList = res.retData
       const that = this
       MapLoader().then(AMap => {
@@ -254,7 +254,7 @@ export default {
               level: 'city' // 查询行政级别为 市
             }
             var district = new AMap.DistrictSearch(opts)
-            district.search('平湖市', function(status, result) {
+            district.search('海宁市', function(status, result) {
               // 查询成功时，result即为对应的行政区信息
               var bounds = result.districtList[0].boundaries
 
@@ -281,7 +281,8 @@ export default {
         // 点击获取table信息
         function markerClick(e) {
           findMapDataDetail({
-            comId: e.target.comId
+            comId: e.target.comId,
+            token: getToken()
           }).then(res => {
             that.deviceInfo = res.retData[0]
             infoWindow.setContent(e.target.content)
@@ -290,7 +291,8 @@ export default {
         }
 
         that.map = new AMap.Map('container1', {
-          center: [121.087157, 30.71595],
+          // center: [121.087157, 30.71595],
+          center: [120.680757, 30.510659],
           zoom: 11,
           mapStyle: 'amap://styles/darkblue'
         })
@@ -316,7 +318,7 @@ export default {
       })
     })
 
-    findIndexTotalData().then(res => {
+    findIndexTotalData({ token: getToken() }).then(res => {
       this.deviceNum = res.retData.deviceNum
       this.todayMaxPower = res.retData.todayMaxPower
       this.warComNum = res.retData.warComNum
@@ -324,7 +326,9 @@ export default {
       this.susComNum = res.retData.susComNum
       this.comNum = res.retData.comNum
     })
-    warMonthSort().then(res => {
+    warMonthSort({
+      token: getToken()
+    }).then(res => {
       var _city = res.retData.date
       this.num = res.retData.value
       for (var i = 0; i < _city.length; i++) {

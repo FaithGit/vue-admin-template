@@ -23,53 +23,59 @@
           <div v-show="!form.sysDevices.length>0" style="text-align:center">
             <img src="@img/none.png" style="width:150px;margin:10px">
           </div>
-          <el-col v-for="(item,index) in form.sysDevices" :key="'sysDevices'+index" :span="24">
-            <el-col :span="1" class="xuhao" style="  border-left: 4px solid #ff8800;">{{ index +1 }}</el-col>
-            <el-col :span="12">
-              <el-form-item
-                :key="'deviceName'+index"
-                label-width="80px"
-                label="设备名称"
-                :prop="`sysDevices[${index}].deviceName`"
-                :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
-              >
-                <el-input v-model.trim="item.deviceName" />
-              </el-form-item>
+
+          <transition-group
+            enter-active-class="animate__fadeInDown"
+            leave-active-class="animate__fadeOutUp animate__faster "
+          >
+            <el-col v-for="(item,index) in form.sysDevices" :key="'sysDevices'+index" :span="24" class="animate__animated ">
+              <el-col :span="1" class="xuhao" style="  border-left: 4px solid #ff8800;">{{ index +1 }}</el-col>
+              <el-col :span="12">
+                <el-form-item
+                  :key="'deviceName'+index"
+                  label-width="80px"
+                  label="设备名称"
+                  :prop="`sysDevices[${index}].deviceName`"
+                  :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
+                >
+                  <el-input v-model.trim="item.deviceName" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item
+                  :key="'modelNum'+index"
+                  label="电表模块编号"
+                  :prop="`sysDevices[${index}].modelNum`"
+                  :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                >
+                  <el-select v-model="item.modelNum" placeholder="请选择电表模块编号" clearable @change="changeListDisable" @clear="clearListDisable">
+                    <el-option
+                      v-for="(length,_index) in form.sysDevices"
+                      :key="'length'+_index"
+                      :label="_index+1"
+                      :value="_index+1"
+                      :disabled="length.listDisabled==1"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item
+                  :key="'deviceStyle'+index"
+                  label="设备类别"
+                  :prop="`sysDevices[${index}].deviceStyle`"
+                  :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                >
+                  <el-select v-model="item.deviceStyle" placeholder="请选择设备类别">
+                    <el-option v-for="(decice,deciceIndex) in deviceStyle_list" :key="'device'+deciceIndex" :label="decice.label" :value="decice.value" />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="1" class="xuhao">
+                <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
+              </el-col>
             </el-col>
-            <el-col :span="5">
-              <el-form-item
-                :key="'modelNum'+index"
-                label="电表模块编号"
-                :prop="`sysDevices[${index}].modelNum`"
-                :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-              >
-                <el-select v-model="item.modelNum" placeholder="请选择电表模块编号" clearable @change="changeListDisable" @clear="clearListDisable">
-                  <el-option
-                    v-for="(length,_index) in form.sysDevices"
-                    :key="'length'+_index"
-                    :label="_index+1"
-                    :value="_index+1"
-                    :disabled="length.listDisabled==1"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item
-                :key="'deviceStyle'+index"
-                label="设备类别"
-                :prop="`sysDevices[${index}].deviceStyle`"
-                :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-              >
-                <el-select v-model="item.deviceStyle" placeholder="请选择设备类别">
-                  <el-option v-for="(decice,deciceIndex) in deviceStyle_list" :key="'device'+deciceIndex" :label="decice.label" :value="decice.value" />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="1" class="xuhao">
-              <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
-            </el-col>
-          </el-col>
+          </transition-group>
           <div style="text-align:center;margin-bottom:20px">
             <el-button type="success" icon="el-icon-plus" circle @click="addDeviceList" />
           </div>
@@ -82,832 +88,837 @@
           <div v-show="!form.sysConditions.length>0" style="text-align:center">
             <img src="@img/none.png" style="width:150px;margin:10px">
           </div>
-          <el-col
-            v-for="(work,workindex) in form.sysConditions"
-            :key="'work'+workindex"
-            :span="24"
-            class="card"
+          <transition-group
+            enter-active-class="animate__fadeInDown"
+            leave-active-class="animate__fadeOutUp animate__faster "
           >
-            <div class="card-close" @click="DelModelList(workindex)">
-              <i class="el-icon-close" />
-            </div>
-            <el-row>
-              <el-col :span="6" :offset="18">
-                <el-form-item
-                  label="工况模块编号"
-                  label-width="124px"
-                  :prop="`sysConditions[${workindex}].modelNum`"
-                  :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-                >
-                  <el-select v-model="work.modelNum" placeholder="请选择对应电表模块编号" style="width:80%">
-                    <el-option
-                      v-for="(length,_index) in form.sysConditions"
-                      :key="'lengthModel'+_index"
-                      :label="_index+1"
-                      :value="_index+1"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
+            <el-col
+              v-for="(work,workindex) in form.sysConditions"
+              :key="'work'+workindex"
+              :span="24"
+              class="card animate__animated"
+            >
+              <div class="card-close" @click="DelModelList(workindex)">
+                <i class="el-icon-close" />
+              </div>
+              <el-row>
+                <el-col :span="6" :offset="18">
+                  <el-form-item
+                    label="工况模块编号"
+                    label-width="124px"
+                    :prop="`sysConditions[${workindex}].modelNum`"
+                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                  >
+                    <el-select v-model="work.modelNum" placeholder="请选择对应电表模块编号" style="width:80%">
+                      <el-option
+                        v-for="(length,_index) in form.sysConditions"
+                        :key="'lengthModel'+_index"
+                        :label="_index+1"
+                        :value="_index+1"
+                      />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-            <div class="card-title">开关量1</div>
-            <div class="card-content">
-              <el-row>
-                <el-col :span="6">
-                  <el-form-item
-                    label="启用状态"
-                    :prop="`sysConditions[${workindex}].ooStatus`"
-                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-                  >
-                    <el-select
-                      v-model.number="work.ooStatus"
-                      placeholder="请选择启用状态"
-                      @change="changeWorkStatus(workindex,'ooStatus1','ooStatus2')"
+              <div class="card-title">开关量1</div>
+              <div class="card-content">
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item
+                      label="启用状态"
+                      :prop="`sysConditions[${workindex}].ooStatus`"
+                      :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
                     >
-                      <el-option
-                        v-for="_i in optionSwitch"
-                        :key="'optionSwitch'+_i.value"
-                        :label="_i.label"
-                        :value="_i.value"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}ooStatus1`"
-                    label="对应电表模块编号"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].ooToModel`"
-                    :rules="work.ooStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.ooToModel " clearable placeholder="请选择对应电表模块编号">
-                      <el-option
-                        v-for="(length,_index) in form.sysDevices"
-                        :key="'lengthDui'+_index"
-                        :label="_index+1"
-                        :value="_index+1"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}ooStatus2`"
-                    label="监测因子"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].ooHbCode`"
-                    :rules="work.ooStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.ooHbCode" clearable placeholder="请选择对应监测因子">
-                      <el-option
-                        v-for="(hbcode,hbcodeIndex) in hb_code_list"
-                        :key="'hb_code_list'+hbcodeIndex"
-                        :label="hbcode.codeName"
-                        :value="hbcode.hbCode"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="card-title">开关量2</div>
-            <div class="card-content">
-              <el-row>
-                <el-col :span="6">
-                  <el-form-item
-                    label="启用状态"
-                    :prop="`sysConditions[${workindex}].otStatus`"
-                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-                  >
-                    <el-select
-                      v-model.number="work.otStatus"
-                      placeholder="请选择启用状态"
-                      @change="changeWorkStatus(workindex,'otStatus1','otStatus2')"
+                      <el-select
+                        v-model.number="work.ooStatus"
+                        placeholder="请选择启用状态"
+                        @change="changeWorkStatus(workindex,'ooStatus1','ooStatus2')"
+                      >
+                        <el-option
+                          v-for="_i in optionSwitch"
+                          :key="'optionSwitch'+_i.value"
+                          :label="_i.label"
+                          :value="_i.value"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}ooStatus1`"
+                      label="对应电表模块编号"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].ooToModel`"
+                      :rules="work.ooStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-option
-                        v-for="_i in optionSwitch"
-                        :key="'optionSwitch'+_i.value"
-                        :label="_i.label"
-                        :value="_i.value"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}otStatus1`"
-                    label="对应电表模块编号"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].otToModel`"
-                    :rules="work.otStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.otToModel " clearable placeholder="请选择对应电表模块编号">
-                      <el-option
-                        v-for="(length,_index) in form.sysDevices"
-                        :key="'lengthDui'+_index"
-                        :label="_index+1"
-                        :value="_index+1"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}otStatus2`"
-                    label="监测因子"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].otHbCode`"
-                    :rules="work.otStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.otHbCode" clearable placeholder="请选择对应监测因子">
-                      <el-option
-                        v-for="(hbcode,hbcodeIndex) in hb_code_list"
-                        :key="'hb_code_list'+hbcodeIndex"
-                        :label="hbcode.codeName"
-                        :value="hbcode.hbCode"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="card-title">开关量3</div>
-            <div class="card-content">
-              <el-row>
-                <el-col :span="6">
-                  <el-form-item
-                    label="启用状态"
-                    :prop="`sysConditions[${workindex}].owStatus`"
-                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-                  >
-                    <el-select
-                      v-model.number="work.owStatus"
-                      placeholder="请选择启用状态"
-                      @change="changeWorkStatus(workindex,'owStatus1','owStatus2')"
+                      <el-select v-model="work.ooToModel " clearable placeholder="请选择对应电表模块编号">
+                        <el-option
+                          v-for="(length,_index) in form.sysDevices"
+                          :key="'lengthDui'+_index"
+                          :label="_index+1"
+                          :value="_index+1"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}ooStatus2`"
+                      label="监测因子"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].ooHbCode`"
+                      :rules="work.ooStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-option
-                        v-for="_i in optionSwitch"
-                        :key="'optionSwitch'+_i.value"
-                        :label="_i.label"
-                        :value="_i.value"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}owStatus1`"
-                    label="对应电表模块编号"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].owToModel`"
-                    :rules="work.owStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.owToModel " clearable placeholder="请选择对应电表模块编号">
-                      <el-option
-                        v-for="(length,_index) in form.sysDevices"
-                        :key="'lengthDui'+_index"
-                        :label="_index+1"
-                        :value="_index+1"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}owStatus2`"
-                    label="监测因子"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].owHbCode`"
-                    :rules="work.owStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.owHbCode" clearable placeholder="请选择对应监测因子">
-                      <el-option
-                        v-for="(hbcode,hbcodeIndex) in hb_code_list"
-                        :key="'hb_code_list'+hbcodeIndex"
-                        :label="hbcode.codeName"
-                        :value="hbcode.hbCode"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="card-title">开关量4</div>
-            <div class="card-content">
-              <el-row>
-                <el-col :span="6">
-                  <el-form-item
-                    label="启用状态"
-                    :prop="`sysConditions[${workindex}].ofStatus`"
-                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-                  >
-                    <el-select
-                      v-model.number="work.ofStatus"
-                      placeholder="请选择启用状态"
-                      @change="changeWorkStatus(workindex,'ofStatus1','ofStatus2')"
+                      <el-select v-model="work.ooHbCode" clearable placeholder="请选择对应监测因子">
+                        <el-option
+                          v-for="(hbcode,hbcodeIndex) in hb_code_list"
+                          :key="'hb_code_list'+hbcodeIndex"
+                          :label="hbcode.codeName"
+                          :value="hbcode.hbCode"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="card-title">开关量2</div>
+              <div class="card-content">
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item
+                      label="启用状态"
+                      :prop="`sysConditions[${workindex}].otStatus`"
+                      :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
                     >
-                      <el-option
-                        v-for="_i in optionSwitch"
-                        :key="'optionSwitch'+_i.value"
-                        :label="_i.label"
-                        :value="_i.value"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}ofStatus1`"
-                    label="对应电表模块编号"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].ofToModel`"
-                    :rules="work.ofStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.ofToModel " clearable placeholder="请选择对应电表模块编号">
-                      <el-option
-                        v-for="(length,_index) in form.sysDevices"
-                        :key="'lengthDui'+_index"
-                        :label="_index+1"
-                        :value="_index+1"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}ofStatus2`"
-                    label="监测因子"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].ofHbCode`"
-                    :rules="work.ofStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.ofHbCode" clearable placeholder="请选择对应监测因子">
-                      <el-option
-                        v-for="(hbcode,hbcodeIndex) in hb_code_list"
-                        :key="'hb_code_list'+hbcodeIndex"
-                        :label="hbcode.codeName"
-                        :value="hbcode.hbCode"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="card-title">模拟量1</div>
-            <div class="card-content">
-              <el-row>
-                <el-col :span="6">
-                  <el-form-item
-                    label="启用状态"
-                    :prop="`sysConditions[${workindex}].aoStatus`"
-                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-                  >
-                    <el-select
-                      v-model.number="work.aoStatus"
-                      placeholder="请选择启用状态"
-                      @change="changeWorkStatus(workindex,'aoStatus1','aoStatus2')"
+                      <el-select
+                        v-model.number="work.otStatus"
+                        placeholder="请选择启用状态"
+                        @change="changeWorkStatus(workindex,'otStatus1','otStatus2')"
+                      >
+                        <el-option
+                          v-for="_i in optionSwitch"
+                          :key="'optionSwitch'+_i.value"
+                          :label="_i.label"
+                          :value="_i.value"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}otStatus1`"
+                      label="对应电表模块编号"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].otToModel`"
+                      :rules="work.otStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-option
-                        v-for="_i in optionSwitch"
-                        :key="'optionSwitch'+_i.value"
-                        :label="_i.label"
-                        :value="_i.value"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}aoStatus1`"
-                    label="对应电表模块编号"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].aoToModel`"
-                    :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.aoToModel" clearable placeholder="请选择对应电表模块编号">
-                      <el-option
-                        v-for="(length,_index) in form.sysDevices"
-                        :key="'lengthDui'+_index"
-                        :label="_index+1"
-                        :value="_index+1"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}aoStatus2`"
-                    label="监测因子"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].aoHbCode`"
-                    :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.aoHbCode" clearable placeholder="请选择对应监测因子">
-                      <el-option
-                        v-for="(hbcode,hbcodeIndex) in hb_code_list"
-                        :key="'hb_code_list'+hbcodeIndex"
-                        :label="hbcode.codeName"
-                        :value="hbcode.hbCode"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="电气量程低"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].aoAcquisitionRangeMin`"
-                    :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.aoAcquisitionRangeMin" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="电气量程高"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].aoAcquisitionRangeMax`"
-                    :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.aoAcquisitionRangeMax" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="监测量程低"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].aoRealRangeMin`"
-                    :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.aoRealRangeMin" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="监测量程高"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].aoRealRangeMax`"
-                    :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.aoRealRangeMax" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="临界值"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].aoCriticalValue`"
-                    :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.aoCriticalValue" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="负荷系数"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].aoLoadCoefficient`"
-                    :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.aoLoadCoefficient" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="风量"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].aoAir`"
-                    :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.aoAir" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="card-title">模拟量2</div>
-            <div class="card-content">
-              <el-row>
-                <el-col :span="6">
-                  <el-form-item
-                    label="启用状态"
-                    :prop="`sysConditions[${workindex}].atStatus`"
-                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-                  >
-                    <el-select
-                      v-model.number="work.atStatus"
-                      placeholder="请选择启用状态"
-                      @change="changeWorkStatus(workindex,'atStatus1','atStatus2')"
+                      <el-select v-model="work.otToModel " clearable placeholder="请选择对应电表模块编号">
+                        <el-option
+                          v-for="(length,_index) in form.sysDevices"
+                          :key="'lengthDui'+_index"
+                          :label="_index+1"
+                          :value="_index+1"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}otStatus2`"
+                      label="监测因子"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].otHbCode`"
+                      :rules="work.otStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-option
-                        v-for="_i in optionSwitch"
-                        :key="'optionSwitch'+_i.value"
-                        :label="_i.label"
-                        :value="_i.value"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}atStatus1`"
-                    label="对应电表模块编号"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].atToModel`"
-                    :rules="work.atStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.atToModel" clearable placeholder="请选择对应电表模块编号">
-                      <el-option
-                        v-for="(length,_index) in form.sysDevices"
-                        :key="'lengthDui'+_index"
-                        :label="_index+1"
-                        :value="_index+1"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}atStatus2`"
-                    label="监测因子"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].atHbCode`"
-                    :rules="work.atStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.atHbCode" clearable placeholder="请选择对应监测因子">
-                      <el-option
-                        v-for="(hbcode,hbcodeIndex) in hb_code_list"
-                        :key="'hb_code_list'+hbcodeIndex"
-                        :label="hbcode.codeName"
-                        :value="hbcode.hbCode"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="电气量程低"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].atAcquisitionRangeMin`"
-                    :rules="work.atStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.atAcquisitionRangeMin" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="电气量程高"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].atAcquisitionRangeMax`"
-                    :rules="work.atStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.atAcquisitionRangeMax" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="监测量程低"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].atRealRangeMin`"
-                    :rules="work.atStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.atRealRangeMin" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="监测量程高"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].atRealRangeMax`"
-                    :rules="work.atStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.atRealRangeMax" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="临界值"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].atCriticalValue`"
-                    :rules="work.atStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.atCriticalValue" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="负荷系数"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].atLoadCoefficient`"
-                    :rules="work.atStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.atLoadCoefficient" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="风量"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].atAir`"
-                    :rules="work.atStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.atAir" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="card-title">模拟量3</div>
-            <div class="card-content">
-              <el-row>
-                <el-col :span="6">
-                  <el-form-item
-                    label="启用状态"
-                    :prop="`sysConditions[${workindex}].awStatus`"
-                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-                  >
-                    <el-select
-                      v-model.number="work.awStatus"
-                      placeholder="请选择启用状态"
-                      @change="changeWorkStatus(workindex,'awStatus1','awStatus2')"
+                      <el-select v-model="work.otHbCode" clearable placeholder="请选择对应监测因子">
+                        <el-option
+                          v-for="(hbcode,hbcodeIndex) in hb_code_list"
+                          :key="'hb_code_list'+hbcodeIndex"
+                          :label="hbcode.codeName"
+                          :value="hbcode.hbCode"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="card-title">开关量3</div>
+              <div class="card-content">
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item
+                      label="启用状态"
+                      :prop="`sysConditions[${workindex}].owStatus`"
+                      :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
                     >
-                      <el-option
-                        v-for="_i in optionSwitch"
-                        :key="'optionSwitch'+_i.value"
-                        :label="_i.label"
-                        :value="_i.value"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}awStatus1`"
-                    label="对应电表模块编号"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].awToModel`"
-                    :rules="work.awStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.awToModel" clearable placeholder="请选择对应电表模块编号">
-                      <el-option
-                        v-for="(length,_index) in form.sysDevices"
-                        :key="'lengthDui'+_index"
-                        :label="_index+1"
-                        :value="_index+1"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}awStatus2`"
-                    label="监测因子"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].awHbCode`"
-                    :rules="work.awStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.awHbCode" clearable placeholder="请选择对应监测因子">
-                      <el-option
-                        v-for="(hbcode,hbcodeIndex) in hb_code_list"
-                        :key="'hb_code_list'+hbcodeIndex"
-                        :label="hbcode.codeName"
-                        :value="hbcode.hbCode"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="电气量程低"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].awAcquisitionRangeMin`"
-                    :rules="work.awStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.awAcquisitionRangeMin" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="电气量程高"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].awAcquisitionRangeMax`"
-                    :rules="work.awStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.awAcquisitionRangeMax" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="监测量程低"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].awRealRangeMin`"
-                    :rules="work.awStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.awRealRangeMin" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="监测量程高"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].awRealRangeMax`"
-                    :rules="work.awStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.awRealRangeMax" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="临界值"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].awCriticalValue`"
-                    :rules="work.awStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.awCriticalValue" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="负荷系数"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].awLoadCoefficient`"
-                    :rules="work.awStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.awLoadCoefficient" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="风量"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].awAir`"
-                    :rules="work.awStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.awAir" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="card-title">模拟量4</div>
-            <div class="card-content">
-              <el-row>
-                <el-col :span="6">
-                  <el-form-item
-                    label="启用状态"
-                    :prop="`sysConditions[${workindex}].afStatus`"
-                    :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
-                  >
-                    <el-select
-                      v-model.number="work.afStatus"
-                      placeholder="请选择启用状态"
-                      @change="changeWorkStatus(workindex,'afStatus1','afStatus2')"
+                      <el-select
+                        v-model.number="work.owStatus"
+                        placeholder="请选择启用状态"
+                        @change="changeWorkStatus(workindex,'owStatus1','owStatus2')"
+                      >
+                        <el-option
+                          v-for="_i in optionSwitch"
+                          :key="'optionSwitch'+_i.value"
+                          :label="_i.label"
+                          :value="_i.value"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}owStatus1`"
+                      label="对应电表模块编号"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].owToModel`"
+                      :rules="work.owStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-option
-                        v-for="_i in optionSwitch"
-                        :key="'optionSwitch'+_i.value"
-                        :label="_i.label"
-                        :value="_i.value"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}afStatus1`"
-                    label="对应电表模块编号"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].afToModel`"
-                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.afToModel" clearable placeholder="请选择对应电表模块编号">
-                      <el-option
-                        v-for="(length,_index) in form.sysDevices"
-                        :key="'lengthDui'+_index"
-                        :label="_index+1"
-                        :value="_index+1"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}afStatus2`"
-                    label="监测因子"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].afHbCode`"
-                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-select v-model="work.afHbCode" clearable placeholder="请选择对应监测因子">
-                      <el-option
-                        v-for="(hbcode,hbcodeIndex) in hb_code_list"
-                        :key="'hb_code_list'+hbcodeIndex"
-                        :label="hbcode.codeName"
-                        :value="hbcode.hbCode"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="电气量程低"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].afAcquisitionRangeMin`"
-                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.afAcquisitionRangeMin" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="电气量程高"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].afAcquisitionRangeMax`"
-                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.afAcquisitionRangeMax" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="监测量程低"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].afRealRangeMin`"
-                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.afRealRangeMin" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="监测量程高"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].afRealRangeMax`"
-                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.afRealRangeMax" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="临界值"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].afCriticalValue`"
-                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.afCriticalValue" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="负荷系数"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].afLoadCoefficient`"
-                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.afLoadCoefficient" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    :ref="`${workindex}workmodel3`"
-                    label="风量"
-                    label-width="134px"
-                    :prop="`sysConditions[${workindex}].afAir`"
-                    :rules="work.afStatus!=0? requiredRules: NorequiredRules"
-                  >
-                    <el-input-number v-model.number="work.afAir" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-          </el-col>
+                      <el-select v-model="work.owToModel " clearable placeholder="请选择对应电表模块编号">
+                        <el-option
+                          v-for="(length,_index) in form.sysDevices"
+                          :key="'lengthDui'+_index"
+                          :label="_index+1"
+                          :value="_index+1"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}owStatus2`"
+                      label="监测因子"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].owHbCode`"
+                      :rules="work.owStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.owHbCode" clearable placeholder="请选择对应监测因子">
+                        <el-option
+                          v-for="(hbcode,hbcodeIndex) in hb_code_list"
+                          :key="'hb_code_list'+hbcodeIndex"
+                          :label="hbcode.codeName"
+                          :value="hbcode.hbCode"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="card-title">开关量4</div>
+              <div class="card-content">
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item
+                      label="启用状态"
+                      :prop="`sysConditions[${workindex}].ofStatus`"
+                      :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                    >
+                      <el-select
+                        v-model.number="work.ofStatus"
+                        placeholder="请选择启用状态"
+                        @change="changeWorkStatus(workindex,'ofStatus1','ofStatus2')"
+                      >
+                        <el-option
+                          v-for="_i in optionSwitch"
+                          :key="'optionSwitch'+_i.value"
+                          :label="_i.label"
+                          :value="_i.value"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}ofStatus1`"
+                      label="对应电表模块编号"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].ofToModel`"
+                      :rules="work.ofStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.ofToModel " clearable placeholder="请选择对应电表模块编号">
+                        <el-option
+                          v-for="(length,_index) in form.sysDevices"
+                          :key="'lengthDui'+_index"
+                          :label="_index+1"
+                          :value="_index+1"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}ofStatus2`"
+                      label="监测因子"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].ofHbCode`"
+                      :rules="work.ofStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.ofHbCode" clearable placeholder="请选择对应监测因子">
+                        <el-option
+                          v-for="(hbcode,hbcodeIndex) in hb_code_list"
+                          :key="'hb_code_list'+hbcodeIndex"
+                          :label="hbcode.codeName"
+                          :value="hbcode.hbCode"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="card-title">模拟量1</div>
+              <div class="card-content">
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item
+                      label="启用状态"
+                      :prop="`sysConditions[${workindex}].aoStatus`"
+                      :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                    >
+                      <el-select
+                        v-model.number="work.aoStatus"
+                        placeholder="请选择启用状态"
+                        @change="changeWorkStatus(workindex,'aoStatus1','aoStatus2')"
+                      >
+                        <el-option
+                          v-for="_i in optionSwitch"
+                          :key="'optionSwitch'+_i.value"
+                          :label="_i.label"
+                          :value="_i.value"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}aoStatus1`"
+                      label="对应电表模块编号"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].aoToModel`"
+                      :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.aoToModel" clearable placeholder="请选择对应电表模块编号">
+                        <el-option
+                          v-for="(length,_index) in form.sysDevices"
+                          :key="'lengthDui'+_index"
+                          :label="_index+1"
+                          :value="_index+1"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}aoStatus2`"
+                      label="监测因子"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].aoHbCode`"
+                      :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.aoHbCode" clearable placeholder="请选择对应监测因子">
+                        <el-option
+                          v-for="(hbcode,hbcodeIndex) in hb_code_list"
+                          :key="'hb_code_list'+hbcodeIndex"
+                          :label="hbcode.codeName"
+                          :value="hbcode.hbCode"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="电气量程低"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].aoAcquisitionRangeMin`"
+                      :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.aoAcquisitionRangeMin" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="电气量程高"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].aoAcquisitionRangeMax`"
+                      :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.aoAcquisitionRangeMax" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="监测量程低"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].aoRealRangeMin`"
+                      :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.aoRealRangeMin" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="监测量程高"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].aoRealRangeMax`"
+                      :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.aoRealRangeMax" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="临界值"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].aoCriticalValue`"
+                      :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.aoCriticalValue" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="负荷系数"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].aoLoadCoefficient`"
+                      :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.aoLoadCoefficient" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="风量"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].aoAir`"
+                      :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.aoAir" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="card-title">模拟量2</div>
+              <div class="card-content">
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item
+                      label="启用状态"
+                      :prop="`sysConditions[${workindex}].atStatus`"
+                      :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                    >
+                      <el-select
+                        v-model.number="work.atStatus"
+                        placeholder="请选择启用状态"
+                        @change="changeWorkStatus(workindex,'atStatus1','atStatus2')"
+                      >
+                        <el-option
+                          v-for="_i in optionSwitch"
+                          :key="'optionSwitch'+_i.value"
+                          :label="_i.label"
+                          :value="_i.value"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}atStatus1`"
+                      label="对应电表模块编号"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].atToModel`"
+                      :rules="work.atStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.atToModel" clearable placeholder="请选择对应电表模块编号">
+                        <el-option
+                          v-for="(length,_index) in form.sysDevices"
+                          :key="'lengthDui'+_index"
+                          :label="_index+1"
+                          :value="_index+1"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}atStatus2`"
+                      label="监测因子"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].atHbCode`"
+                      :rules="work.atStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.atHbCode" clearable placeholder="请选择对应监测因子">
+                        <el-option
+                          v-for="(hbcode,hbcodeIndex) in hb_code_list"
+                          :key="'hb_code_list'+hbcodeIndex"
+                          :label="hbcode.codeName"
+                          :value="hbcode.hbCode"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="电气量程低"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].atAcquisitionRangeMin`"
+                      :rules="work.atStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.atAcquisitionRangeMin" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="电气量程高"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].atAcquisitionRangeMax`"
+                      :rules="work.atStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.atAcquisitionRangeMax" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="监测量程低"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].atRealRangeMin`"
+                      :rules="work.atStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.atRealRangeMin" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="监测量程高"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].atRealRangeMax`"
+                      :rules="work.atStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.atRealRangeMax" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="临界值"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].atCriticalValue`"
+                      :rules="work.atStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.atCriticalValue" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="负荷系数"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].atLoadCoefficient`"
+                      :rules="work.atStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.atLoadCoefficient" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="风量"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].atAir`"
+                      :rules="work.atStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.atAir" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="card-title">模拟量3</div>
+              <div class="card-content">
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item
+                      label="启用状态"
+                      :prop="`sysConditions[${workindex}].awStatus`"
+                      :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                    >
+                      <el-select
+                        v-model.number="work.awStatus"
+                        placeholder="请选择启用状态"
+                        @change="changeWorkStatus(workindex,'awStatus1','awStatus2')"
+                      >
+                        <el-option
+                          v-for="_i in optionSwitch"
+                          :key="'optionSwitch'+_i.value"
+                          :label="_i.label"
+                          :value="_i.value"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}awStatus1`"
+                      label="对应电表模块编号"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].awToModel`"
+                      :rules="work.awStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.awToModel" clearable placeholder="请选择对应电表模块编号">
+                        <el-option
+                          v-for="(length,_index) in form.sysDevices"
+                          :key="'lengthDui'+_index"
+                          :label="_index+1"
+                          :value="_index+1"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}awStatus2`"
+                      label="监测因子"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].awHbCode`"
+                      :rules="work.awStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.awHbCode" clearable placeholder="请选择对应监测因子">
+                        <el-option
+                          v-for="(hbcode,hbcodeIndex) in hb_code_list"
+                          :key="'hb_code_list'+hbcodeIndex"
+                          :label="hbcode.codeName"
+                          :value="hbcode.hbCode"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="电气量程低"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].awAcquisitionRangeMin`"
+                      :rules="work.awStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.awAcquisitionRangeMin" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="电气量程高"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].awAcquisitionRangeMax`"
+                      :rules="work.awStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.awAcquisitionRangeMax" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="监测量程低"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].awRealRangeMin`"
+                      :rules="work.awStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.awRealRangeMin" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="监测量程高"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].awRealRangeMax`"
+                      :rules="work.awStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.awRealRangeMax" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="临界值"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].awCriticalValue`"
+                      :rules="work.awStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.awCriticalValue" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="负荷系数"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].awLoadCoefficient`"
+                      :rules="work.awStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.awLoadCoefficient" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="风量"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].awAir`"
+                      :rules="work.awStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.awAir" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="card-title">模拟量4</div>
+              <div class="card-content">
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item
+                      label="启用状态"
+                      :prop="`sysConditions[${workindex}].afStatus`"
+                      :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                    >
+                      <el-select
+                        v-model.number="work.afStatus"
+                        placeholder="请选择启用状态"
+                        @change="changeWorkStatus(workindex,'afStatus1','afStatus2')"
+                      >
+                        <el-option
+                          v-for="_i in optionSwitch"
+                          :key="'optionSwitch'+_i.value"
+                          :label="_i.label"
+                          :value="_i.value"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}afStatus1`"
+                      label="对应电表模块编号"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].afToModel`"
+                      :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.afToModel" clearable placeholder="请选择对应电表模块编号">
+                        <el-option
+                          v-for="(length,_index) in form.sysDevices"
+                          :key="'lengthDui'+_index"
+                          :label="_index+1"
+                          :value="_index+1"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}afStatus2`"
+                      label="监测因子"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].afHbCode`"
+                      :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-select v-model="work.afHbCode" clearable placeholder="请选择对应监测因子">
+                        <el-option
+                          v-for="(hbcode,hbcodeIndex) in hb_code_list"
+                          :key="'hb_code_list'+hbcodeIndex"
+                          :label="hbcode.codeName"
+                          :value="hbcode.hbCode"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="电气量程低"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].afAcquisitionRangeMin`"
+                      :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.afAcquisitionRangeMin" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="电气量程高"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].afAcquisitionRangeMax`"
+                      :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.afAcquisitionRangeMax" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="监测量程低"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].afRealRangeMin`"
+                      :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.afRealRangeMin" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="监测量程高"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].afRealRangeMax`"
+                      :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.afRealRangeMax" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="临界值"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].afCriticalValue`"
+                      :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.afCriticalValue" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="负荷系数"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].afLoadCoefficient`"
+                      :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.afLoadCoefficient" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item
+                      :ref="`${workindex}workmodel3`"
+                      label="风量"
+                      label-width="134px"
+                      :prop="`sysConditions[${workindex}].afAir`"
+                      :rules="work.afStatus!=0? requiredRules: NorequiredRules"
+                    >
+                      <el-input-number v-model.number="work.afAir" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-col>
+          </transition-group>
           <div style="text-align:center;margin-bottom:20px">
             <el-button type="success" icon="el-icon-plus" circle @click="addModelList" />
           </div>
