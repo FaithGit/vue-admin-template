@@ -207,6 +207,7 @@
 
 <script>
 import { findData, selectByComId, findDataHistory } from '@/api/table'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'History',
@@ -370,6 +371,7 @@ export default {
     findDataHistory(pageIndex, pageSize) {
       this.loadable = true
       findDataHistory({
+        'token': getToken(),
         'pageIndex': this.pageIndex || pageIndex,
         'pageSize': this.pageSize || pageSize,
         'deviceId': this.deviceValue,

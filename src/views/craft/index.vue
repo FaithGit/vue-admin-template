@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="head-com">
       <span>企业：</span>
-      <el-select v-model="com" placeholder="请选择" @change="changeCom">
+      <el-select v-model="com" placeholder="请选择">
         <el-option
           v-for="item in comList"
           :key="item.value"
@@ -22,134 +22,124 @@
       >
         <div :class="{card:!tableDataStyle[index],cardNo:tableDataStyle[index]}">
           <div class="createLineName">{{ tableData[0].comName }}-{{ item.groupName }}</div>
-          <div class="createLineTime">时间：{{ item.groupName }}</div>
+          <div class="createLineTime">时间：{{ item.dataTime }}</div>
 
           <div class="imgBody">
             <div class="imgBlock">
-              <div class="leftIMG">
+              <div v-for="(_item,_index) in item.scData" :key="'xxxxxx'+_index" class="leftIMG">
                 <img src="@img/left-creat.png">
+
+                <img src="@img/gyticon.png" :class="{gyticon1:true,rotation:_item.switch_data!=0}">
+                <img src="@img/gyticon.png" :class="{gyticon2:true,rotation:_item.switch_data!=0}">
+                <img src="@img/gyticon.png" :class="{gyticon3:true,rotation:_item.switch_data!=0}">
+
                 <div class="leftGuan" />
+                <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true}" />
+                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true}" />
+                <div class="left-content">
+                  <div>监测仪：{{ _item.device_name }}</div>
+                  <div>设备状态：
+                    <svg-icon icon-class="swtich" :class="{greenSvg:_item.switch_data!=0,redSvg:_item.switch_data==0}" />
+                  </div>
+                  <div>生产温度(℃)：{{ _item.pro_tem }}</div>
+                  <div>功率：{{ _item.active_power }}</div>
+                </div>
               </div>
-              <div class="leftIMG">
-                <img src="@img/left-creat.png">
-                <div class="leftGuan" />
-              </div>
-              <div class="leftIMG">
-                <img src="@img/left-creat.png">
-                <div class="leftGuan" />
-              </div>
+
+              <img src="@img/right-zl.png" class="right-zl">
               <div class="middle-zl">
                 <img src="@img/middle-zl.png">
+                <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true}" style="right: -24px;transform: scale(1.3) rotate(180deg);top:-148px;" />
+                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 48px;" />
+                <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 228px;" />
+                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 328px;" />
+                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 368px;" />
+                <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true} " style="left: 29px;transform: scale(1) rotate(-90deg);top: 214px;" />
+                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="left: 99px;transform: scale(1) rotate(-90deg);top: 214px;" />
+                <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true} " style="left: 488px;transform: scale(1.3) rotate(-90deg);top: 265px;" />
+                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="left: 592px;transform: scale(1.3) rotate(-90deg);top: 265px;" />
+                <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true} " style="left: 370px;transform: scale(1) rotate(-90deg);top:10px;" />
+                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="left: 430px;transform: scale(1) rotate(-90deg);top: 10px;" />
+                <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true} " style="left: 456px;transform: scale(1);top:80px;" />
+                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="left: 456px;transform: scale(1);top: 180px;" />
+
+                <div class="left-content left-content-zl">
+                  <div>监测仪：{{ item.zlData[0].device_name }}</div>
+                </div>
               </div>
             </div>
           </div>
           <div v-if="index%3==0" style="clear:both" />
         </div>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
-import { findData, selectByComId } from '@/api/table'
+import { findData, findDataGyt } from '@/api/table'
+import { getToken } from '@/utils/auth'
 
 export default {
   data() {
     return {
       comList: [],
       com: '',
-      magnify: false,
-      tableDataStyle: [false, false, false, false],
+      tableDataStyle: [false, false],
+      tableDataCss: [true, false],
       tableData: [
         {
-          groups: [
+          'dataTime': '2020-06-15 10:45:00',
+          'groups': [
             {
-              groupName: '1#线',
-              groupId: '0edb2d3d-7a41-4970-9664-d0a8128b096b',
-              scData: [
+              'groupName': '1#线',
+              'groupId': '0edb2d3d-7a41-4970-9664-d0a8128b096b',
+              'scData': [
                 {
-                  switch_data: 0,
-                  pro_tem: 0.0,
-                  device_name: '压延机1#',
-                  device_id: 'ae1ec053-3987-4449-9185-0a1600b65ca1',
-                  active_power: 108.36
+                  'switch_data': 1,
+                  'pro_tem': 0.00,
+                  'device_name': '压延机1#',
+                  'active_power': 0.00
+                },
+                {
+                  'switch_data': 0,
+                  'pro_tem': 0.00,
+                  'device_name': '压延机2#',
+                  'active_power': 0.00
                 }
+
               ],
-              groupNo: 1,
-              zlData: [
+              'groupNo': 1,
+              'zlData': [
                 {
-                  device_name: '治理设施1#',
-                  device_id: 'aa7cd955-80da-4bef-9a28-b59aa2b35ab8',
-                  active_power: 29.55
+                  'device_name': '治理设施1#',
+                  'active_power': 0.00
                 }
               ]
             },
             {
-              groupName: '3#线',
-              groupId: '4503093d-4e41-420e-b932-96b2e9ac4c93',
-              scData: [
+              'groupName': '3#线',
+              'groupId': '4503093d-4e41-420e-b932-96b2e9ac4c93',
+              'scData': [
                 {
-                  switch_data: 0,
-                  pro_tem: 0.0,
-                  device_name: '压延机3#',
-                  device_id: '57e0f5c5-0d6b-4d00-ab61-359fa7954b3d',
-                  active_power: 126.26
+                  'switch_data': 0,
+                  'pro_tem': 0.00,
+                  'device_name': '压延机3#',
+                  'active_power': 0.00
                 }
               ],
-              groupNo: 3,
-              zlData: [
+              'groupNo': 3,
+              'zlData': [
                 {
-                  device_name: '治理设施3#',
-                  device_id: 'cb005fc9-cb2b-4812-b5e1-4f6ee2ee746a',
-                  active_power: 26.25
-                }
-              ]
-            },
-            {
-              groupName: '4#线',
-              groupId: '4503093d-4e41-420e-b932-96b2e9ac4c93',
-              scData: [
-                {
-                  switch_data: 0,
-                  pro_tem: 0.0,
-                  device_name: '压延机4#',
-                  device_id: '57e0f5c5-0d6b-4d00-ab61-359fa7954b3d',
-                  active_power: 126.26
-                }
-              ],
-              groupNo: 4,
-              zlData: [
-                {
-                  device_name: '治理设施4#',
-                  device_id: 'cb005fc9-cb2b-4812-b5e1-4f6ee2ee746a',
-                  active_power: 26.25
-                }
-              ]
-            },
-            {
-              groupName: '5#线',
-              groupId: '4503093d-4e41-420e-b932-96b2e9ac4c93',
-              scData: [
-                {
-                  switch_data: 0,
-                  pro_tem: 0.0,
-                  device_name: '压延机5#',
-                  device_id: '57e0f5c5-0d6b-4d00-ab61-359fa7954b3d',
-                  active_power: 126.26
-                }
-              ],
-              groupNo: 5,
-              zlData: [
-                {
-                  device_name: '治理设施5#',
-                  device_id: 'cb005fc9-cb2b-4812-b5e1-4f6ee2ee746a',
-                  active_power: 26.25
+                  'device_name': '治理设施3#',
+                  'active_power': 0.00
                 }
               ]
             }
           ],
-          comId: '714bcde8-a7b4-11ea-a177-b8599f0536c0',
-          comName: '浙江罗诗妮新材料有限公司'
+          'comId': '714bcde8-a7b4-11ea-a177-b8599f0536c0',
+          'comName': '浙江罗诗妮新材料有限公司'
         }
       ]
     }
@@ -178,16 +168,18 @@ export default {
       })
     },
     searchClick() {
-      this.search = this.search1
-      this.findData(this.search, 1, this.pageSize)
-    },
-
-    changeCom(val) {
-      console.log(val)
-      selectByComId({
-        comId: val
+      console.log(this.com)
+      findDataGyt({
+        comId: this.com,
+        token: getToken()
       }).then(res => {
         console.log(res)
+        this.tableData = res.retData
+        const _arr = []
+        for (var i = 0; i < this.tableData[0].groups.length; i++) {
+          _arr[i] = false
+        }
+        this.tableDataStyle = _arr
       })
     },
     big(index) {
@@ -195,10 +187,48 @@ export default {
       this.$set(this.tableDataStyle, index, !this.tableDataStyle[index])
       console.log(this.tableDataStyle)
     }
+
   }
 }
 </script>
 <style lang="scss" scoped>
+
+@-webkit-keyframes rotation {
+	from {
+	-webkit-transform:rotate(0deg);
+}
+to {
+	-webkit-transform:rotate(360deg);
+}
+}.rotation {
+	-webkit-transform:rotate(360deg);
+	animation:rotation 2.7s linear infinite;
+}
+
+@-webkit-keyframes opacityFu {
+	from {
+	opacity: 1;
+}
+to {
+	opacity: 0;
+}
+}.opacityFu {
+	opacity: 1;
+	animation:opacityFu 0.8s linear infinite;
+}
+
+@-webkit-keyframes opacityFu2 {
+	from {
+	opacity: 0;
+}
+to {
+	opacity: 1;
+}
+}.opacityFu2 {
+	opacity: 0;
+	animation:opacityFu2 0.8s linear infinite;
+}
+
 .card-body {
   background: #9c9c9c;
   overflow: auto;
@@ -253,6 +283,11 @@ export default {
   margin: 50px auto 0;
 }
 .app-container {
+  min-height: calc(100vh - 84px);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #9c9c9c;
   padding: 0;
 }
 .head-com {
@@ -271,6 +306,7 @@ export default {
 }
 .imgBlock{
   position: relative;
+  margin: 150px 0 0 100px;
 }
 .middle-zl{
   position: absolute;
@@ -285,6 +321,97 @@ export default {
   right: 0px;
   z-index: 2;
   top: 40px;
-
 }
+.left-content{
+    width: 180px;
+    padding: 0 10px;
+    background: #304156;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+    line-height: 30px;
+    position: absolute;
+    z-index: 5;
+    top: 80px;
+    left: -80px;
+}
+.left-content-zl{
+    top: -120px;
+    left: 85px;
+    max-height: 180px;
+    overflow: auto;
+}
+.right-zl{
+  position: absolute;
+  bottom: -94px;
+  right: 20px;
+  z-index: 5;
+}
+.gyticon1{
+    position: absolute;
+    z-index: 9;
+    width: 50px;
+    left: 146px;
+    top: 149px;
+}
+.gyticon2{
+    position: absolute;
+    z-index: 9;
+    width: 14px;
+    left: 142px;
+    top: 109px;
+}
+.gyticon3{
+    position: absolute;
+    z-index: 9;
+    width: 25px;
+    left: 117px;
+    top: 127px;
+}
+.jiantou{
+  width: 6px;
+  height: 22px;
+  background: #555;
+  position: absolute;
+  z-index: 99;
+  top: 73px;
+  right: 7px;
+}
+.jiantou::after{
+    content: '';
+    border-width: 8px 8px 8px 8px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+    position: absolute;
+    bottom: -16px;
+    left: -5px;
+}
+.jiantou2{
+  width: 6px;
+  height: 22px;
+  background: #555;
+  position: absolute;
+  z-index: 99;
+  top: 170px;
+  right: 7px;
+  opacity: 0;
+}
+.jiantou2::after{
+    content: '';
+    border-width: 8px 8px 8px 8px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+    position: absolute;
+    bottom: -16px;
+    left: -5px;
+}
+.greenSvg{
+  font-size: 20px;
+  color: #68ff68;
+}
+.redSvg{
+  font-size: 20px;
+  color: #ff3c3c;
+}
+
 </style>

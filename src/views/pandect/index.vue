@@ -298,7 +298,9 @@ export default {
         })
         addPolygonbox() // 添加行政区
 
-        var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) })
+        var infoWindow = new AMap.InfoWindow({
+          offset: new AMap.Pixel(0, -30)
+        })
 
         for (var j = 0; j < this.markList.length; j++) {
           var marker = new AMap.Marker({

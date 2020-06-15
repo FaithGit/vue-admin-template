@@ -52,7 +52,13 @@
       </el-table-column>
       <el-table-column label="时间" align="center" width="154px">
         <template slot-scope="scope">
-          {{ scope.row.data_time }}
+          <div v-if="scope.row.data_time">
+            <svg-icon icon-class="anpei" />
+            {{ scope.row.data_time }}
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="水喷淋" align="center">
@@ -194,6 +200,7 @@ export default {
       const typeIndex = [0] // 保存id,地区需要合并的值
       const nameIndex = [0] // 保存类型需要合并的值
       let a // id,地区需要合并的行是所有类型的长度
+      // console.log(this.tableData)
       this.tableData.forEach((v, index) => {
         if (v.groups && v.groups.length) {
           a = 0
@@ -239,12 +246,12 @@ export default {
         }
       })
 
-      console.log(nameIndex)
+      // console.log(nameIndex)
       // [0, 5, 4]
       // 看一下打印出来的规律,除去第一项,5是第一次需要合并的行
       // 第二次合并又是从第五行开始合并4行
 
-      console.log(typeIndex)
+      // console.log(typeIndex)
       // [0, 2, 3, 2, 2]
       // 类型的数据存储规律也是一样,第一次合并2行
       // 第二次从2行开始,合并3行,以此类推

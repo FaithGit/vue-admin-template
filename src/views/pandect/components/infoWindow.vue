@@ -15,6 +15,11 @@
     </div>
     <div>
       <el-table border :data="tableData" :span-method="arraySpanMethod">
+        <el-table-column label="企业" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.comName }}
+          </template>
+        </el-table-column>
         <el-table-column label="组号" align="center">
           <template slot-scope="scope">
             {{ scope.row.groupName }}
@@ -47,7 +52,13 @@
         </el-table-column>
         <el-table-column label="时间" align="center" width="154px">
           <template slot-scope="scope">
-            {{ scope.row.data_time }}
+            <div v-if="scope.row.data_time">
+              <svg-icon icon-class="anpei" />
+              {{ scope.row.data_time }}
+            </div>
+            <div v-else>
+              /
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="水喷淋" align="center">
