@@ -41,8 +41,8 @@
                   <div>设备状态：
                     <svg-icon icon-class="swtich" :class="{greenSvg:_item.switch_data!=0,redSvg:_item.switch_data==0}" />
                   </div>
-                  <div>生产温度(℃)：{{ _item.pro_tem }}</div>
-                  <div>功率：{{ _item.active_power }}</div>
+                  <div v-if="_item.switch_data!=0">生产温度：{{ _item.pro_tem }} ℃</div>
+                  <div v-if="_item.switch_data!=0">功率：{{ _item.active_power }} kw</div>
                 </div>
               </div>
 
@@ -65,6 +65,17 @@
 
                 <div class="left-content left-content-zl">
                   <div>监测仪：{{ item.zlData[0].device_name }}</div>
+                  <div v-if="item.zlData[0].active_power!=null">功率：{{ item.zlData[0].active_power }} kw</div>
+                  <div v-if="item.zlData[0].ph_value!=null">ph值：{{ item.zlData[0].ph_value }}</div>
+                  <div v-if="item.zlData[0].purifier_load!=null">净化器负荷：{{ item.zlData[0].purifier_load }} Hz</div>
+                  <div v-if="item.zlData[0].purifier_current!=null">净化器电流：{{ item.zlData[0].purifier_current }} A</div>
+                  <div v-if="item.zlData[0].fans_load!=null">风机负荷：{{ item.zlData[0].fans_load }} Hz</div>
+                  <div v-if="item.zlData[0].fans_current!=null">风机电流：{{ item.zlData[0].fans_current }} A</div>
+                  <div v-if="item.zlData[0].water_spray!=null">水喷淋开关：
+                    <svg-icon icon-class="water_switch" :class="[item.zlData[0].water_spray!==true?'redSvg':'greenSvg']" />
+                  </div>
+                  <div v-if="item.zlData[0].emission_tem_out!=null">排放口温度：{{ item.zlData[0].emission_tem_out }} ℃</div>
+                  <div v-if="item.zlData[0].emission_tem_in!=null">净化温度：{{ item.zlData[0].emission_tem_in }} ℃</div>
                 </div>
               </div>
             </div>
@@ -82,64 +93,15 @@ import { findData, findDataGyt } from '@/api/table'
 import { getToken } from '@/utils/auth'
 
 export default {
+  name: 'Craft',
   data() {
     return {
       comList: [],
       com: '',
-      tableDataStyle: [false, false],
-      tableDataCss: [true, false],
+      tableDataStyle: [],
+      tableDataCss: [],
       tableData: [
         {
-          'dataTime': '2020-06-15 10:45:00',
-          'groups': [
-            {
-              'groupName': '1#线',
-              'groupId': '0edb2d3d-7a41-4970-9664-d0a8128b096b',
-              'scData': [
-                {
-                  'switch_data': 1,
-                  'pro_tem': 0.00,
-                  'device_name': '压延机1#',
-                  'active_power': 0.00
-                },
-                {
-                  'switch_data': 0,
-                  'pro_tem': 0.00,
-                  'device_name': '压延机2#',
-                  'active_power': 0.00
-                }
-
-              ],
-              'groupNo': 1,
-              'zlData': [
-                {
-                  'device_name': '治理设施1#',
-                  'active_power': 0.00
-                }
-              ]
-            },
-            {
-              'groupName': '3#线',
-              'groupId': '4503093d-4e41-420e-b932-96b2e9ac4c93',
-              'scData': [
-                {
-                  'switch_data': 0,
-                  'pro_tem': 0.00,
-                  'device_name': '压延机3#',
-                  'active_power': 0.00
-                }
-              ],
-              'groupNo': 3,
-              'zlData': [
-                {
-                  'device_name': '治理设施3#',
-                  'active_power': 0.00
-                }
-              ]
-            }
-          ],
-          'comId': '714bcde8-a7b4-11ea-a177-b8599f0536c0',
-          'comName': '浙江罗诗妮新材料有限公司'
         }
       ]
     }
@@ -176,10 +138,23 @@ export default {
         console.log(res)
         this.tableData = res.retData
         const _arr = []
+        const _arr2 = []
         for (var i = 0; i < this.tableData[0].groups.length; i++) {
           _arr[i] = false
+          _arr2[i] = false
         }
         this.tableDataStyle = _arr
+        this.tableDataCss = _arr2
+
+        for (var j = 0; j < this.tableData[0].groups.length; j++) {
+          for (var z = 0; z < this.tableData[0].groups[j].scData.length; z++) {
+            if (this.tableData[0].groups[j].scData[z].switch_data === 1) {
+              this.tableDataCss[j] = true
+            }
+          }
+        }
+
+        console.log(this.tableDataCss)
       })
     },
     big(index) {
@@ -336,6 +311,7 @@ to {
     left: -80px;
 }
 .left-content-zl{
+   width: 200px;
     top: -120px;
     left: 85px;
     max-height: 180px;
