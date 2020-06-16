@@ -37,17 +37,6 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '/pandect',
-    name: 'Pandect',
-    component: () => import('@/views/pandect/index'),
-    meta: { title: '总览一张图', icon: 'pandect' }
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
-  },
-  {
     path: '/redirect', // 跳转页
     component: Layout,
     hidden: true,
@@ -61,176 +50,15 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/table/index'
-    // children: [{
-    //   path: 'dashboard',
-    //   name: 'Dashboard',
-    //   component: () => import('@/views/dashboard/index'),
-    //   meta: { title: '总控制台', icon: 'dashboard' }
-    // }]
-  },
+    redirect: '/dashboard',
+    children: [{
+      path: 'dashboard',
+      name: 'Dashboard',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '控制台', icon: 'dashboard' }
+    }]
+  }
 
-  {
-    path: '/table',
-    // hidden: true,
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '数据列表', icon: 'table' }
-      }
-    ]
-  },
-  {
-    path: '/form',
-    // hidden: true,
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: '工况表格', icon: 'form' }
-      }
-    ]
-  },
-  {
-    path: '/history',
-    // hidden: true,
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'History',
-        component: () => import('@/views/history/index'),
-        meta: { title: '历史数据', icon: 'history' }
-      }
-    ]
-  },
-  {
-    path: '/lineList',
-    // hidden: true,
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'LineList',
-        component: () => import('@/views/lineList/index'),
-        meta: { title: '生产线管理', icon: 'line' }
-      }
-    ]
-  },
-  {
-    path: '/company',
-    // hidden: true,
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Company',
-        component: () => import('@/views/company/index'),
-        meta: { title: '企业管理', icon: 'company' }
-      }
-    ]
-  },
-  {
-    path: '/craft',
-    component: Layout,
-    // hidden: true,
-    children: [
-      {
-        path: 'index',
-        name: 'Craft',
-        component: () => import('@/views/craft/index'),
-        meta: { title: '工艺图', icon: 'craft' }
-      }
-    ]
-  },
-  // {
-  //   path: '/map',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Map',
-  //       component: () => import('@/views/map/index'),
-  //       meta: { title: 'map', icon: 'form' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/nested',
-  //   component: Layout,
-  //   redirect: '/nested/menu1',
-  //   name: 'Nested',
-  //   meta: {
-  //     title: 'Nested',
-  //     icon: 'nested'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
-  //       name: 'Menu1',
-  //       meta: { title: 'Menu1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           component: () => import('@/views/nested/menu1/menu1-1'),
-  //           name: 'Menu1-1',
-  //           meta: { title: 'Menu1-1' }
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           component: () => import('@/views/nested/menu1/menu1-2'),
-  //           name: 'Menu1-2',
-  //           meta: { title: 'Menu1-2' },
-  //           children: [
-  //             {
-  //               path: 'menu1-2-1',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-  //               name: 'Menu1-2-1',
-  //               meta: { title: 'Menu1-2-1' }
-  //             },
-  //             {
-  //               path: 'menu1-2-2',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-  //               name: 'Menu1-2-2',
-  //               meta: { title: 'Menu1-2-2' }
-  //             }
-  //           ]
-  //         },
-  //         {
-  //           path: 'menu1-3',
-  //           component: () => import('@/views/nested/menu1/menu1-3'),
-  //           name: 'Menu1-3',
-  //           meta: { title: 'Menu1-3' }
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'menu2',
-  //       component: () => import('@/views/nested/menu2/index'),
-  //       meta: { title: 'menu2' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-  //       meta: { title: 'External Link', icon: 'link' }
-  //     }
-  //   ]
-  // },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
@@ -246,5 +74,111 @@ export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }
+export const asyncRoutes = [
+  // {
+  //   path: '/Attention',
+  //   component: Layout,
+  //   meta: { title: '粉丝', roles: ['user', 'admin'], icon: 'userAttention' },
+  //   children: [
+  //     {
+  //       path: 'UserLowFans',
+  //       name: 'UserLowFans',
+  //       component: () => import('@/views/userLowFans/index'),
+  //       meta: { title: '刷量粉', roles: ['user', 'admin'] }
+  //     },
+  //     {
+  //       path: 'UserOrdinaryFans',
+  //       name: 'UserOrdinaryFans',
+  //       component: () => import('@/views/userOrdinaryFans/index'),
+  //       meta: { title: '初级粉', roles: ['user', 'admin'] }
+  //     }
+  //   ]
+  // },
+  {
+    path: '/pandect',
+    name: 'Pandect',
+    component: () => import('@/views/pandect/index'),
+    meta: { title: '总览一张图', icon: 'pandect', roles: ['kf', 'gly', 'hbj'] }
+  },
+  {
+    path: '/table',
+    // hidden: true,
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: '数据列表', icon: 'table', roles: ['kf', 'gly', 'yw', 'qy'] }
+      }
+    ]
+  },
+  {
+    path: '/form',
+    // hidden: true,
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Form',
+        component: () => import('@/views/form/index'),
+        meta: { title: '工况表格', icon: 'form', roles: ['kf', 'gly', 'az'] }
+      }
+    ]
+  },
+  {
+    path: '/company',
+    // hidden: true,
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Company',
+        component: () => import('@/views/company/index'),
+        meta: { title: '企业管理', icon: 'company', roles: ['kf', 'gly'] }
+      }
+    ]
+  },
+  {
+    path: '/lineList',
+    // hidden: true,
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'LineList',
+        component: () => import('@/views/lineList/index'),
+        meta: { title: '生产线管理', icon: 'line', roles: ['kf', 'gly'] }
+      }
+    ]
+  },
+  {
+    path: '/history',
+    // hidden: true,
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'History',
+        component: () => import('@/views/history/index'),
+        meta: { title: '历史数据', icon: 'history', roles: ['kf', 'gly', 'yw', 'sjfx', 'qy'] }
+      }
+    ]
+  },
+  {
+    path: '/craft',
+    component: Layout,
+    // hidden: true,
+    children: [
+      {
+        path: 'index',
+        name: 'Craft',
+        component: () => import('@/views/craft/index'),
+        meta: { title: '工艺图', icon: 'craft', roles: ['kf', 'gly'] }
+      }
+    ]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
 
 export default router
