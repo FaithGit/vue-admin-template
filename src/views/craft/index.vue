@@ -113,6 +113,7 @@ export default {
     findData() {
       this.loadable = true
       findData({
+        token: getToken(),
         comName: '',
         pageIndex: 1,
         pageSize: 9999

@@ -208,6 +208,7 @@
 <script>
 import { findData, selectByComId, findDataHistory } from '@/api/table'
 import { getToken } from '@/utils/auth'
+import { DateHandle } from '@/utils/validate'
 
 export default {
   name: 'History',
@@ -294,6 +295,7 @@ export default {
     },
     findData() {
       findData({
+        token: getToken(),
         comName: '',
         pageIndex: 1,
         pageSize: 100
@@ -334,8 +336,8 @@ export default {
       console.log(this.deviceStyles)
       this.pageIndex = 1
       this.deviceValue = this.device.value
-      this.startTime = this.time[0]
-      this.endTime = this.time[1]
+      this.startTime = DateHandle(this.time[0])
+      this.endTime = DateHandle(this.time[1])
       this.findDataHistory()
     },
     searchClickReset() {
@@ -375,8 +377,8 @@ export default {
         'pageIndex': this.pageIndex || pageIndex,
         'pageSize': this.pageSize || pageSize,
         'deviceId': this.deviceValue,
-        'startTime': this.startTime,
-        'endTime': this.endTime,
+        'startTime': DateHandle(this.startTime),
+        'endTime': DateHandle(this.endTime),
         'deviceStyle': this.deviceStyles
       }).then(res => {
         console.log(res)
@@ -394,6 +396,7 @@ export default {
     init() {
       if (this.$route.params.comId && this.$route.params.device_id && this.$route.params.device_name && this.$route.params.style) {
         findData({
+          'token': getToken(),
           comName: '',
           pageIndex: 1,
           pageSize: 100
@@ -435,6 +438,7 @@ export default {
         })
       } else {
         findData({
+          'token': getToken(),
           comName: '',
           pageIndex: 1,
           pageSize: 100

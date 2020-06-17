@@ -20,34 +20,55 @@
       </el-table-column>
       <el-table-column label="组号" align="center">
         <template slot-scope="scope">
-          {{ scope.row.groupName }}
+          <div v-if="scope.row.groupName">
+            {{ scope.row.groupName }}
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
 
       <el-table-column label="生产设备开关" align="center">
         <template slot-scope="scope">
-          <span v-for="sc in scope.row.scData " :key="sc.id">
-            <el-popover
-              placement="top-start"
-              :title="sc.device_name"
-              width="200"
-              trigger="hover"
-              :content="'生产设备开关:'+(sc.switch_data ==true?'开':'关')"
-            >
-              <svg-icon slot="reference" icon-class="create" :class="[sc.device_name==true?'redSvgCreate':'greenSvgCreate']" style="margin:0 5px" class="hoverHref" @click="gotoHistory(sc,scope.row,1)" />
-            </el-popover>
+          <div v-if="scope.row.scData">
+            <span v-for="sc in scope.row.scData " :key="sc.id">
+              <el-popover
+                placement="top-start"
+                :title="sc.device_name"
+                width="200"
+                trigger="hover"
+                :content="'生产设备开关:'+(sc.switch_data ==true?'开':'关')"
+              >
+                <svg-icon slot="reference" icon-class="create" :class="[sc.device_name==true?'redSvgCreate':'greenSvgCreate']" style="margin:0 5px" class="hoverHref" @click="gotoHistory(sc,scope.row,1)" />
+              </el-popover>
 
-          </span>
+            </span>
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="治理设施名称" align="center">
         <template slot-scope="scope">
-          <span class="gotoZL" @click="gotoHistoryZL(scope.row,2)">  {{ scope.row.device_name }}</span>
+          <div v-if="scope.row.device_name">
+            <span class="gotoZL" @click="gotoHistoryZL(scope.row,2)">  {{ scope.row.device_name }}</span>
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="工艺名称" align="center">
         <template slot-scope="scope">
-          {{ scope.row.PROCESS }}
+
+          <div v-if="scope.row.PROCESS">
+            {{ scope.row.PROCESS }}
+          </div>
+          <div v-else>
+            /
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="时间" align="center" width="154px">
@@ -126,6 +147,17 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column label="功率" align="center">
+        <template slot-scope="scope">
+          <div v-if="scope.row.active_power">
+            <svg-icon icon-class="powerss" />
+            {{ scope.row.active_power }}
+          </div>
+          <div v-else>
+            /
+          </div>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       :current-page="pageIndex"
@@ -142,6 +174,7 @@
 
 <script>
 import { findData } from '@/api/table'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Table',
@@ -237,12 +270,22 @@ export default {
                   purifier_load: ss.purifier_load,
                   fans_current: ss.fans_current,
                   water_spray: ss.water_spray,
+                  active_power: ss.active_power,
                   scData: subV.scData,
                   PROCESS: ss.PROCESS
                 })
               })
             }
           })
+        } else {
+          getDate.push({ // 这里是表格得展示数据
+            comName: v.comName,
+            comShortName: v.comShortName,
+            id: v.id
+          })
+          var x = 1
+          nameIndex.push(x)
+          typeIndex.push(x)
         }
       })
 
@@ -273,6 +316,8 @@ export default {
         }
       })
       this.tableData = getDate
+      console.log(nameIndex)
+      console.log(typeIndex)
       console.log(getDate)
     },
     handleSizeChange(val) {
@@ -286,6 +331,7 @@ export default {
     findData(seach1, pageIndex, pageSize) {
       this.loadable = true
       findData({
+        token: getToken(),
         comName: seach1 || this.search,
         pageIndex: pageIndex || this.pageIndex,
         pageSize: pageSize || this.pageSize

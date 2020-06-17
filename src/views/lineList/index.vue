@@ -121,6 +121,7 @@
 </template>
 <script>
 import { findData, selectAllGroups, addGroup, deleteGroup, updateGroup } from '@/api/table'
+import { getToken } from '@/utils/auth'
 export default {
   name: 'LineList',
   data() {
@@ -206,6 +207,7 @@ export default {
     },
     findData() {
       findData({
+        token: getToken(),
         comName: '',
         pageIndex: 1,
         pageSize: 100

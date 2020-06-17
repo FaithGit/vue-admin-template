@@ -228,6 +228,7 @@
 </template>
 <script>
 import { findData, selectAllCom, addCom, deleteCom, updateCom, deleteSmsPerson } from '@/api/table'
+import { getToken } from '@/utils/auth'
 import hyType from '@/utils/type.json'
 import ElSelectTree from 'el-select-tree'
 export default {
@@ -386,6 +387,7 @@ export default {
     },
     findData() {
       findData({
+        token: getToken(),
         comName: '',
         pageIndex: 1,
         pageSize: 100

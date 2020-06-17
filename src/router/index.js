@@ -74,26 +74,15 @@ export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }
+// @gly :管理员
+// @kf :开发人员
+// @yw :运维人员
+// @sjfx :数据分析
+// @az :安装人员
+// @hbj :环保局
+// @qy :企业
+
 export const asyncRoutes = [
-  // {
-  //   path: '/Attention',
-  //   component: Layout,
-  //   meta: { title: '粉丝', roles: ['user', 'admin'], icon: 'userAttention' },
-  //   children: [
-  //     {
-  //       path: 'UserLowFans',
-  //       name: 'UserLowFans',
-  //       component: () => import('@/views/userLowFans/index'),
-  //       meta: { title: '刷量粉', roles: ['user', 'admin'] }
-  //     },
-  //     {
-  //       path: 'UserOrdinaryFans',
-  //       name: 'UserOrdinaryFans',
-  //       component: () => import('@/views/userOrdinaryFans/index'),
-  //       meta: { title: '初级粉', roles: ['user', 'admin'] }
-  //     }
-  //   ]
-  // },
   {
     path: '/pandect',
     name: 'Pandect',
@@ -101,83 +90,64 @@ export const asyncRoutes = [
     meta: { title: '总览一张图', icon: 'pandect', roles: ['kf', 'gly', 'hbj'] }
   },
   {
-    path: '/table',
-    // hidden: true,
+    path: '/system',
     component: Layout,
+    meta: { title: '系统管理', roles: ['kf', 'gly', 'az'], icon: 'system' },
     children: [
       {
-        path: 'index',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '数据列表', icon: 'table', roles: ['kf', 'gly', 'yw', 'qy'] }
-      }
-    ]
-  },
-  {
-    path: '/form',
-    // hidden: true,
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: '工况表格', icon: 'form', roles: ['kf', 'gly', 'az'] }
-      }
-    ]
-  },
-  {
-    path: '/company',
-    // hidden: true,
-    component: Layout,
-    children: [
-      {
-        path: 'index',
+        path: 'company',
         name: 'Company',
         component: () => import('@/views/company/index'),
         meta: { title: '企业管理', icon: 'company', roles: ['kf', 'gly'] }
-      }
-    ]
-  },
-  {
-    path: '/lineList',
-    // hidden: true,
-    component: Layout,
-    children: [
+      },
       {
-        path: 'index',
+        path: 'lineList',
         name: 'LineList',
         component: () => import('@/views/lineList/index'),
         meta: { title: '生产线管理', icon: 'line', roles: ['kf', 'gly'] }
+      },
+      {
+        path: 'form',
+        name: 'Form',
+        component: () => import('@/views/form/index'),
+        meta: { title: '配置表管理', icon: 'form', roles: ['kf', 'gly', 'az'] }
       }
     ]
   },
   {
-    path: '/history',
-    // hidden: true,
+    path: '/realTime',
     component: Layout,
+    meta: { title: '实时监控', roles: ['kf', 'gly', 'yw', 'qy'], icon: 'realTime' },
     children: [
       {
-        path: 'index',
+        path: 'table',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: '实时数据', icon: 'table', roles: ['kf', 'gly', 'yw', 'qy'] }
+      },
+      {
+        path: 'craft',
+        name: 'Craft',
+        component: () => import('@/views/craft/index'),
+        meta: { title: '工艺图', icon: 'craft', roles: ['kf', 'gly', 'qy'] }
+      }
+
+    ]
+  },
+  {
+    path: '/data',
+    component: Layout,
+    meta: { title: '数据查询', roles: ['kf', 'gly', 'yw', 'qy', 'sjfx'], icon: 'seacher' },
+    children: [
+      {
+        path: 'history',
         name: 'History',
         component: () => import('@/views/history/index'),
         meta: { title: '历史数据', icon: 'history', roles: ['kf', 'gly', 'yw', 'sjfx', 'qy'] }
       }
     ]
   },
-  {
-    path: '/craft',
-    component: Layout,
-    // hidden: true,
-    children: [
-      {
-        path: 'index',
-        name: 'Craft',
-        component: () => import('@/views/craft/index'),
-        meta: { title: '工艺图', icon: 'craft', roles: ['kf', 'gly'] }
-      }
-    ]
-  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]
 

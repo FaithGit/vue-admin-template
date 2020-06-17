@@ -7,10 +7,11 @@ export function getList(params) {
     params
   })
 }
-export function findAllCom() { // 公司列表
+export function findAllCom(data) { // 公司列表
   return request({
     url: 'http://47.96.147.99:8081/hbjk/findAllCom',
-    method: 'POST'
+    method: 'POST',
+    data
   })
 }
 export function findAllCode() { // 监测因子

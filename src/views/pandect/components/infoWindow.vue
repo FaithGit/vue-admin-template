@@ -126,6 +126,17 @@
             </div>
           </template>
         </el-table-column>
+        <el-table-column label="功率" align="center">
+          <template slot-scope="scope">
+            <div v-if="scope.row.active_power">
+              <svg-icon icon-class="powerss" />
+              {{ scope.row.active_power }}
+            </div>
+            <div v-else>
+              /
+            </div>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -200,6 +211,7 @@ export default {
                   purifier_load: ss.purifier_load,
                   fans_current: ss.fans_current,
                   water_spray: ss.water_spray,
+                  active_power: ss.active_power,
                   scData: subV.scData,
                   PROCESS: ss.PROCESS
                 })

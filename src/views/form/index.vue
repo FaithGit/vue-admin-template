@@ -934,6 +934,7 @@
 
 <script>
 import { findAllCom, findAllCode, testJson } from '@/api/table'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Form',
@@ -1062,7 +1063,9 @@ export default {
     }
   },
   mounted() {
-    findAllCom({}).then(res => {
+    findAllCom({
+      token: getToken()
+    }).then(res => {
       this.com_list = res.retData
     }).catch(res => {
 
