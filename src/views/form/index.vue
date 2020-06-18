@@ -10,7 +10,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="企业名称" prop="comId">
-            <el-select v-model="form.comId" placeholder="请选择企业名称" style="width:100%">
+            <el-select v-model="form.comId" placeholder="请选择企业名称" style="width:100%" @change="changeLine">
               <el-option v-for="com in com_list" :key="com.id" :label="com.com_name" :value="com.id" />
             </el-select>
           </el-form-item>
@@ -30,7 +30,7 @@
           >
             <el-col v-for="(item,index) in form.sysDevices" :key="'sysDevices'+index" :span="24" class="animate__animated ">
               <el-col :span="1" class="xuhao" style="  border-left: 4px solid #ff8800;">{{ index +1 }}</el-col>
-              <el-col :span="12">
+              <el-col :span="5">
                 <el-form-item
                   :key="'deviceName'+index"
                   label-width="80px"
@@ -59,7 +59,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="5">
+              <el-col :span="4">
                 <el-form-item
                   :key="'deviceStyle'+index"
                   label="设备类别"
@@ -71,9 +71,59 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              <el-col :span="4">
+                <el-form-item
+                  :key="'deviceProcess'+index"
+                  label-width="80px"
+                  label="工艺类型"
+                  :prop="`sysDevices[${index}].deviceProcess`"
+                  :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
+                >
+                  <el-select v-if="item.deviceStyle == 1" v-model="item.deviceProcess" clearable placeholder="请选择对应生产工艺">
+                    <el-option
+                      v-for="(gy,gyIndex) in createList"
+                      :key="'gy'+gyIndex"
+                      :label="gy.label"
+                      :value="gy.value"
+                    />
+                  </el-select>
+                  <el-select v-else-if="item.deviceStyle == 2" v-model="item.deviceProcess" clearable placeholder="请选择对应治理工艺">
+                    <el-option
+                      v-for="(zl,zlIndex) in zlList"
+                      :key="'zl'+zlIndex"
+                      :label="zl.label"
+                      :value="zl.value"
+                    />
+                  </el-select>
+                  <el-select v-else v-model="item.deviceProcess" clearable placeholder="请选择设备类别" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item
+                  :key="'deviceProcess'+index"
+                  label-width="80px"
+                  label="生产线"
+                  :prop="`sysDevices[${index}].deviceProcess`"
+                  :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
+                >
+                  <el-select v-model="item.deviceProcess" clearable placeholder="请选择生产线">
+                    <el-option
+                      v-for="(line,lineIndex) in createLine"
+                      :key="'line'+lineIndex"
+                      :label="line.group_name"
+                      :value="line.group_id"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
               <el-col :span="1" class="xuhao">
                 <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
               </el-col>
+              <!-- <el-col :span="1" class="xuhao">
+                <el-button type="success" circle @click="DelDeviceList(index)">
+                  <svg-icon icon-class="save" />
+                </el-button>
+              </el-col> -->
             </el-col>
           </transition-group>
           <div style="text-align:center;margin-bottom:20px">
@@ -846,7 +896,7 @@
                       :prop="`sysConditions[${workindex}].afAcquisitionRangeMin`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afAcquisitionRangeMin" />
+                      <el-input-number v-model.number="work.afAcquisitionRangeMin" controls-position="right" style="width:100%" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -857,7 +907,7 @@
                       :prop="`sysConditions[${workindex}].afAcquisitionRangeMax`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afAcquisitionRangeMax" />
+                      <el-input-number v-model.number="work.afAcquisitionRangeMax" controls-position="right" style="width:100%" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -868,7 +918,7 @@
                       :prop="`sysConditions[${workindex}].afRealRangeMin`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afRealRangeMin" />
+                      <el-input-number v-model.number="work.afRealRangeMin" controls-position="right" style="width:100%" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -879,7 +929,7 @@
                       :prop="`sysConditions[${workindex}].afRealRangeMax`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afRealRangeMax" />
+                      <el-input-number v-model.number="work.afRealRangeMax" controls-position="right" style="width:100%" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -890,7 +940,7 @@
                       :prop="`sysConditions[${workindex}].afCriticalValue`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afCriticalValue" />
+                      <el-input-number v-model.number="work.afCriticalValue" controls-position="right" style="width:100%" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -901,7 +951,7 @@
                       :prop="`sysConditions[${workindex}].afLoadCoefficient`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afLoadCoefficient" />
+                      <el-input-number v-model.number="work.afLoadCoefficient" controls-position="right" style="width:100%" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -912,7 +962,7 @@
                       :prop="`sysConditions[${workindex}].afAir`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afAir" />
+                      <el-input-number v-model.number="work.afAir" controls-position="right" style="width:100%" />
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -933,7 +983,7 @@
 </template>
 
 <script>
-import { findAllCom, findAllCode, testJson } from '@/api/table'
+import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups } from '@/api/table'
 import { getToken } from '@/utils/auth'
 
 export default {
@@ -1059,7 +1109,10 @@ export default {
           label: '治理'
         }
       ],
-      com_list: []
+      com_list: [],
+      createList: [], // 生产工艺类型
+      zlList: [], // 治理工艺类型
+      createLine: [] // 生产线
     }
   },
   mounted() {
@@ -1074,13 +1127,19 @@ export default {
       this.hb_code_list = res.retData
     }).catch(res => {
     })
+    findProncess({ deviceStyle: 1 }).then(res => {
+      this.createList = res.retData
+    })
+    findProncess({ deviceStyle: 2 }).then(res => {
+      this.zlList = res.retData
+    })
   },
   methods: {
     onSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
           // alert('submit!')
-          testJson(this.form).then(res => {
+          addBoard(this.form).then(res => {
             this.$notify({
               title: '成功',
               message: res.retMsg,
@@ -1106,7 +1165,7 @@ export default {
       this.form = {
         mn: '',
         comId: '',
-        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '' }],
+        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '' }],
         sysConditions: [
           {
             modelNum: '',
@@ -1173,7 +1232,8 @@ export default {
         deviceName: '',
         modelNum: '',
         deviceStyle: '',
-        listDisabled: ''
+        listDisabled: '',
+        deviceProcess: ''
       }
       this.form.sysDevices.push(_obj)
     },
@@ -1268,8 +1328,18 @@ export default {
           this.form.sysDevices[temp].listDisabled = 1
         }
       }
+    },
+    changeLine(val) {
+      console.log(val)
+      selectAllGroups({
+        'comId': val,
+        'pageIndex': 1,
+        'pageSize': 999
+      }).then(res => {
+        console.log(res)
+        this.createLine = res.retData.data
+      })
     }
-
   }
 }
 </script>

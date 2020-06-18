@@ -20,9 +20,9 @@ export function findAllCode() { // 监测因子
     method: 'POST'
   })
 }
-export function testJson(data) { // 测试工况表格提交
+export function addBoard(data) { // 测试工况表格提交
   return request({
-    url: 'http://47.96.147.99:8081/hbjk/testJson',
+    url: 'http://47.96.147.99:8081/hbjk/addBoard',
     method: 'POST',
     data
   })
@@ -149,6 +149,20 @@ export function findSysBus(data) { // 行业列表
 export function findDataGyt(data) { // 查询工艺图接口
   return request({
     url: 'http://47.96.147.99:8081/hbjk/findDataGyt',
+    method: 'POST',
+    data
+  })
+}
+export function findProncess(data) { // 查询设备工艺类型接口
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findProncess',
+    method: 'POST',
+    data
+  })
+}
+export function findBoards(data) { // 查询所有板子配置表
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findBoards',
     method: 'POST',
     data
   })
