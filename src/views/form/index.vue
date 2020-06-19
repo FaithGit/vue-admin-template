@@ -5,7 +5,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="mn号" prop="mn" label-width="60px">
-            <el-input v-model="form.mn" placeholder="17位数字不能为空" />
+            <el-input v-model="form.mn" placeholder="20位数字不能为空" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -100,13 +100,13 @@
               </el-col>
               <el-col :span="4">
                 <el-form-item
-                  :key="'deviceProcess'+index"
+                  :key="'groupId'+index"
                   label-width="80px"
                   label="生产线"
-                  :prop="`sysDevices[${index}].deviceProcess`"
+                  :prop="`sysDevices[${index}].groupId`"
                   :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
                 >
-                  <el-select v-model="item.deviceProcess" clearable placeholder="请选择生产线">
+                  <el-select v-model="item.groupId" clearable placeholder="请选择生产线">
                     <el-option
                       v-for="(line,lineIndex) in createLine"
                       :key="'line'+lineIndex"
@@ -620,7 +620,7 @@
                       :prop="`sysConditions[${workindex}].atAcquisitionRangeMin`"
                       :rules="work.atStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.atAcquisitionRangeMin" />
+                      <el-input-number v-model.number="work.atAcquisitionRangeMin" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -631,7 +631,7 @@
                       :prop="`sysConditions[${workindex}].atAcquisitionRangeMax`"
                       :rules="work.atStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.atAcquisitionRangeMax" />
+                      <el-input-number v-model.number="work.atAcquisitionRangeMax" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -642,7 +642,7 @@
                       :prop="`sysConditions[${workindex}].atRealRangeMin`"
                       :rules="work.atStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.atRealRangeMin" />
+                      <el-input-number v-model.number="work.atRealRangeMin" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -653,7 +653,7 @@
                       :prop="`sysConditions[${workindex}].atRealRangeMax`"
                       :rules="work.atStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.atRealRangeMax" />
+                      <el-input-number v-model.number="work.atRealRangeMax" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -664,7 +664,7 @@
                       :prop="`sysConditions[${workindex}].atCriticalValue`"
                       :rules="work.atStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.atCriticalValue" />
+                      <el-input-number v-model.number="work.atCriticalValue" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -675,7 +675,7 @@
                       :prop="`sysConditions[${workindex}].atLoadCoefficient`"
                       :rules="work.atStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.atLoadCoefficient" />
+                      <el-input-number v-model.number="work.atLoadCoefficient" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -686,7 +686,7 @@
                       :prop="`sysConditions[${workindex}].atAir`"
                       :rules="work.atStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.atAir" />
+                      <el-input-number v-model.number="work.atAir" controls-position="right" />
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -758,7 +758,7 @@
                       :prop="`sysConditions[${workindex}].awAcquisitionRangeMin`"
                       :rules="work.awStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.awAcquisitionRangeMin" />
+                      <el-input-number v-model.number="work.awAcquisitionRangeMin" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -769,7 +769,7 @@
                       :prop="`sysConditions[${workindex}].awAcquisitionRangeMax`"
                       :rules="work.awStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.awAcquisitionRangeMax" />
+                      <el-input-number v-model.number="work.awAcquisitionRangeMax" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -780,7 +780,7 @@
                       :prop="`sysConditions[${workindex}].awRealRangeMin`"
                       :rules="work.awStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.awRealRangeMin" />
+                      <el-input-number v-model.number="work.awRealRangeMin" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -791,7 +791,7 @@
                       :prop="`sysConditions[${workindex}].awRealRangeMax`"
                       :rules="work.awStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.awRealRangeMax" />
+                      <el-input-number v-model.number="work.awRealRangeMax" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -802,7 +802,7 @@
                       :prop="`sysConditions[${workindex}].awCriticalValue`"
                       :rules="work.awStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.awCriticalValue" />
+                      <el-input-number v-model.number="work.awCriticalValue" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -813,7 +813,7 @@
                       :prop="`sysConditions[${workindex}].awLoadCoefficient`"
                       :rules="work.awStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.awLoadCoefficient" />
+                      <el-input-number v-model.number="work.awLoadCoefficient" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -824,7 +824,7 @@
                       :prop="`sysConditions[${workindex}].awAir`"
                       :rules="work.awStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.awAir" />
+                      <el-input-number v-model.number="work.awAir" controls-position="right" />
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -896,7 +896,7 @@
                       :prop="`sysConditions[${workindex}].afAcquisitionRangeMin`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afAcquisitionRangeMin" controls-position="right" style="width:100%" />
+                      <el-input-number v-model.number="work.afAcquisitionRangeMin" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -907,7 +907,7 @@
                       :prop="`sysConditions[${workindex}].afAcquisitionRangeMax`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afAcquisitionRangeMax" controls-position="right" style="width:100%" />
+                      <el-input-number v-model.number="work.afAcquisitionRangeMax" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -918,7 +918,7 @@
                       :prop="`sysConditions[${workindex}].afRealRangeMin`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afRealRangeMin" controls-position="right" style="width:100%" />
+                      <el-input-number v-model.number="work.afRealRangeMin" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -929,7 +929,7 @@
                       :prop="`sysConditions[${workindex}].afRealRangeMax`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afRealRangeMax" controls-position="right" style="width:100%" />
+                      <el-input-number v-model.number="work.afRealRangeMax" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -940,7 +940,7 @@
                       :prop="`sysConditions[${workindex}].afCriticalValue`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afCriticalValue" controls-position="right" style="width:100%" />
+                      <el-input-number v-model.number="work.afCriticalValue" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -951,7 +951,7 @@
                       :prop="`sysConditions[${workindex}].afLoadCoefficient`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afLoadCoefficient" controls-position="right" style="width:100%" />
+                      <el-input-number v-model.number="work.afLoadCoefficient" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -962,7 +962,7 @@
                       :prop="`sysConditions[${workindex}].afAir`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.afAir" controls-position="right" style="width:100%" />
+                      <el-input-number v-model.number="work.afAir" controls-position="right" />
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -976,7 +976,7 @@
       </div>
       <el-form-item style="text-align:center">
         <el-button type="primary" @click="onSubmit">提交</el-button>
-        <el-button @click="onCancel">重置</el-button>
+        <!-- <el-button @click="onCancel">重置</el-button> -->
       </el-form-item>
     </el-form>
   </div>
@@ -988,13 +988,19 @@ import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Form',
+  props: {
+    form: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     // 检测mn
     var checkmn = (rule, value, callback) => {
       var reg = new RegExp('^[0-9]*$') // 纯数字
       console.log(reg.test(value))
-      if (!(value.length === 17)) {
-        return callback(new Error('请输入17位数字'))
+      if (!(value.length === 20)) {
+        return callback(new Error('请输入20位数字'))
       } else if (!reg.test(value)) {
         console.log(reg.test(value))
         return callback(new Error('不能包含字符串'))
@@ -1003,68 +1009,68 @@ export default {
       }
     }
     return {
-      form: {
-        mn: '',
-        comId: '',
-        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '' }],
-        sysConditions: [
-          {
-            modelNum: 1,
-            ooStatus: 0,
-            ooToModel: '',
-            ooHbCode: '',
-            otStatus: 0,
-            otToModel: '',
-            otHbCode: '',
-            owStatus: 0,
-            owToModel: '',
-            owHbCode: '',
-            ofStatus: 0,
-            ofToModel: '',
-            ofHbCode: '',
-            aoStatus: 0,
-            aoToModel: '',
-            aoHbCode: '',
-            aoAcquisitionRangeMax: 1,
-            aoAcquisitionRangeMin: '',
-            aoRealRangeMax: 1,
-            aoRealRangeMin: '',
-            aoCriticalValue: '',
-            aoLoadCoefficient: 1,
-            aoAir: '',
-            atStatus: 0,
-            atToModel: '',
-            atHbCode: '',
-            atAcquisitionRangeMax: 1,
-            atAcquisitionRangeMin: '',
-            atRealRangeMax: 1,
-            atRealRangeMin: '',
-            atCriticalValue: '',
-            atLoadCoefficient: 1,
-            atAir: '',
-            awStatus: 0,
-            awToModel: '',
-            awHbCode: '',
-            awAcquisitionRangeMax: 1,
-            awAcquisitionRangeMin: '',
-            awRealRangeMax: 1,
-            awRealRangeMin: '',
-            awCriticalValue: '',
-            awLoadCoefficient: 1,
-            awAir: '',
-            afStatus: 0,
-            afToModel: '',
-            afHbCode: '',
-            afAcquisitionRangeMax: 1,
-            afAcquisitionRangeMin: '',
-            afRealRangeMax: 1,
-            afRealRangeMin: '',
-            afCriticalValue: '',
-            afLoadCoefficient: 1,
-            afAir: ''
-          }
-        ]
-      },
+      // form: {
+      //   mn: '',
+      //   comId: '',
+      //   sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', groupId: '', deviceProcess: '' }],
+      //   sysConditions: [
+      //     {
+      //       modelNum: 1,
+      //       ooStatus: 0,
+      //       ooToModel: '',
+      //       ooHbCode: '',
+      //       otStatus: 0,
+      //       otToModel: '',
+      //       otHbCode: '',
+      //       owStatus: 0,
+      //       owToModel: '',
+      //       owHbCode: '',
+      //       ofStatus: 0,
+      //       ofToModel: '',
+      //       ofHbCode: '',
+      //       aoStatus: 0,
+      //       aoToModel: '',
+      //       aoHbCode: '',
+      //       aoAcquisitionRangeMax: 1,
+      //       aoAcquisitionRangeMin: '',
+      //       aoRealRangeMax: 1,
+      //       aoRealRangeMin: '',
+      //       aoCriticalValue: '',
+      //       aoLoadCoefficient: 1,
+      //       aoAir: '',
+      //       atStatus: 0,
+      //       atToModel: '',
+      //       atHbCode: '',
+      //       atAcquisitionRangeMax: 1,
+      //       atAcquisitionRangeMin: '',
+      //       atRealRangeMax: 1,
+      //       atRealRangeMin: '',
+      //       atCriticalValue: '',
+      //       atLoadCoefficient: 1,
+      //       atAir: '',
+      //       awStatus: 0,
+      //       awToModel: '',
+      //       awHbCode: '',
+      //       awAcquisitionRangeMax: 1,
+      //       awAcquisitionRangeMin: '',
+      //       awRealRangeMax: 1,
+      //       awRealRangeMin: '',
+      //       awCriticalValue: '',
+      //       awLoadCoefficient: 1,
+      //       awAir: '',
+      //       afStatus: 0,
+      //       afToModel: '',
+      //       afHbCode: '',
+      //       afAcquisitionRangeMax: 1,
+      //       afAcquisitionRangeMin: '',
+      //       afRealRangeMax: 1,
+      //       afRealRangeMin: '',
+      //       afCriticalValue: '',
+      //       afLoadCoefficient: 1,
+      //       afAir: ''
+      //     }
+      //   ]
+      // },
       rules: {
         mn: [{ validator: checkmn, required: true, trigger: 'blur' }],
         comId: [{ required: true, trigger: 'blur', message: '此为必填项' }]
@@ -1081,31 +1087,22 @@ export default {
       },
       optionSwitch: [
         {
-          value: 1,
+          value: true,
           label: '开启'
         },
         {
-          value: 0,
+          value: false,
           label: '关闭'
         }
       ],
-      hb_code_list: [
-        {
-          value: 1,
-          label: '生产'
-        },
-        {
-          value: 2,
-          label: '治理'
-        }
-      ],
+      hb_code_list: [],
       deviceStyle_list: [
         {
-          value: 1,
+          value: '1',
           label: '生产'
         },
         {
-          value: 2,
+          value: '2',
           label: '治理'
         }
       ],
@@ -1158,72 +1155,72 @@ export default {
       })
     },
     onCancel() {
-      this.$message({
-        message: '重置成功!',
-        type: 'success'
-      })
-      this.form = {
-        mn: '',
-        comId: '',
-        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '' }],
-        sysConditions: [
-          {
-            modelNum: '',
-            ooStatus: 0,
-            ooToModel: '',
-            ooHbCode: '',
-            otStatus: 0,
-            otToModel: '',
-            otHbCode: '',
-            owStatus: 0,
-            owToModel: '',
-            owHbCode: '',
-            ofStatus: 0,
-            ofToModel: '',
-            ofHbCode: '',
-            aoStatus: 0,
-            aoToModel: '',
-            aoHbCode: '',
-            aoAcquisitionRangeMax: '',
-            aoAcquisitionRangeMin: '',
-            aoRealRangeMax: 1,
-            aoRealRangeMin: '',
-            aoCriticalValue: '',
-            aoLoadCoefficient: 1,
-            aoAir: '',
-            atStatus: 0,
-            atToModel: '',
-            atHbCode: '',
-            atAcquisitionRangeMax: '',
-            atAcquisitionRangeMin: '',
-            atRealRangeMax: 1,
-            atRealRangeMin: '',
-            atCriticalValue: '',
-            atLoadCoefficient: 1,
-            atAir: '',
-            awStatus: 0,
-            awToModel: '',
-            awHbCode: '',
-            awAcquisitionRangeMax: '',
-            awAcquisitionRangeMin: '',
-            awRealRangeMax: 1,
-            awRealRangeMin: '',
-            awCriticalValue: '',
-            awLoadCoefficient: 1,
-            awAir: '',
-            afStatus: 0,
-            afToModel: '',
-            afHbCode: '',
-            afAcquisitionRangeMax: '',
-            afAcquisitionRangeMin: '',
-            afRealRangeMax: 1,
-            afRealRangeMin: '',
-            afCriticalValue: '',
-            afLoadCoefficient: 1,
-            afAir: ''
-          }
-        ]
-      }
+      // this.$message({
+      //   message: '重置成功!',
+      //   type: 'success'
+      // })
+      // this.form = {
+      //   mn: '',
+      //   comId: '',
+      //   sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '' }],
+      //   sysConditions: [
+      //     {
+      //       modelNum: '',
+      //       ooStatus: 0,
+      //       ooToModel: '',
+      //       ooHbCode: '',
+      //       otStatus: 0,
+      //       otToModel: '',
+      //       otHbCode: '',
+      //       owStatus: 0,
+      //       owToModel: '',
+      //       owHbCode: '',
+      //       ofStatus: 0,
+      //       ofToModel: '',
+      //       ofHbCode: '',
+      //       aoStatus: 0,
+      //       aoToModel: '',
+      //       aoHbCode: '',
+      //       aoAcquisitionRangeMax: '',
+      //       aoAcquisitionRangeMin: '',
+      //       aoRealRangeMax: 1,
+      //       aoRealRangeMin: '',
+      //       aoCriticalValue: '',
+      //       aoLoadCoefficient: 1,
+      //       aoAir: '',
+      //       atStatus: 0,
+      //       atToModel: '',
+      //       atHbCode: '',
+      //       atAcquisitionRangeMax: '',
+      //       atAcquisitionRangeMin: '',
+      //       atRealRangeMax: 1,
+      //       atRealRangeMin: '',
+      //       atCriticalValue: '',
+      //       atLoadCoefficient: 1,
+      //       atAir: '',
+      //       awStatus: 0,
+      //       awToModel: '',
+      //       awHbCode: '',
+      //       awAcquisitionRangeMax: '',
+      //       awAcquisitionRangeMin: '',
+      //       awRealRangeMax: 1,
+      //       awRealRangeMin: '',
+      //       awCriticalValue: '',
+      //       awLoadCoefficient: 1,
+      //       awAir: '',
+      //       afStatus: 0,
+      //       afToModel: '',
+      //       afHbCode: '',
+      //       afAcquisitionRangeMax: '',
+      //       afAcquisitionRangeMin: '',
+      //       afRealRangeMax: 1,
+      //       afRealRangeMin: '',
+      //       afCriticalValue: '',
+      //       afLoadCoefficient: 1,
+      //       afAir: ''
+      //     }
+      //   ]
+      // }
       this.$refs.form.clearValidate()
     },
     addDeviceList() {
@@ -1233,7 +1230,8 @@ export default {
         modelNum: '',
         deviceStyle: '',
         listDisabled: '',
-        deviceProcess: ''
+        deviceProcess: '',
+        groupId: ''
       }
       this.form.sysDevices.push(_obj)
     },

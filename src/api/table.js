@@ -167,3 +167,10 @@ export function findBoards(data) { // 查询所有板子配置表
     data
   })
 }
+export function deleteSysCondition(data) { // 删除板子工况配置表
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/sysCondition/deleteSysCondition',
+    method: 'POST',
+    data
+  })
+}
