@@ -5,12 +5,12 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="mn号" prop="mn" label-width="60px">
-            <el-input v-model="form.mn" placeholder="20位数字不能为空" />
+            <el-input v-model="form.mn" placeholder="20位数字不能为空" :disabled="sprot==2" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="企业名称" prop="comId">
-            <el-select v-model="form.comId" placeholder="请选择企业名称" style="width:100%" @change="changeLine">
+            <el-select v-model="form.comId" placeholder="请选择企业名称" style="width:100%" :disabled="sprot==2" @change="changeLine">
               <el-option v-for="com in com_list" :key="com.id" :label="com.com_name" :value="com.id" />
             </el-select>
           </el-form-item>
@@ -30,7 +30,7 @@
           >
             <el-col v-for="(item,index) in form.sysDevices" :key="'sysDevices'+index" :span="24" class="animate__animated ">
               <el-col :span="1" class="xuhao" style="  border-left: 4px solid #ff8800;">{{ index +1 }}</el-col>
-              <el-col :span="5">
+              <el-col :span="4">
                 <el-form-item
                   :key="'deviceName'+index"
                   label-width="80px"
@@ -116,14 +116,19 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="1" class="xuhao">
+
+              <el-col v-if="sprot==2" :span="1" class="xuhao">
                 <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
               </el-col>
-              <!-- <el-col :span="1" class="xuhao">
+              <el-col v-else :span="2 " class="xuhao">
+                <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
+              </el-col>
+
+              <el-col v-if="sprot==2" :span="1" class="xuhao">
                 <el-button type="success" circle @click="DelDeviceList(index)">
                   <svg-icon icon-class="save" />
                 </el-button>
-              </el-col> -->
+              </el-col>
             </el-col>
           </transition-group>
           <div style="text-align:center;margin-bottom:20px">
@@ -140,7 +145,7 @@
           </div>
           <transition-group
             enter-active-class="animate__fadeInDown"
-            leave-active-class="animate__fadeOutUp animate__faster "
+            leave-active-class="animate__zoomOut  animate__faster "
           >
             <el-col
               v-for="(work,workindex) in form.sysConditions"
@@ -992,6 +997,10 @@ export default {
     form: {
       type: Object,
       required: true
+    },
+    sprot: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -1016,19 +1025,19 @@ export default {
       //   sysConditions: [
       //     {
       //       modelNum: 1,
-      //       ooStatus: 0,
+      //       ooStatus: false,
       //       ooToModel: '',
       //       ooHbCode: '',
-      //       otStatus: 0,
+      //       otStatus: false,
       //       otToModel: '',
       //       otHbCode: '',
-      //       owStatus: 0,
+      //       owStatus: false,
       //       owToModel: '',
       //       owHbCode: '',
-      //       ofStatus: 0,
+      //       ofStatus: false,
       //       ofToModel: '',
       //       ofHbCode: '',
-      //       aoStatus: 0,
+      //       aoStatus: false,
       //       aoToModel: '',
       //       aoHbCode: '',
       //       aoAcquisitionRangeMax: 1,
@@ -1038,7 +1047,7 @@ export default {
       //       aoCriticalValue: '',
       //       aoLoadCoefficient: 1,
       //       aoAir: '',
-      //       atStatus: 0,
+      //       atStatus: false,
       //       atToModel: '',
       //       atHbCode: '',
       //       atAcquisitionRangeMax: 1,
@@ -1048,7 +1057,7 @@ export default {
       //       atCriticalValue: '',
       //       atLoadCoefficient: 1,
       //       atAir: '',
-      //       awStatus: 0,
+      //       awStatus: false,
       //       awToModel: '',
       //       awHbCode: '',
       //       awAcquisitionRangeMax: 1,
@@ -1058,7 +1067,7 @@ export default {
       //       awCriticalValue: '',
       //       awLoadCoefficient: 1,
       //       awAir: '',
-      //       afStatus: 0,
+      //       afStatus: false,
       //       afToModel: '',
       //       afHbCode: '',
       //       afAcquisitionRangeMax: 1,
@@ -1112,6 +1121,11 @@ export default {
       createLine: [] // 生产线
     }
   },
+  watch: {
+    'form.comId': function() {
+      console.log('公司变了吗')
+    }
+  },
   mounted() {
     findAllCom({
       token: getToken()
@@ -1155,72 +1169,6 @@ export default {
       })
     },
     onCancel() {
-      // this.$message({
-      //   message: '重置成功!',
-      //   type: 'success'
-      // })
-      // this.form = {
-      //   mn: '',
-      //   comId: '',
-      //   sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '' }],
-      //   sysConditions: [
-      //     {
-      //       modelNum: '',
-      //       ooStatus: 0,
-      //       ooToModel: '',
-      //       ooHbCode: '',
-      //       otStatus: 0,
-      //       otToModel: '',
-      //       otHbCode: '',
-      //       owStatus: 0,
-      //       owToModel: '',
-      //       owHbCode: '',
-      //       ofStatus: 0,
-      //       ofToModel: '',
-      //       ofHbCode: '',
-      //       aoStatus: 0,
-      //       aoToModel: '',
-      //       aoHbCode: '',
-      //       aoAcquisitionRangeMax: '',
-      //       aoAcquisitionRangeMin: '',
-      //       aoRealRangeMax: 1,
-      //       aoRealRangeMin: '',
-      //       aoCriticalValue: '',
-      //       aoLoadCoefficient: 1,
-      //       aoAir: '',
-      //       atStatus: 0,
-      //       atToModel: '',
-      //       atHbCode: '',
-      //       atAcquisitionRangeMax: '',
-      //       atAcquisitionRangeMin: '',
-      //       atRealRangeMax: 1,
-      //       atRealRangeMin: '',
-      //       atCriticalValue: '',
-      //       atLoadCoefficient: 1,
-      //       atAir: '',
-      //       awStatus: 0,
-      //       awToModel: '',
-      //       awHbCode: '',
-      //       awAcquisitionRangeMax: '',
-      //       awAcquisitionRangeMin: '',
-      //       awRealRangeMax: 1,
-      //       awRealRangeMin: '',
-      //       awCriticalValue: '',
-      //       awLoadCoefficient: 1,
-      //       awAir: '',
-      //       afStatus: 0,
-      //       afToModel: '',
-      //       afHbCode: '',
-      //       afAcquisitionRangeMax: '',
-      //       afAcquisitionRangeMin: '',
-      //       afRealRangeMax: 1,
-      //       afRealRangeMin: '',
-      //       afCriticalValue: '',
-      //       afLoadCoefficient: 1,
-      //       afAir: ''
-      //     }
-      //   ]
-      // }
       this.$refs.form.clearValidate()
     },
     addDeviceList() {
@@ -1238,19 +1186,19 @@ export default {
     addModelList() {
       const _obj = {
         modelNum: this.form.sysConditions.length + 1,
-        ooStatus: 0,
+        ooStatus: false,
         ooToModel: '',
         ooHbCode: '',
-        otStatus: 0,
+        otStatus: false,
         otToModel: '',
         otHbCode: '',
-        owStatus: 0,
+        owStatus: false,
         owToModel: '',
         owHbCode: '',
-        ofStatus: 0,
+        ofStatus: false,
         ofToModel: '',
         ofHbCode: '',
-        aoStatus: 0,
+        aoStatus: false,
         aoToModel: '',
         aoHbCode: '',
         aoAcquisitionRangeMax: 1,
@@ -1260,7 +1208,7 @@ export default {
         aoCriticalValue: '',
         aoLoadCoefficient: 1,
         aoAir: '',
-        atStatus: 0,
+        atStatus: false,
         atToModel: '',
         atHbCode: '',
         atAcquisitionRangeMax: 1,
@@ -1270,7 +1218,7 @@ export default {
         atCriticalValue: '',
         atLoadCoefficient: 1,
         atAir: '',
-        awStatus: 0,
+        awStatus: false,
         awToModel: '',
         awHbCode: '',
         awAcquisitionRangeMax: 1,
@@ -1280,7 +1228,7 @@ export default {
         awCriticalValue: '',
         awLoadCoefficient: 1,
         awAir: '',
-        afStatus: 0,
+        afStatus: false,
         afToModel: '',
         afHbCode: '',
         afAcquisitionRangeMax: 1,

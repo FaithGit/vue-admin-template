@@ -109,6 +109,7 @@ export const asyncRoutes = [
       {
         path: 'form',
         name: 'Form',
+        hidden: true,
         component: () => import('@/views/form/index'),
         meta: { title: '配置表管理', icon: 'form', roles: ['kf', 'gly', 'az'] }
       },

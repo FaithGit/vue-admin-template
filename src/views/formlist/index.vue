@@ -50,17 +50,17 @@
     <el-dialog
       :title="diglogTitle"
       :visible.sync="visible"
-      width="80%"
+      width="90%"
       style="margin-top: 0vh;"
       @close="closeDialog"
     >
-      <Forms ref="fuForm" :form="form" />
+      <Forms ref="fuForm" :form="form" :sprot="sprot" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { findBoards, deleteSysCondition } from '@/api/table'
+import { findBoards, deleteBoards } from '@/api/table'
 import Forms from '@/views/form'
 
 export default {
@@ -70,6 +70,7 @@ export default {
   },
   data() {
     return {
+      sprot: 1,
       diglogTitle: '',
       search1: '海',
       tableData: [],
@@ -81,19 +82,19 @@ export default {
         sysConditions: [
           {
             modelNum: '',
-            ooStatus: 0,
+            ooStatus: false,
             ooToModel: '',
             ooHbCode: '',
-            otStatus: 0,
+            otStatus: false,
             otToModel: '',
             otHbCode: '',
-            owStatus: 0,
+            owStatus: false,
             owToModel: '',
             owHbCode: '',
-            ofStatus: 0,
+            ofStatus: false,
             ofToModel: '',
             ofHbCode: '',
-            aoStatus: 0,
+            aoStatus: false,
             aoToModel: '',
             aoHbCode: '',
             aoAcquisitionRangeMax: '',
@@ -103,7 +104,7 @@ export default {
             aoCriticalValue: '',
             aoLoadCoefficient: 1,
             aoAir: '',
-            atStatus: 0,
+            atStatus: false,
             atToModel: '',
             atHbCode: '',
             atAcquisitionRangeMax: '',
@@ -113,7 +114,7 @@ export default {
             atCriticalValue: '',
             atLoadCoefficient: 1,
             atAir: '',
-            awStatus: 0,
+            awStatus: false,
             awToModel: '',
             awHbCode: '',
             awAcquisitionRangeMax: '',
@@ -123,7 +124,7 @@ export default {
             awCriticalValue: '',
             awLoadCoefficient: 1,
             awAir: '',
-            afStatus: 0,
+            afStatus: false,
             afToModel: '',
             afHbCode: '',
             afAcquisitionRangeMax: '',
@@ -153,6 +154,7 @@ export default {
     handleEdit(index, row) {
       this.visible = true
       this.diglogTitle = '编辑配置表'
+      this.sprot = 2 // 1新增 2编辑
       console.log(row)
       this.form = row
     },
@@ -162,7 +164,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteSysCondition({ mn: row.mn }).then(res => {
+        deleteBoards({ mn: row.mn }).then(res => {
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -174,6 +176,7 @@ export default {
     },
     addList() {
       this.visible = true
+      this.sprot = 1 // 1新增 2编辑
       this.diglogTitle = '新增配置表'
       this.form = {
         mn: '',
@@ -181,20 +184,20 @@ export default {
         sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '' }],
         sysConditions: [
           {
-            modelNum: '',
-            ooStatus: 0,
+            modelNum: 1,
+            ooStatus: false,
             ooToModel: '',
             ooHbCode: '',
-            otStatus: 0,
+            otStatus: false,
             otToModel: '',
             otHbCode: '',
-            owStatus: 0,
+            owStatus: false,
             owToModel: '',
             owHbCode: '',
-            ofStatus: 0,
+            ofStatus: false,
             ofToModel: '',
             ofHbCode: '',
-            aoStatus: 0,
+            aoStatus: false,
             aoToModel: '',
             aoHbCode: '',
             aoAcquisitionRangeMax: '',
@@ -204,7 +207,7 @@ export default {
             aoCriticalValue: '',
             aoLoadCoefficient: 1,
             aoAir: '',
-            atStatus: 0,
+            atStatus: false,
             atToModel: '',
             atHbCode: '',
             atAcquisitionRangeMax: '',
@@ -214,7 +217,7 @@ export default {
             atCriticalValue: '',
             atLoadCoefficient: 1,
             atAir: '',
-            awStatus: 0,
+            awStatus: false,
             awToModel: '',
             awHbCode: '',
             awAcquisitionRangeMax: '',
@@ -224,7 +227,7 @@ export default {
             awCriticalValue: '',
             awLoadCoefficient: 1,
             awAir: '',
-            afStatus: 0,
+            afStatus: false,
             afToModel: '',
             afHbCode: '',
             afAcquisitionRangeMax: '',
