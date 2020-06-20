@@ -123,10 +123,9 @@
               <el-col v-else :span="2 " class="xuhao">
                 <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
               </el-col>
-
               <el-col v-if="sprot==2" :span="1" class="xuhao">
-                <el-button type="success" circle @click="DelDeviceList(index)">
-                  <svg-icon icon-class="save" />
+                <el-button type="success" circle>
+                  <svg-icon :icon-class="item.id?'save':'up'" />
                 </el-button>
               </el-col>
             </el-col>
@@ -1122,8 +1121,8 @@ export default {
     }
   },
   watch: {
-    'form.comId': function() {
-      console.log('公司变了吗')
+    'form.comId': function(val) {
+      this.changeLine(val)
     }
   },
   mounted() {
@@ -1144,6 +1143,7 @@ export default {
     findProncess({ deviceStyle: 2 }).then(res => {
       this.zlList = res.retData
     })
+    this.changeLine(this.form.comId)
   },
   methods: {
     onSubmit() {
@@ -1156,7 +1156,7 @@ export default {
               message: res.retMsg,
               type: 'success'
             })
-            console.log(res)
+            this.$emit('fuclose')
           })
         } else {
           // console.log('error submit!!')
@@ -1172,15 +1172,7 @@ export default {
       this.$refs.form.clearValidate()
     },
     addDeviceList() {
-      const _obj = {
-        comId: '',
-        deviceName: '',
-        modelNum: '',
-        deviceStyle: '',
-        listDisabled: '',
-        deviceProcess: '',
-        groupId: ''
-      }
+      const _obj = { deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1 }
       this.form.sysDevices.push(_obj)
     },
     addModelList() {
@@ -1276,15 +1268,17 @@ export default {
       }
     },
     changeLine(val) {
-      console.log(val)
-      selectAllGroups({
-        'comId': val,
-        'pageIndex': 1,
-        'pageSize': 999
-      }).then(res => {
-        console.log(res)
-        this.createLine = res.retData.data
-      })
+      if (val) {
+        selectAllGroups({
+          'comId': val,
+          'pageIndex': 1,
+          'pageSize': 999
+        }).then(res => {
+          this.createLine = res.retData.data
+        })
+      } else {
+        this.createLine = []
+      }
     }
   }
 }

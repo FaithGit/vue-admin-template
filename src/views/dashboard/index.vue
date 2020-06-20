@@ -1,30 +1,37 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">你好，{{ name }}欢迎登录</div>
+    <el-row>
+      <el-col :span="8">{{ comName }}</el-col>
+      <el-col :span="8">123</el-col>
+      <el-col :span="8">123</el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { findComBasicData } from '@/api/table'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
+  data() {
+    return {
+      comName: ''
+    }
+  },
+  mounted() {
+    findComBasicData({
+      token: getToken()
+    }).then(res => {
+      console.log(res)
+      this.comName = res.retData.comName
+    })
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
+.dashboard-container{
+  padding: 20px;
 }
 </style>

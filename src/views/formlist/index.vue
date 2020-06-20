@@ -53,8 +53,9 @@
       width="90%"
       style="margin-top: 0vh;"
       @close="closeDialog"
+      @opened="openDialog"
     >
-      <Forms ref="fuForm" :form="form" :sprot="sprot" />
+      <Forms ref="fuForm" :form="form" :sprot="sprot" @fuclose="fuclose" />
     </el-dialog>
   </div>
 </template>
@@ -72,76 +73,30 @@ export default {
     return {
       sprot: 1,
       diglogTitle: '',
-      search1: '海',
+      search1: '',
       tableData: [],
       visible: false,
-      form: {
-        mn: '',
-        comId: '',
-        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '' }],
-        sysConditions: [
-          {
-            modelNum: '',
-            ooStatus: false,
-            ooToModel: '',
-            ooHbCode: '',
-            otStatus: false,
-            otToModel: '',
-            otHbCode: '',
-            owStatus: false,
-            owToModel: '',
-            owHbCode: '',
-            ofStatus: false,
-            ofToModel: '',
-            ofHbCode: '',
-            aoStatus: false,
-            aoToModel: '',
-            aoHbCode: '',
-            aoAcquisitionRangeMax: '',
-            aoAcquisitionRangeMin: '',
-            aoRealRangeMax: 1,
-            aoRealRangeMin: '',
-            aoCriticalValue: '',
-            aoLoadCoefficient: 1,
-            aoAir: '',
-            atStatus: false,
-            atToModel: '',
-            atHbCode: '',
-            atAcquisitionRangeMax: '',
-            atAcquisitionRangeMin: '',
-            atRealRangeMax: 1,
-            atRealRangeMin: '',
-            atCriticalValue: '',
-            atLoadCoefficient: 1,
-            atAir: '',
-            awStatus: false,
-            awToModel: '',
-            awHbCode: '',
-            awAcquisitionRangeMax: '',
-            awAcquisitionRangeMin: '',
-            awRealRangeMax: 1,
-            awRealRangeMin: '',
-            awCriticalValue: '',
-            awLoadCoefficient: 1,
-            awAir: '',
-            afStatus: false,
-            afToModel: '',
-            afHbCode: '',
-            afAcquisitionRangeMax: '',
-            afAcquisitionRangeMin: '',
-            afRealRangeMax: 1,
-            afRealRangeMin: '',
-            afCriticalValue: '',
-            afLoadCoefficient: 1,
-            afAir: ''
-          }
-        ]
-      }
+      form: {}
     }
   },
+  mounted() {
+    this.searchClick()
+  },
   methods: {
+    fuclose() {
+      this.visible = false
+      this.searchClick()
+    },
+
     closeDialog() {
       this.$refs.fuForm.onCancel()
+      this.searchClick()
+    },
+    openDialog() {
+      var that = this
+      setTimeout(function() {
+        that.$refs.fuForm.onCancel()
+      }, 500)
     },
     searchClick() {
       findBoards({
@@ -181,7 +136,7 @@ export default {
       this.form = {
         mn: '',
         comId: '',
-        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '' }],
+        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1 }],
         sysConditions: [
           {
             modelNum: 1,
