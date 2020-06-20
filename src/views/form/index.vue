@@ -116,15 +116,69 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              <el-col :span="4" :offset="10">
+                <el-form-item
+                  :key="'isWar'+index"
+                  label-width="80px"
+                  label="是否异常"
+                  :prop="`sysDevices[${index}].isWar`"
+                  :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
+                >
+                  <el-select v-model="item.isWar" clearable placeholder="请选择是否异常">
+                    <el-option
+                      v-for="(war,warIndex) in isWarList"
+                      :key="'war'+warIndex"
+                      :label="war.label"
+                      :value="war.value"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item
+                  :key="'deviceStatus'+index"
+                  label-width="80px"
+                  label="设备状态"
+                  :prop="`sysDevices[${index}].deviceStatus`"
+                  :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
+                >
+                  <el-select v-model="item.deviceStatus" clearable placeholder="请选择设备状态">
+                    <el-option
+                      v-for="(ds,dsIndex) in deviceStatusList"
+                      :key="'ds'+dsIndex"
+                      :label="ds.label"
+                      :value="ds.value"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item
+                  :key="'isTest'+index"
+                  label-width="80px"
+                  label="测试数据"
+                  :prop="`sysDevices[${index}].isTest`"
+                  :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
+                >
+                  <el-select v-model="item.isTest" clearable placeholder="请选择是否测试数据">
+                    <el-option
+                      v-for="(ist,istIndex) in isTestList"
+                      :key="'ist'+istIndex"
+                      :label="ist.label"
+                      :value="ist.value"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
 
               <el-col v-if="sprot==2" :span="1" class="xuhao">
-                <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
+                <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceListCloud(item,index)" />
               </el-col>
               <el-col v-else :span="2 " class="xuhao">
                 <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
               </el-col>
               <el-col v-if="sprot==2" :span="1" class="xuhao">
-                <el-button type="success" circle>
+                <el-button type="success" circle @click="saveOrUp(item)">
                   <svg-icon :icon-class="item.id?'save':'up'" />
                 </el-button>
               </el-col>
@@ -978,7 +1032,7 @@
           </div>
         </el-row>
       </div>
-      <el-form-item style="text-align:center">
+      <el-form-item v-if="sprot==1" style="text-align:center">
         <el-button type="primary" @click="onSubmit">提交</el-button>
         <!-- <el-button @click="onCancel">重置</el-button> -->
       </el-form-item>
@@ -987,7 +1041,7 @@
 </template>
 
 <script>
-import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups } from '@/api/table'
+import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, deleteSysdevice, addSysdevice } from '@/api/table'
 import { getToken } from '@/utils/auth'
 
 export default {
@@ -1101,6 +1155,36 @@ export default {
         {
           value: false,
           label: '关闭'
+        }
+      ],
+      isWarList: [
+        {
+          value: true,
+          label: '异常'
+        },
+        {
+          value: false,
+          label: '正常'
+        }
+      ],
+      deviceStatusList: [
+        {
+          value: true,
+          label: '使用中'
+        },
+        {
+          value: false,
+          label: '废用'
+        }
+      ],
+      isTestList: [
+        {
+          value: true,
+          label: '是'
+        },
+        {
+          value: false,
+          label: '否'
         }
       ],
       hb_code_list: [],
@@ -1236,6 +1320,29 @@ export default {
     DelDeviceList(index) {
       this.form.sysDevices.splice(index, 1)
       // this.$forceUpdate()
+    },
+    DelDeviceListCloud(item, index) {
+      if (item.id) {
+        deleteSysdevice({
+          deviceId: item.deviceId
+        }).then(res => {
+          console.log(res)
+          if (res.retData === 1) {
+            this.$message({
+              type: 'success',
+              message: '已从服务器中删除'
+            })
+          }
+        })
+      } else {
+        this.DelDeviceList(index)
+      }
+    },
+    saveOrUp(item) {
+      console.log('123213312')
+      addSysdevice(item).then(res => {
+        console.log(res)
+      })
     },
     DelModelList(index) {
       this.form.sysConditions.splice(index, 1)

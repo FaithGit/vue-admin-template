@@ -181,3 +181,17 @@ export function findComBasicData(data) { // 删除板子工况配置表
     data
   })
 }
+export function deleteSysdevice(data) { // 删除设备信息
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/deleteSysdevice',
+    method: 'POST',
+    data
+  })
+}
+export function addSysdevice(data) { // 新增设备信息
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/addSysdevice',
+    method: 'POST',
+    data
+  })
+}
