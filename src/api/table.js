@@ -169,7 +169,7 @@ export function findBoards(data) { // 查询所有板子配置表
 }
 export function deleteBoards(data) { // 删除板子工况配置表
   return request({
-    url: 'http://47.96.147.99:8081/hbjk/sysCondition/deleteBoards',
+    url: 'http://47.96.147.99:8081/hbjk/deleteBoards',
     method: 'POST',
     data
   })
@@ -191,6 +191,41 @@ export function deleteSysdevice(data) { // 删除设备信息
 export function addSysdevice(data) { // 新增设备信息
   return request({
     url: 'http://47.96.147.99:8081/hbjk/addSysdevice',
+    method: 'POST',
+    data
+  })
+}
+export function updateByDeviceId(data) { // 更新备信息
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/updateByDeviceId',
+    method: 'POST',
+    data
+  })
+}
+export function addSysCondition(data) { // 新增工况配置表
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/sysCondition/addSysCondition',
+    method: 'POST',
+    data
+  })
+}
+export function deleteSysCondition(data) { // 删除工况配置表
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/sysCondition/deleteSysCondition',
+    method: 'POST',
+    data
+  })
+}
+export function updateSysCondition(data) { // 更新工况配置表
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/sysCondition/updateSysCondition',
+    method: 'POST',
+    data
+  })
+}
+export function findComElc(data) { // 查询获取企业用电量概况
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findComElc',
     method: 'POST',
     data
   })

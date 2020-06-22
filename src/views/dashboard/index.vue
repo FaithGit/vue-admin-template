@@ -13,29 +13,52 @@
       <el-col :span="10">
         <div class="comBlock" style="background:#42b983">
           <div class="comTitle" style="text-align:left"> <svg-icon icon-class="powers" style="margin:0 5px" />用电情况<br></div>
-          <el-col :span="6" class="comTitle"> 今日总用电量<br> 200<div class="">2020-06-19 17:00:00</div>   </el-col>
-          <el-col :span="6" class="comTitle whiteBorder"> 今日功率峰值<br> <span class="comtitle">{{ scNum }}</span>  </el-col>
-          <el-col :span="6" class="comTitle whiteBorderRight"> 昨日同期总用电量<br> <span class="comtitle">{{ scNum }}</span>  </el-col>
-          <el-col :span="6" class="comTitle"> 昨日功率峰值<br> <span class="comtitle">{{ zlNum }}</span>  </el-col>
+          <el-col :span="6" class="comTitle"> 今日总用电量<br>
+            <span class="timeNum"> {{ todayTotal }}kw/h </span>
+            <div class="timeset">{{ todayTotalTime }}</div>
+          </el-col>
+          <el-col :span="6" class="comTitle whiteBorder"> 今日功率峰值<br>
+            <span class="timeNum"> {{ maxPowerToday }}kw </span>
+            <div class="timeset">{{ maxPowerTodayTime }}</div>
+          </el-col>
+          <el-col :span="6" class="comTitle whiteBorderRight"> <span class="bigtitle">昨日同期总用电量</span><br>
+            <span class="timeNum"> {{ yesterdayTotal }}kw/h </span>
+            <div class="timeset">{{ yesterdayTotalTime }}</div>
+          </el-col>
+          <el-col :span="6" class="comTitle"> 昨日功率峰值<br>
+            <span class="timeNum"> {{ maxPowerYesterday }}kw </span>
+            <div class="timeset">{{ maxPowerYesterdayTime }}</div>
+          </el-col>
         </div>
       </el-col>
-      <el-col :span="6">123</el-col>
+      <el-col :span="6" style="height:200px"><error /></el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import { findComBasicData } from '@/api/table'
+import { findComBasicData, findComElc } from '@/api/table'
 import { getToken } from '@/utils/auth'
-
+import error from './components/error'
 export default {
   name: 'Dashboard',
+  components: {
+    error
+  },
   data() {
     return {
       comName: '',
       scNum: '',
       zlNum: '',
-      groupNum: ''
+      groupNum: '',
+      todayTotal: 0,
+      yesterdayTotal: 0.000,
+      maxPowerYesterday: 0.000,
+      maxPowerToday: 0,
+      maxPowerYesterdayTime: '',
+      todayTotalTime: '',
+      maxPowerTodayTime: '',
+      yesterdayTotalTime: ''
     }
   },
   mounted() {
@@ -47,6 +70,18 @@ export default {
       this.scNum = res.retData.scNum
       this.zlNum = res.retData.zlNum
       this.groupNum = res.retData.groupNum
+    })
+    findComElc({
+      token: getToken()
+    }).then(res => {
+      this.todayTotal = res.retData.todayTotal
+      this.yesterdayTotal = res.retData.yesterdayTotal
+      this.maxPowerYesterday = res.retData.maxPowerYesterday
+      this.maxPowerToday = res.retData.maxPowerToday
+      this.maxPowerYesterdayTime = res.retData.maxPowerYesterdayTime
+      this.todayTotalTime = res.retData.todayTotalTime
+      this.maxPowerTodayTime = res.retData.maxPowerTodayTime
+      this.yesterdayTotalTime = res.retData.yesterdayTotalTime
     })
   }
 }
@@ -77,5 +112,28 @@ export default {
 }
 .whiteBorderRight{
   border-right:1px white solid ;
+}
+.timeset{
+  font-size: 14px;
+  line-height: 23px;
+}
+.timeNum{
+  font-size: 16px;
+  font-weight: bold;
+}
+.bigtitle{
+    font-size: 13px;
+    letter-spacing: 0px;
+  @media screen and (min-width: 1633px){
+      font-size: 14px;
+      letter-spacing: -1px;
+  }
+  @media screen and (max-width: 1480px){
+      font-size: 13px;
+      letter-spacing: -1px;
+  }
+    @media screen and (min-width: 1700px){
+      font-size: 16px;
+  }
 }
 </style>

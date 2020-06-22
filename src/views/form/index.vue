@@ -178,8 +178,8 @@
                 <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
               </el-col>
               <el-col v-if="sprot==2" :span="1" class="xuhao">
-                <el-button type="success" circle @click="saveOrUp(item)">
-                  <svg-icon :icon-class="item.id?'save':'up'" />
+                <el-button type="success" circle @click="saveOrUp(item,index)">
+                  <svg-icon :icon-class="item.deviceId?'save':'up'" />
                 </el-button>
               </el-col>
             </el-col>
@@ -206,8 +206,14 @@
               :span="24"
               class="card animate__animated"
             >
-              <div class="card-close" @click="DelModelList(workindex)">
-                <i class="el-icon-close" />
+              <div class="card-close">
+                <i class="el-icon-close" @click="DelModelList(workindex,work)" />
+                <span v-if="sprot==2&&work.id" @click=" saveModelListCloud(workindex,work)">
+                  <svg-icon icon-class="save" />
+                </span>
+                <span v-if="sprot==2&&!work.id" @click="addModelListCloud(workindex,work)">
+                  <svg-icon icon-class="up" />
+                </span>
               </div>
               <el-row>
                 <el-col :span="6" :offset="18">
@@ -1041,7 +1047,7 @@
 </template>
 
 <script>
-import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, deleteSysdevice, addSysdevice } from '@/api/table'
+import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, deleteSysdevice, addSysdevice, updateByDeviceId, addSysCondition, deleteSysCondition, updateSysCondition } from '@/api/table'
 import { getToken } from '@/utils/auth'
 
 export default {
@@ -1259,6 +1265,25 @@ export default {
       const _obj = { deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1 }
       this.form.sysDevices.push(_obj)
     },
+    addModelListCloud(index, item) {
+      item.mn = this.form.mn
+      addSysCondition(item).then(res => {
+        this.$message({
+          type: 'success',
+          message: '添加成功'
+        })
+        this.$set(this.form.sysConditions[index], 'id', res.retData)
+      })
+    },
+    saveModelListCloud(index, item) {
+      item.mn = this.form.mn
+      updateSysCondition(item).then(res => {
+        this.$message({
+          type: 'success',
+          message: '更新成功'
+        })
+      })
+    },
     addModelList() {
       const _obj = {
         modelNum: this.form.sysConditions.length + 1,
@@ -1332,20 +1357,48 @@ export default {
               type: 'success',
               message: '已从服务器中删除'
             })
+            this.DelDeviceList(index)
           }
         })
       } else {
         this.DelDeviceList(index)
       }
     },
-    saveOrUp(item) {
-      console.log('123213312')
-      addSysdevice(item).then(res => {
-        console.log(res)
-      })
+    saveOrUp(item, index) {
+      item.mn = this.form.mn
+      if (item.deviceId) {
+        updateByDeviceId(item).then(res => {
+          this.$message({
+            type: 'success',
+            message: '设备信息已经更新'
+          })
+          console.log('更新', res)
+        })
+      } else {
+        addSysdevice(item).then(res => {
+          console.log(res)
+          this.$set(this.form.sysDevices[index], 'deviceId', res.retData.deviceId)
+          this.$message({
+            type: 'success',
+            message: '设备信息已经添加'
+          })
+        })
+      }
     },
-    DelModelList(index) {
-      this.form.sysConditions.splice(index, 1)
+    DelModelList(index, item) {
+      if (item.id) {
+        item.mn = this.form.mn
+        deleteSysCondition(item).then(res => {
+          this.form.sysConditions.splice(index, 1)
+          this.$message({
+            type: 'success',
+            message: '工况信息已经从服务器中删除'
+          })
+        })
+      } else {
+        this.form.sysConditions.splice(index, 1)
+      }
+
       // this.$forceUpdate()
     },
     changeWorkStatus(workindex, value1, value2) {
