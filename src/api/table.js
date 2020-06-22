@@ -230,3 +230,17 @@ export function findComElc(data) { // 查询获取企业用电量概况
     data
   })
 }
+export function findScSwitchData(data) { // 查询企业首页近六小时生产情况
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findScSwitchData',
+    method: 'POST',
+    data
+  })
+}
+export function findUseElcByGroup(data) { // 查询企业生产治理用电根据组
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findUseElcByGroup',
+    method: 'POST',
+    data
+  })
+}
