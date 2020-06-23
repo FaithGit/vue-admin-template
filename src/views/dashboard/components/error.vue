@@ -15,7 +15,7 @@ export default {
   methods: {
     drawChart() {
       const myChart9 = echarts.init(document.getElementById('distribution9'))
-      const bgColor = '#041a51'
+      const bgColor = '#FFFFFF'
       const title = '总量'
       const color = ['#0E7CE2', '#FF8352', '#E271DE', '#F8456B', '#00FFFF', '#4AEAB0']
       const echartData = [{
@@ -57,7 +57,7 @@ export default {
           y: '30', // 'center' | 'bottom' | {number}
           padding: 15, // [5, 10, 15, 20]
           itemGap: 3,
-          textStyle: { color: '#c3cad9' }
+          textStyle: { color: '#000' }
         },
         title: [{
           text: '{name|' + title + '}\n{val|' + formatNumber(total) + '}',
@@ -68,13 +68,13 @@ export default {
               name: {
                 fontSize: 12,
                 fontWeight: 'normal',
-                color: '#ffffff',
+                color: '#000',
                 padding: [10, 0]
               },
               val: {
                 fontSize: 18,
                 fontWeight: 'bold',
-                color: '#ffffff'
+                color: '#000'
               }
             }
           }
@@ -127,12 +127,12 @@ export default {
                 name: {
                   fontSize: 14,
                   padding: [0, 10, 0, 4],
-                  color: '#ffffff'
+                  color: '#000'
                 },
                 value: {
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: 'bold',
-                  color: '#ffffff'
+                  color: '#000'
                 }
               }
             }

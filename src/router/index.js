@@ -50,12 +50,11 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/home',
+    hidden: true,
     children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '企业首页', icon: 'dashboard' }
+      path: 'home',
+      component: () => import('@/views/home/index')
     }]
   }
 
@@ -88,6 +87,18 @@ export const asyncRoutes = [
     name: 'Pandect',
     component: () => import('@/views/pandect/index'),
     meta: { title: '总览一张图', icon: 'pandect', roles: ['kf', 'gly', 'hbj'] }
+  },
+  {
+    path: '/dashboard',
+    component: Layout,
+    meta: { title: '企业首页', icon: 'dashboard', roles: ['qy'] },
+    children: [{
+      path: 'index',
+      name: 'Dashboard',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '企业首页', icon: 'dashboard', roles: ['qy'] }
+    }]
+
   },
   {
     path: '/system',

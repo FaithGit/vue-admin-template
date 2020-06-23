@@ -155,11 +155,19 @@ export default {
           padding: 12,
           extraCssText:
             'box-shadow: 0px 2px 8px 0px #cacaca;border-radius: 4px;opacity: 0.9;max-height: 100%;',
-          formatter: {
-            _custom: {
-              type: 'function',
-              display: '<span>ƒ</span> (params)'
+          formatter(params) {
+            const item = params[0]
+            var time = `${item.axisValue} <br>`
+            var text1 = ''
+            for (var i = 0; i < params.length; i++) {
+              text1 += `${params[i].marker}${params[i].seriesName}：`
+              if (params[i].data === 1) {
+                text1 += '开<br>'
+              } else {
+                text1 += '关<br>'
+              }
             }
+            return time + text1
           }
         },
         grid: {
@@ -195,11 +203,22 @@ export default {
             color: 'gray'
           },
           type: 'value',
+          // axisLabel: {
+          //   color: '#a0a9bc',
+          //   inside: true,
+          //   margin: 0,
+          //   verticalAlign: 'bottom'
+          // },
           axisLabel: {
-            color: '#a0a9bc',
-            inside: true,
-            margin: 0,
-            verticalAlign: 'bottom'
+            formatter: function(value, index) {
+              const texts = []
+              if (value === 0) {
+                texts.push('关')
+              } else if (value === 1) {
+                texts.push('开')
+              }
+              return texts
+            }
           },
           splitLine: {
             lineStyle: {
