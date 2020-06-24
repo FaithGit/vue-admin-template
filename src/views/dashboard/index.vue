@@ -3,10 +3,13 @@
     <el-row :gutter="20">
       <el-col :span="8">
         <div class="comBlock">
-          <div class="comTitle" style="text-align:left;margin-bottom:60px"> <svg-icon icon-class="where" style="margin: 0 5px" />{{ comName }}<br></div>
+          <div class="comTitle" style="text-align:left;margin-bottom:40px"> <svg-icon icon-class="comName" style="margin: 0 5px" />{{ comName }}<br>
+            <svg-icon icon-class="where" style="margin: 0 5px" />{{ adress }}<br>
+          </div>
           <el-col :span="8" class="comTitle "> 治理线组<br> <span class="comtitle">{{ groupNum }}</span>  </el-col>
-          <el-col :span="8" class="comTitle whiteBorder"> 生产设备<br> <span class="comtitle">{{ scNum }}</span>  </el-col>
-          <el-col :span="8" class="comTitle "> 治理设备<br> <span class="comtitle">{{ zlNum }}</span>  </el-col>
+          <el-col :span="8" class="comTitle whiteBorder"> 产污设施：{{ scNum }}<br> 开启 <span style="margin-right:5px">{{ scOpen }}</span>  关闭 <span>{{ scClose }}</span></el-col>
+          <el-col :span="8" class="comTitle whiteBorder"> 治污设施：{{ zlNum }}<br> 开启 <span style="margin-right:5px">{{ zlOpen }}</span>  关闭 <span>{{ zlClose }}</span></el-col>
+          <!-- <el-col :span="8" class="comTitle "> 治理设备<br> <span class="comtitle">{{ zlNum }}</span>  </el-col> -->
           <svg-icon icon-class="com" class="com" />
         </div>
 
@@ -14,21 +17,17 @@
       <el-col :span="10">
         <div class="comBlock" style="background:#42b983">
           <div class="comTitle" style="text-align:left;margin-bottom:50px"> <svg-icon icon-class="powers" style="margin:0 5px" />用电情况<br></div>
-          <el-col :span="6" class="comTitle"> 今日总用电量<br>
-            <span class="timeNum"> {{ todayTotal }}kW·h </span>
-            <div class="timeset">{{ todayTotalTime }}</div>
+          <el-col :span="6" class="comTitle"> 今日产污设施用电量<br>
+            <span class="timeNum"> {{ todayScTotal }}kW·h </span>
           </el-col>
-          <el-col :span="6" class="comTitle whiteBorder"> 今日功率峰值<br>
-            <span class="timeNum"> {{ maxPowerToday }}kw </span>
-            <div class="timeset">{{ maxPowerTodayTime }}</div>
+          <el-col :span="6" class="comTitle whiteBorder"> 今日治污设施用电量<br>
+            <span class="timeNum"> {{ todayZlTotal }}kW·h</span>
           </el-col>
-          <el-col :span="6" class="comTitle whiteBorderRight"> <span class="bigtitle">昨日同期总用电量</span><br>
-            <span class="timeNum"> {{ yesterdayTotal }}kW·h </span>
-            <div class="timeset">{{ yesterdayTotalTime }}</div>
+          <el-col :span="6" class="comTitle whiteBorderRight"> <span class="bigtitle">年度产污设施用电量</span><br>
+            <span class="timeNum"> {{ yearScTotal }}kW·h </span>
           </el-col>
-          <el-col :span="6" class="comTitle"> 昨日功率峰值<br>
-            <span class="timeNum"> {{ maxPowerYesterday }}kw </span>
-            <div class="timeset">{{ maxPowerYesterdayTime }}</div>
+          <el-col :span="6" class="comTitle"> 年度治污设施用电量<br>
+            <span class="timeNum"> {{ yearZlTotal }}kw </span>
           </el-col>
         </div>
       </el-col>
@@ -85,17 +84,18 @@ export default {
   data() {
     return {
       comName: '',
+      adress: '',
       scNum: '',
+      scClose: '',
+      scOpen: '',
       zlNum: '',
+      zlOpen: '',
+      zlClose: '',
       groupNum: '',
-      todayTotal: 0,
-      yesterdayTotal: 0.000,
-      maxPowerYesterday: 0.000,
-      maxPowerToday: 0,
-      maxPowerYesterdayTime: '',
-      todayTotalTime: '',
-      maxPowerTodayTime: '',
-      yesterdayTotalTime: '',
+      todayScTotal: 0,
+      todayZlTotal: 0,
+      yearScTotal: 0,
+      yearZlTotal: 0,
       dataTime: [],
       dataList: [],
       deviceName: [],
@@ -179,21 +179,22 @@ export default {
     }).then(res => {
       console.log(res)
       this.comName = res.retData.comName
+      this.adress = res.retData.adress
       this.scNum = res.retData.scNum
+      this.scClose = res.retData.scClose
+      this.scOpen = res.retData.scOpen
       this.zlNum = res.retData.zlNum
+      this.zlClose = res.retData.zlClose
+      this.zlOpen = res.retData.zlOpen
       this.groupNum = res.retData.groupNum
     })
     findComElc({
       token: getToken()
     }).then(res => {
-      this.todayTotal = res.retData.todayTotal
-      this.yesterdayTotal = res.retData.yesterdayTotal
-      this.maxPowerYesterday = res.retData.maxPowerYesterday
-      this.maxPowerToday = res.retData.maxPowerToday
-      this.maxPowerYesterdayTime = res.retData.maxPowerYesterdayTime
-      this.todayTotalTime = res.retData.todayTotalTime
-      this.maxPowerTodayTime = res.retData.maxPowerTodayTime
-      this.yesterdayTotalTime = res.retData.yesterdayTotalTime
+      this.todayScTotal = res.retData.todayScTotal
+      this.todayZlTotal = res.retData.todayZlTotal
+      this.yearScTotal = res.retData.yearScTotal
+      this.yearZlTotal = res.retData.yearZlTotal
     })
     findScSwitchData({
       token: getToken()
@@ -369,10 +370,13 @@ box-shadow: 4px 4px 40px rgba(0,0,0,.05);
   padding: 15px;
   text-align: center;
   line-height: 35px;
+  @media screen and (max-width: 1888px){
+    font-size: 12px;
+  }
 }
 .comtitle{
   font-size: 18px;
-  font-weight: bold;;
+  font-weight: bold;
 }
 .whiteBorder{
   border-left:1px white solid ;

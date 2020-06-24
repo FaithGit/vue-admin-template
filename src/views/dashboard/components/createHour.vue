@@ -69,11 +69,15 @@ export default {
     drawChart() {
       var fuseries = []
       for (var i = 0; i < this.datalist.length; i++) {
+        var _arr = []
+        for (var j = 0; j < this.datalist[i].length; j++) {
+          _arr[j] = (this.datalist[i][j] + i * 2)
+        }
         fuseries.push({
           name: this.devicename[i],
-          data: this.datalist[i],
+          data: _arr,
           type: 'line',
-          smooth: true,
+          step: 'middle',
           smoothMonotone: 'x',
           cursor: 'pointer',
           showSymbol: false,
@@ -161,7 +165,7 @@ export default {
             var text1 = ''
             for (var i = 0; i < params.length; i++) {
               text1 += `${params[i].marker}${params[i].seriesName}：`
-              if (params[i].data === 1) {
+              if (params[i].data % 2 === 1) {
                 text1 += '开<br>'
               } else {
                 text1 += '关<br>'
@@ -212,9 +216,9 @@ export default {
           axisLabel: {
             formatter: function(value, index) {
               const texts = []
-              if (value === 0) {
+              if (value % 2 === 0) {
                 texts.push('关')
-              } else if (value === 1) {
+              } else {
                 texts.push('开')
               }
               return texts
