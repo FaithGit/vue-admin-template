@@ -235,10 +235,10 @@ export default {
       let a // id,地区需要合并的行是所有类型的长度
       // console.log(this.tableData)
       this.tableData.forEach((v, index) => {
-        if (v.groups && v.groups.length) {
+        if (v.groups && v.groups.length) { // 如果有生产线
           a = 0
           v.groups.forEach((subV, i, typeData) => {
-            if (subV.zlData && subV.zlData.length) {
+            if (subV.zlData && subV.zlData.length) { // 如果有治理设备
               subV.zlData.forEach((ss, k, data) => {
                 if (k === data.length - 1) {
                   typeIndex.push(data.length) // 把每一个类型下面数据长度存起来
@@ -275,10 +275,21 @@ export default {
                   PROCESS: ss.PROCESS
                 })
               })
+            } else { // 如果没治理设备
+              getDate.push({ // 这里是表格得展示数据
+                comName: v.comName,
+                id: v.id,
+                groupName: subV.groupName,
+                scData: subV.scData
+
+              })
+              var x = 1
+              nameIndex.push(x)
+              typeIndex.push(x)
             }
           })
         } else {
-          getDate.push({ // 这里是表格得展示数据
+          getDate.push({ // //如果没有生产线
             comName: v.comName,
             comShortName: v.comShortName,
             id: v.id

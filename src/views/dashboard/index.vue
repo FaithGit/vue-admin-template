@@ -17,16 +17,16 @@
       <el-col :span="10">
         <div class="comBlock" style="background:#42b983">
           <div class="comTitle" style="text-align:left;margin-bottom:50px"> <svg-icon icon-class="powers" style="margin:0 5px" />用电情况<br></div>
-          <el-col :span="6" class="comTitle"> 今日产污设施用电量<br>
+          <el-col :span="6" class="comTitle"> <span class="bigtitle">今日产污设施用电量</span><br>
             <span class="timeNum"> {{ todayScTotal }}kW·h </span>
           </el-col>
-          <el-col :span="6" class="comTitle whiteBorder"> 今日治污设施用电量<br>
+          <el-col :span="6" class="comTitle whiteBorder"> <span class="bigtitle">今日治污设施用电量</span><br>
             <span class="timeNum"> {{ todayZlTotal }}kW·h</span>
           </el-col>
           <el-col :span="6" class="comTitle whiteBorderRight"> <span class="bigtitle">年度产污设施用电量</span><br>
             <span class="timeNum"> {{ yearScTotal }}kW·h </span>
           </el-col>
-          <el-col :span="6" class="comTitle"> 年度治污设施用电量<br>
+          <el-col :span="6" class="comTitle"> <span class="bigtitle">年度治污设施用电量</span><br>
             <span class="timeNum"> {{ yearZlTotal }}kw </span>
           </el-col>
         </div>
@@ -217,15 +217,22 @@ export default {
     forId: function(index) {
       return 'geo_' + index
     },
+    allResize() {
+      for (var i = 0; i < this.getId.length; i++) {
+        // console.log(i)
+        this.getId[i].resize()
+      }
+    },
     mapTree() {
       this.$nextTick(function() {
         for (var i = 0; i < this.xhList.length; i++) {
-          console.log(i)
+          console.log('i' + i)
           this.getId.push(echarts.init(document.getElementById('geo_' + i)))
           const xAxisData = this.xhList[i].dataTime
           var fuseries = []
 
           for (var j = 0; j < this.xhList[i].dataList.length; j++) {
+            console.log('j' + j)
             fuseries.push({
               name: this.xhList[i].deviceName[j],
               data: this.xhList[i].dataList[j],
@@ -344,6 +351,7 @@ export default {
             'series': fuseries
           })
         }
+        window.addEventListener('resize', () => { this.allResize() })
       })
     }
 
@@ -370,7 +378,7 @@ box-shadow: 4px 4px 40px rgba(0,0,0,.05);
   padding: 15px;
   text-align: center;
   line-height: 35px;
-  @media screen and (max-width: 1888px){
+  @media screen and (max-width: 1700px){
     font-size: 12px;
   }
 }
@@ -394,19 +402,15 @@ box-shadow: 4px 4px 40px rgba(0,0,0,.05);
   font-weight: bold;
 }
 .bigtitle{
-    font-size: 13px;
-    letter-spacing: 0px;
-  @media screen and (min-width: 1633px){
-      font-size: 14px;
-      letter-spacing: -1px;
-  }
-  @media screen and (max-width: 1480px){
+  @media screen and (max-width: 1890px){
       font-size: 13px;
       letter-spacing: -1px;
   }
-    @media screen and (min-width: 1700px){
-      font-size: 16px;
+  @media screen and (max-width: 1543px){
+    font-size: 14px;
+    letter-spacing: 2px;
   }
+
 }
 .floatError{
   position: relative;

@@ -28,10 +28,8 @@
     </div>
     <div class="right">
       <div class="weatherPostiton">
-        <iframe allowtransparency="true" frameborder="0" width="410" height="96" scrolling="no" src="//tianqi.2345.com/plugin/widget/index.htm?s=2&z=3&t=0&v=0&d=3&bd=0&k=&f=ffffff&ltf=009944&htf=cc0000&q=1&e=0&a=0&c=60160&w=450&h=96&align=center" />
-        <!-- <div class="bkWeather" />
-        <div id="he-plugin-standard" /> -->
-      </div>
+        <!-- <iframe allowtransparency="true" frameborder="0" width="410" height="96" scrolling="no" src="//tianqi.2345.com/plugin/widget/index.htm?s=2&z=3&t=0&v=0&d=3&bd=0&k=&f=ffffff&ltf=009944&htf=cc0000&q=1&e=0&a=0&c=60160&w=450&h=96&align=center" /> -->
+        <iframe allowtransparency="true" frameborder="0" width="410" height="96" scrolling="no" src="//tianqi.2345.com/plugin/widget/index.htm?s=2&z=1&t=0&v=0&d=3&bd=0&k=&f=ffffff&ltf=009944&htf=cc0000&q=1&e=1&a=0&c=58452&w=385&h=96&align=center" />      </div>
 
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
         <div style=" color: white;margin-bottom: 10px;">用户登录</div>
@@ -105,7 +103,7 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined,
+      // redirect: undefined,
       swiperOption: {
         autoplay: 5000,
         autoplayDisableOnInteraction: false,
@@ -114,14 +112,14 @@ export default {
       }
     }
   },
-  watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
-  },
+  // watch: {
+  //   $route: {
+  //     handler: function(route) {
+  //       this.redirect = route.query && route.query.redirect
+  //     },
+  //     immediate: true
+  //   }
+  // },
   created() {
     window.WIDGET = {
       CONFIG: {
@@ -162,7 +160,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then((res) => {
-            this.$router.push({ path: this.redirect || '/' })
+            this.$router.push({ path: '/' })
             this.loading = false
           }).catch(() => {
             this.loading = false

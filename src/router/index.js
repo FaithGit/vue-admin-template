@@ -56,7 +56,8 @@ export const constantRoutes = [
       path: 'home',
       component: () => import('@/views/home/index')
     }]
-  }
+  },
+  { path: '*', redirect: '/404', hidden: true }
 
 ]
 
