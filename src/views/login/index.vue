@@ -121,28 +121,28 @@ export default {
   //   }
   // },
   created() {
-    window.WIDGET = {
-      CONFIG: {
-        'layout': 1,
-        'width': '450',
-        'height': '150',
-        'background': 1,
-        'dataColor': 'FFFFFF',
-        'borderRadius': 5,
-        'city': 'CN101210305',
-        'key': '24990edf2cef4a9ab7598682f12d5e52'
-      }
-    };
-    (function(d) {
-      var cs = d.createElement('link')
-      cs.rel = 'stylesheet'
-      cs.href = 'https://apip.weatherdt.com/view/static/css/tqw_widget_view.css?v=0101'
-      var s = d.createElement('script')
-      s.src = 'https://widget.heweather.net/standard/static/js/he-standard-common.js?v=1.1'
-      var sn = d.getElementsByTagName('script')[0]
-      sn.parentNode.insertBefore(cs, sn)
-      sn.parentNode.insertBefore(s, sn)
-    })(document)
+    // window.WIDGET = {
+    //   CONFIG: {
+    //     'layout': 1,
+    //     'width': '450',
+    //     'height': '150',
+    //     'background': 1,
+    //     'dataColor': 'FFFFFF',
+    //     'borderRadius': 5,
+    //     'city': 'CN101210305',
+    //     'key': '24990edf2cef4a9ab7598682f12d5e52'
+    //   }
+    // };
+    // (function(d) {
+    //   var cs = d.createElement('link')
+    //   cs.rel = 'stylesheet'
+    //   cs.href = 'https://apip.weatherdt.com/view/static/css/tqw_widget_view.css?v=0101'
+    //   var s = d.createElement('script')
+    //   s.src = 'https://widget.heweather.net/standard/static/js/he-standard-common.js?v=1.1'
+    //   var sn = d.getElementsByTagName('script')[0]
+    //   sn.parentNode.insertBefore(cs, sn)
+    //   sn.parentNode.insertBefore(s, sn)
+    // })(document)
   },
   methods: {
     showPwd() {

@@ -74,7 +74,6 @@
       <el-table-column label="时间" align="center" width="154px">
         <template slot-scope="scope">
           <div v-if="scope.row.data_time">
-            <svg-icon icon-class="anpei" />
             {{ scope.row.data_time }}
           </div>
           <div v-else>

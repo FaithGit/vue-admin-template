@@ -69,6 +69,7 @@ const actions = {
     commit('RESET_ROLES')
     removeToken()
     resetRouter()
+    window.location.reload()
     // return new Promise((resolve, reject) => {
     //   logout(state.token).then(() => {
     //     commit('SET_TOKEN', '')

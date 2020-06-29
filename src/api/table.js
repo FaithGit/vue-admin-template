@@ -244,3 +244,17 @@ export function findUseElcByGroup(data) { // 查询企业生产治理用电根�
     data
   })
 }
+export function findComDeviceRealData(data) { // 企业设备实时状态
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findComDeviceRealData',
+    method: 'POST',
+    data
+  })
+}
+export function findComDeviceWarRange(data) { // 企业设备异常次数排名
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findComDeviceWarRange',
+    method: 'POST',
+    data
+  })
+}
