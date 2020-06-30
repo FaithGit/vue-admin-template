@@ -54,8 +54,12 @@
           <swiper v-else ref="swiperList" :options="swiperOption" style="width:100%;height:374px;">
             <swiper-slide v-for="(sw,swIndex) in swiperList" :key="'sw'+swIndex">
               <div class="innerSwiper">
-                <el-col :span="12" class="swiperCol"> 设备名称<br>{{ sw.deviceName }}</el-col>
-                <el-col :span="12" class="swiperCol"> 设备类型<br>{{ sw.processName }}</el-col>
+                <el-col :span="12" class="swiperCol" style="margin-top:20px"> <svg-icon icon-class="name" style="margin: 0 5px;" />设备名称<br>
+                  <span class="font15">{{ sw.deviceName }}</span>
+                </el-col>
+                <el-col :span="12" class="swiperCol" style="margin-top:20px"> <svg-icon icon-class="type" style="margin: 0 5px;" />设备类型<br>
+                  <span class="font15">{{ sw.processName }}</span>
+                </el-col>
                 <el-col :span="12" class="swiperCol">  A相电流：{{ sw.aCurrent }} <svg-icon icon-class="anpei" /></el-col>
                 <el-col :span="12" class="swiperCol"> A相电压：{{ sw.aVoltage }} <svg-icon icon-class="dianya" /></el-col>
                 <el-col :span="12" class="swiperCol"> B相电流：{{ sw.bCurrent }} <svg-icon icon-class="anpei" /></el-col>
@@ -74,7 +78,7 @@
       </el-col>
       <el-col :span="9" style="margin-top:20px;">
         <div style="background:white;height:412px">
-          <div class="qyTitle">
+          <!-- <div class="qyTitle">
             企业设备异常次数排名
           </div>
           <el-row v-if="warnList.length!==0" :gutter="20" style="text-align:center">
@@ -88,8 +92,8 @@
           </el-row>
           <div v-else class="noData">
             暂无数据
-          </div>
-
+          </div> -->
+          <x-chart id="highcharts" class="high" :option="option" />
           <!-- <createHour :datatime="dataTime" :datalist="dataList" :devicename="deviceName" /> -->
         </div>
       </el-col>
@@ -112,16 +116,20 @@
 </template>
 
 <script>
+
 var echarts = require('echarts')
 import { findComBasicData, findComElc, findUseElcByGroup, findComDeviceRealData, findComDeviceWarRange } from '@/api/table'
 import { getToken } from '@/utils/auth'
 // import createHour from './components/createHour'
+import XChart from '@/components/charts'
 import error from './components/error'
+
 export default {
   name: 'Dashboard',
   components: {
     // createHour,
-    error
+    error,
+    XChart
   },
   data() {
     return {
@@ -152,6 +160,8 @@ export default {
       getId: [],
       swiperList: [],
       warnList: [],
+      option: {
+      },
       colorArry: [
         '#123dac',
         '#73e2e2',
@@ -262,7 +272,58 @@ export default {
     findComDeviceWarRange({
       token: getToken()
     }).then(res => {
-      this.warnList = res.retData
+      var _obj = {
+        credits: {
+          enabled: false
+        },
+        chart: {
+          type: 'packedbubble',
+          height: '412px'
+        },
+        title: {
+          text: '企业设备异常次数排名',
+          y: 20,
+          style: {
+            'fontSize': '16px'
+          }
+        },
+        tooltip: {
+          useHTML: true,
+          pointFormat: '<b>{point.name}:</b> {point.y}次'
+        },
+        plotOptions: {
+          packedbubble: {
+            minSize: '30%',
+            maxSize: '120%',
+            zMin: 0,
+            zMax: 1000,
+            layoutAlgorithm: {
+              gravitationalConstant: 0.02,
+              splitSeries: false,
+              seriesInteraction: true,
+              dragBetweenSeries: true,
+              parentNodeLimit: true
+            },
+            dataLabels: {
+              enabled: true,
+              format: '{point.name}',
+              filter: {
+                property: 'y',
+                operator: '>',
+                value: 250
+              },
+              style: {
+                color: 'black',
+                textOutline: 'none',
+                fontWeight: 'normal'
+              }
+            }
+          }
+        },
+        series: []
+      }
+      _obj.series = res.retData
+      this.option = _obj
     })
     findUseElcByGroup({
       token: getToken()
@@ -522,5 +583,8 @@ box-shadow: 4px 4px 40px rgba(0,0,0,.05);
 }
 .swiper-pagination{
       bottom: 20px;
+}
+.font15{
+  font-size: 15px;
 }
 </style>
