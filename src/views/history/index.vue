@@ -33,165 +33,171 @@
       <el-button type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
       <el-button type="primary" icon="el-icon-refresh-right" @click="searchClickReset">重置</el-button>
     </div>
+    <el-tabs v-model="activeName" type="card" class="elTab">
+      <el-tab-pane label="表格" name="first">
+        <el-table v-loading="loadable" border :data="tableData" style="margin:10px 0px 0px 0px">
+          <el-table-column
+            type="index"
+            width="50"
+            label="#"
+            align="center"
+          />
+          <el-table-column label="设备名称" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.device_name }}
+            </template>
+          </el-table-column>
+          <el-table-column label="企业名称" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.com_name }}
+            </template>
+          </el-table-column>
+          <el-table-column label="类型" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.device_type">
+                {{ scope.row.device_type }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="生产线组号" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.group_name">
+                {{ scope.row.group_name }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="时间" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.data_time">
+                {{ scope.row.data_time }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="deviceStyles=='1'" key="1" label="开启状态" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.switch_data">
+                {{ scope.row.switch_data==true?'开':'关' }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="deviceStyles=='1'" key="2" label="生产温度" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.pro_tem">
+                <svg-icon icon-class="tem" />
+                {{ scope.row.pro_tem }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="deviceStyles=='1'" key="3" label="功率" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.active_power">
+                <svg-icon icon-class="powerss" />
+                {{ scope.row.active_power }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="deviceStyles=='2'" key="4" label="水喷淋" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.water_spray">
+                <svg-icon icon-class="water_switch" :class="[scope.row.water_spray!==true?'redSvg':'greenSvg']" />
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="deviceStyles=='2'" key="5" label="风机电流" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.fans_current">
+                <svg-icon icon-class="anpei" />
+                {{ scope.row.fans_current }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="deviceStyles=='2'" key="6" label="风机负荷" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.fans_load">
+                <svg-icon icon-class="fuhe" />
+                {{ scope.row.fans_load }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="deviceStyles=='2'" key="7" label="风量" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.fans_volume">
+                <svg-icon icon-class="fan" />
+                {{ scope.row.fans_volume }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
 
-    <el-table v-loading="loadable" border :data="tableData" style="margin:10px 0px 0px 0px">
-      <el-table-column
-        type="index"
-        width="50"
-        label="#"
-        align="center"
-      />
-      <el-table-column label="设备名称" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.device_name }}
-        </template>
-      </el-table-column>
-      <el-table-column label="企业名称" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.com_name }}
-        </template>
-      </el-table-column>
-      <el-table-column label="类型" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.device_type">
-            {{ scope.row.device_type }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="生产线组号" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.group_name">
-            {{ scope.row.group_name }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="时间" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.data_time">
-            {{ scope.row.data_time }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="deviceStyles=='1'" key="1" label="开启状态" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.switch_data">
-            {{ scope.row.switch_data==true?'开':'关' }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="deviceStyles=='1'" key="2" label="生产温度" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.pro_tem">
-            <svg-icon icon-class="tem" />
-            {{ scope.row.pro_tem }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="deviceStyles=='1'" key="3" label="功率" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.active_power">
-            <svg-icon icon-class="powerss" />
-            {{ scope.row.active_power }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="deviceStyles=='2'" key="4" label="水喷淋" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.water_spray">
-            <svg-icon icon-class="water_switch" :class="[scope.row.water_spray!==true?'redSvg':'greenSvg']" />
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="deviceStyles=='2'" key="5" label="风机电流" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.fans_current">
-            <svg-icon icon-class="anpei" />
-            {{ scope.row.fans_current }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="deviceStyles=='2'" key="6" label="风机负荷" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.fans_load">
-            <svg-icon icon-class="fuhe" />
-            {{ scope.row.fans_load }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="deviceStyles=='2'" key="7" label="风量" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.fans_volume">
-            <svg-icon icon-class="fan" />
-            {{ scope.row.fans_volume }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
+          <el-table-column v-if="deviceStyles=='2'" key="8" label="净化器电流" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.purifier_current">
+                <svg-icon icon-class="anpei" />
+                {{ scope.row.purifier_current }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="deviceStyles=='2'" key="9" label="净化负荷" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.purifier_load">
+                <svg-icon icon-class="fuhe" />
+                {{ scope.row.purifier_load }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="deviceStyles=='2'" key="10" label="功率" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.active_power">
+                <svg-icon icon-class="powerss" />
+                {{ scope.row.active_power }}
+              </div>
+              <div v-else>
+                /
+              </div>
+            </template>
+          </el-table-column>
 
-      <el-table-column v-if="deviceStyles=='2'" key="8" label="净化器电流" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.purifier_current">
-            <svg-icon icon-class="anpei" />
-            {{ scope.row.purifier_current }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="deviceStyles=='2'" key="9" label="净化负荷" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.purifier_load">
-            <svg-icon icon-class="fuhe" />
-            {{ scope.row.purifier_load }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="deviceStyles=='2'" key="10" label="功率" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.active_power">
-            <svg-icon icon-class="powerss" />
-            {{ scope.row.active_power }}
-          </div>
-          <div v-else>
-            /
-          </div>
-        </template>
-      </el-table-column>
-
-    </el-table>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="图表化" name="second">
+        <charts v-if="activeName=='second'" :tabledata="tableData" style="height:900px" />
+      </el-tab-pane>
+    </el-tabs>
     <el-pagination
       :current-page="pageIndex"
       :page-sizes="[10,20,30,50]"
@@ -209,9 +215,13 @@
 import { findData, selectByComId, findDataHistory } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import { DateHandle } from '@/utils/validate'
+import charts from './components/charts'
 
 export default {
   name: 'History',
+  components: {
+    charts
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -224,6 +234,7 @@ export default {
   },
   data() {
     return {
+      activeName: 'first',
       deviceStyle: '',
       deviceStyles: '',
       list: null,
@@ -284,7 +295,6 @@ export default {
     this.init()
   },
   methods: {
-
     handleSizeChange(val) {
       this.pageSize = val
       this.findDataHistory()
@@ -394,6 +404,7 @@ export default {
       }
     },
     init() {
+      // 判断是否传参进入
       if (this.$route.params.comId && this.$route.params.device_id && this.$route.params.device_name && this.$route.params.style) {
         findData({
           'token': getToken(),
@@ -437,6 +448,7 @@ export default {
           })
         })
       } else {
+        // 正常进入
         findData({
           'token': getToken(),
           comName: '',
@@ -497,5 +509,8 @@ export default {
 .paginationStyle{
  text-align: center;
  margin: 15px 0;
+}
+.elTab{
+  margin-top:10px
 }
 </style>

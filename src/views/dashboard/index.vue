@@ -281,7 +281,7 @@ export default {
           height: '412px'
         },
         title: {
-          text: '企业设备异常次数排名',
+          text: '企业设备异常次数',
           y: 20,
           style: {
             'fontSize': '16px'

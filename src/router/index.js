@@ -165,6 +165,19 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/person',
+    component: Layout,
+    meta: { title: '图像上传', roles: ['kf'], icon: 'seacher' },
+    children: [
+      {
+        path: 'index',
+        name: 'Person',
+        component: () => import('@/views/Person/index'),
+        meta: { title: '图像上传', icon: 'history', roles: ['kf'] }
+      }
+    ]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
