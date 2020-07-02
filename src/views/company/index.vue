@@ -215,8 +215,11 @@
             <el-form-item label="上传企业图片">
 
               <el-button v-show="companyForm.comImage==''" type="primary" @click="toggleShow">上传<i class="el-icon-upload el-icon--right" /></el-button>
+              <div v-if="companyForm.comImage!=''" class="imgBox">
+                <i class="el-icon-close innerImgClose" @click="delPic" />
+                <img :src="companyForm.comImage" style="box-shadow: 1px 1px 4px rgba(0,0,0,0.4);">
+              </div>
 
-              <img :src="companyForm.comImage" class="imgBox">
               <my-upload
                 v-model="show"
                 field="file"
@@ -249,7 +252,7 @@
   </div>
 </template>
 <script>
-import { findData, selectAllCom, addCom, deleteCom, updateCom, deleteSmsPerson } from '@/api/table'
+import { findData, selectAllCom, addCom, deleteCom, updateCom, deleteSmsPerson, deletePicture } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import hyType from '@/utils/type.json'
 import ElSelectTree from 'el-select-tree'
@@ -378,6 +381,19 @@ export default {
   methods: {
     toggleShow() {
       this.show = !this.show
+    },
+    // 删除图片
+    delPic() {
+      const str = this.companyForm.comImage
+      deletePicture({
+        'fileName': str.substr(str.lastIndexOf('/') + 1) // 截取文件名
+      }).then(res => {
+        this.companyForm.comImage = ''
+        this.$message({
+          type: 'success',
+          message: '图片删除'
+        })
+      })
     },
     /**
 			 * crop success
@@ -602,6 +618,13 @@ export default {
     padding: 20px;
 }
 .imgBox{
-  box-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+  position: relative;
+  display: inline-block;
+}
+.innerImgClose{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 26px;
 }
 </style>

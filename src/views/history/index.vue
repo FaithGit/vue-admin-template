@@ -341,7 +341,16 @@ export default {
       })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
+      return jsonData.map(v => filterVal.map(j => {
+        if (v[j] === true) {
+          v[j] = '开'
+        } else if (v[j] === false) {
+          v[j] = '关'
+        } else if (v[j] === undefined) {
+          v[j] = undefined
+        }
+        return v[j]
+      }))
     },
     handleSizeChange(val) {
       this.pageSize = val

@@ -258,3 +258,10 @@ export function findComDeviceWarRange(data) { // 企业设备异常次数排名
     data
   })
 }
+export function deletePicture(data) { // 删除图片
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/deletePicture',
+    method: 'POST',
+    data
+  })
+}

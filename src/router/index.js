@@ -168,6 +168,7 @@ export const asyncRoutes = [
   {
     path: '/person',
     component: Layout,
+    hidden: true,
     meta: { title: '图像上传', roles: ['kf'], icon: 'seacher' },
     children: [
       {
