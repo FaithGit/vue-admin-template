@@ -208,6 +208,19 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <div class="daochu">
+      <span>文件格式：</span>
+      <el-select v-model="bookType" placeholder="请选择" size="small">
+        <el-option label="xlsx" value="xlsx" />
+        <el-option label="csv" value="csv" />
+        <el-option label="txt" value="txt" />
+      </el-select>
+      <el-button v-if="deviceStyles==2" size="small" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownloadAll">
+        单页导出
+      </el-button>
+      <el-button v-else size="small" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload"> 单页导出</el-button>
+    </div>
+
   </div>
 </template>
 
@@ -234,6 +247,7 @@ export default {
   },
   data() {
     return {
+      bookType: 'xlsx',
       activeName: 'first',
       deviceStyle: '',
       deviceStyles: '',
@@ -295,6 +309,40 @@ export default {
     this.init()
   },
   methods: {
+    // 导出excel
+    handleDownloadAll() {
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['设备名称', '企业名称', '类型', '生产线组号', '时间', '水喷淋', '风机电流', '风机负荷', '风量', '净化器电流', '净化负荷', '功率'] // 表头名称
+        const filterVal = ['device_name', 'com_name', 'device_type', 'group_name', 'data_time', 'water_spray', 'fans_current', 'fans_load', 'fans_volume', 'purifier_current', 'purifier_load', 'active_power'] // 对应的字段v
+        const list = this.tableData
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename,
+          autoWidth: true,
+          bookType: this.bookType || 'xlsx'
+        })
+      })
+    },
+    handleDownload() {
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['设备名称', '企业名称', '类型', '生产线组号', '时间', '开启状态', '生产温度', '功率'] // 表头名称
+        const filterVal = ['device_name', 'com_name', 'device_type', 'group_name', 'data_time', 'switch_data', 'pro_tem', 'active_power']
+        const list = this.tableData
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename,
+          autoWidth: true,
+          bookType: this.bookType || 'xlsx'
+        })
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
+    },
     handleSizeChange(val) {
       this.pageSize = val
       this.findDataHistory()
@@ -512,5 +560,15 @@ export default {
 }
 .elTab{
   margin-top:10px
+}
+.daochu{
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  position: absolute;
+  top: 74px;
+  right: 22px;
+  font-size: 14px;
+  font-weight: 500;
 }
 </style>
