@@ -211,6 +211,28 @@
               </div>
             </el-form-item>
           </el-col>
+          <el-col :span="24">
+            <el-form-item label="上传企业图片">
+
+              <el-button v-show="companyForm.comImage==''" type="primary" @click="toggleShow">上传<i class="el-icon-upload el-icon--right" /></el-button>
+
+              <img :src="companyForm.comImage" class="imgBox">
+              <my-upload
+                v-model="show"
+                field="file"
+                :width="500"
+                :height="300"
+                url="http://47.96.147.99:8081/hbjk/addPicture"
+                :params="params"
+                :headers="headers"
+                img-format="png"
+                :lang-ext="langExt"
+                @crop-success="cropSuccess"
+                @crop-upload-success="cropUploadSuccess"
+                @crop-upload-fail="cropUploadFail"
+              />
+            </el-form-item>
+          </el-col>
 
         </el-row>
 
@@ -231,10 +253,12 @@ import { findData, selectAllCom, addCom, deleteCom, updateCom, deleteSmsPerson }
 import { getToken } from '@/utils/auth'
 import hyType from '@/utils/type.json'
 import ElSelectTree from 'el-select-tree'
+import myUpload from 'vue-image-crop-upload'
 export default {
   name: 'Company',
   components: {
-    ElSelectTree
+    ElSelectTree,
+    myUpload
   },
   data() {
     var moblie = (rule, value, callback) => {
@@ -245,6 +269,33 @@ export default {
       }
     }
     return {
+      show: false,
+      params: {
+
+      },
+      headers: {
+        smail: '*_~'
+      },
+      imgDataUrl: '',
+      langExt: {
+        hint: '点击，或拖动图片至此处',
+        loading: '正在上传……',
+        noSupported: '浏览器不支持该功能，请使用IE10以上或其他现在浏览器！',
+        success: '上传成功',
+        fail: '图片上传失败',
+        preview: '图片预览',
+        btn: {
+          off: '取消',
+          close: '关闭',
+          back: '上一步',
+          save: '保存'
+        },
+        error: {
+          onlyImg: '仅限图片格式',
+          outOfSize: '单文件大小不能超过 ',
+          lowestPx: '图片最低像素为（宽*高）：'
+        }
+      },
       com: '',
       comList: [],
       searchReal: '',
@@ -325,6 +376,42 @@ export default {
     // })
   },
   methods: {
+    toggleShow() {
+      this.show = !this.show
+    },
+    /**
+			 * crop success
+			 *
+			 * [param] imgDataUrl
+			 * [param] field
+			 */
+    cropSuccess(imgDataUrl, field) {
+      console.log('-------- crop success --------')
+      // this.imgDataUrl = imgDataUrl
+    },
+    /**
+			 * upload success
+			 *
+			 * [param] jsonData   服务器返回数据，已进行json转码
+			 * [param] field
+			 */
+    cropUploadSuccess(jsonData, field) {
+      console.log('-------- upload success --------')
+      console.log(jsonData.retData)
+      this.companyForm.comImage = jsonData.retData
+      // console.log('field: ' + field)
+    },
+    /**
+			 * upload fail
+			 *
+			 * [param] status    server api return error status, like 500
+			 * [param] field
+			 */
+    cropUploadFail(status, field) {
+      console.log('-------- upload fail --------')
+      console.log(status)
+      console.log('field: ' + field)
+    },
     selectAllCom() {
       // this.loadable = true
       selectAllCom({
@@ -370,7 +457,8 @@ export default {
           smsPerson: '',
           smsPersonTel: '',
           remark: ''
-        }]
+        }],
+        comImage: ''
       }
       this.showUpdata = false
     },
@@ -446,7 +534,8 @@ export default {
         envPersonTel: item.envPersonTel,
         busName: item.busName,
         smsStatus: item.smsStatus,
-        sysSmsPersons: item.sysSmsPersons
+        sysSmsPersons: item.sysSmsPersons,
+        comImage: item.comImage
       }
     },
     handleDelete(index, item) {
@@ -511,5 +600,8 @@ export default {
 <style lang="scss" scoped>
 .app-container {
     padding: 20px;
+}
+.imgBox{
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.4);
 }
 </style>

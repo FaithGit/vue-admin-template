@@ -10,6 +10,7 @@
       :params="params"
       :headers="headers"
       img-format="png"
+      :lang-ext="langExt"
       @crop-success="cropSuccess"
       @crop-upload-success="cropUploadSuccess"
       @crop-upload-fail="cropUploadFail"
@@ -34,7 +35,26 @@ export default {
       headers: {
         smail: '*_~'
       },
-      imgDataUrl: ''
+      imgDataUrl: '',
+      langExt: {
+        hint: '点击，或拖动图片至此处',
+        loading: '正在上传……',
+        noSupported: '浏览器不支持该功能，请使用IE10以上或其他现在浏览器！',
+        success: '上传成功',
+        fail: '图片上传失败',
+        preview: '图片预览',
+        btn: {
+          off: '取消',
+          close: '关闭',
+          back: '上一步',
+          save: '保存'
+        },
+        error: {
+          onlyImg: '仅限图片格式',
+          outOfSize: '单文件大小不能超过 ',
+          lowestPx: '图片最低像素为（宽*高）：'
+        }
+      }
     }
   },
   methods: {
