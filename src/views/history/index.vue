@@ -195,7 +195,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="图表化" name="second">
-        <charts v-if="activeName=='second'" :tabledata="tableData" style="height:900px" />
+        <charts v-if="activeName=='second'" :tabledata="tableData" :device-styles="deviceStyles" style="height:900px" />
       </el-tab-pane>
     </el-tabs>
     <el-pagination

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="tabledata.length!=0" id="historyCharts" style="height:100%" />
+    <div id="historyCharts" style="height:100%" />
   </div>
 
 </template>
@@ -11,6 +11,10 @@ export default {
   props: {
     tabledata: {
       type: Array,
+      required: true
+    },
+    deviceStyles: {
+      type: String,
       required: true
     }
   },
@@ -27,15 +31,153 @@ export default {
   },
   methods: {
     drawChart() {
+      const colorList = ['#9E87FF', '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', '#f10948', '#0E67FF']
       console.log('执行了吗')
+      console.log('deviceStyles', this.deviceStyles)
       const timeArr = []
-      const shujuArr = []
-      for (var i = this.tabledata.length - 1; i >= 0; i--) {
-        timeArr.push(this.tabledata[i].data_time)
-        shujuArr.push(this.tabledata[i].data_time)
+      var series = []
+      if (this.deviceStyles === '1') {
+        const temArr = []
+        const powerArr = []
+        for (var i = this.tabledata.length - 1; i >= 0; i--) {
+          timeArr.push(this.tabledata[i].data_time)
+          temArr.push(this.tabledata[i].pro_tem === undefined ? 0 : this.tabledata[i].pro_tem)
+          powerArr.push(this.tabledata[i].active_power === undefined ? 0 : this.tabledata[i].active_power)
+        }
+        series = [
+          {
+            name: '功率',
+            type: 'line',
+            data: powerArr,
+            symbol: 'circle',
+            smooth: true,
+            showSymbol: false,
+            itemStyle: {
+              normal: {
+                color: colorList[0],
+                borderColor: colorList[0]
+              }
+            }
+          },
+          {
+            name: '生产温度',
+            type: 'line',
+            data: temArr,
+            symbol: 'circle',
+            smooth: true,
+            showSymbol: false,
+            itemStyle: {
+              normal: {
+                color: colorList[1],
+                borderColor: colorList[1]
+              }
+            }
+          }
+        ]
+      } else if (this.deviceStyles === '2') {
+        const fansArr = []
+        const fansLoadArr = []
+        const fansVolumeArr = []
+        const purifierArr = []
+        const purifierLoadArr = []
+        const powerArr = []
+        for (var j = this.tabledata.length - 1; j >= 0; j--) {
+          timeArr.push(this.tabledata[j].data_time)
+          fansArr.push(this.tabledata[j].fans_current === undefined ? 0 : this.tabledata[j].fans_current)
+          fansLoadArr.push(this.tabledata[j].fans_load === undefined ? 0 : this.tabledata[j].fans_load)
+          fansVolumeArr.push(this.tabledata[j].fans_volume === undefined ? 0 : this.tabledata[j].fans_volume)
+          purifierArr.push(this.tabledata[j].purifier_current === undefined ? 0 : this.tabledata[j].purifier_current)
+          purifierLoadArr.push(this.tabledata[j].purifier_load === undefined ? 0 : this.tabledata[j].purifier_load)
+          powerArr.push(this.tabledata[j].active_power === undefined ? 0 : this.tabledata[j].active_power)
+        }
+        series = [
+          {
+            name: '风机电流',
+            type: 'line',
+            data: fansArr,
+            symbol: 'circle',
+            smooth: true,
+            showSymbol: false,
+            itemStyle: {
+              normal: {
+                color: colorList[1],
+                borderColor: colorList[1]
+              }
+            }
+          },
+          {
+            name: '风机负荷',
+            type: 'line',
+            data: fansLoadArr,
+            symbol: 'circle',
+            smooth: true,
+            showSymbol: false,
+            itemStyle: {
+              normal: {
+                color: colorList[2],
+                borderColor: colorList[2]
+              }
+            }
+          },
+          {
+            name: '风量',
+            type: 'line',
+            data: fansVolumeArr,
+            symbol: 'circle',
+            smooth: true,
+            showSymbol: false,
+            itemStyle: {
+              normal: {
+                color: colorList[3],
+                borderColor: colorList[3]
+              }
+            }
+          },
+          {
+            name: '净化器电流',
+            type: 'line',
+            data: purifierArr,
+            symbol: 'circle',
+            smooth: true,
+            showSymbol: false,
+            itemStyle: {
+              normal: {
+                color: colorList[4],
+                borderColor: colorList[4]
+              }
+            }
+          },
+          {
+            name: '净化负荷',
+            type: 'line',
+            data: purifierLoadArr,
+            symbol: 'circle',
+            smooth: true,
+            showSymbol: false,
+            itemStyle: {
+              normal: {
+                color: colorList[5],
+                borderColor: colorList[5]
+              }
+            }
+          },
+          {
+            name: '功率',
+            type: 'line',
+            data: powerArr,
+            symbol: 'circle',
+            smooth: true,
+            showSymbol: false,
+            itemStyle: {
+              normal: {
+                color: colorList[0],
+                borderColor: colorList[0]
+              }
+            }
+          }
+        ]
       }
 
-      const colorList = ['#9E87FF', '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', '#f10948', '#0E67FF']
       var historyCharts = echarts.init(document.getElementById('historyCharts'))
       var option = {
         backgroundColor: '#fff',
@@ -137,106 +279,7 @@ export default {
             show: false
           }
         }],
-        series: [{
-          name: '风机电流',
-          type: 'line',
-          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          symbolSize: 1,
-          symbol: 'circle',
-          smooth: true,
-          showSymbol: false,
-          itemStyle: {
-            normal: {
-              color: colorList[1],
-              borderColor: colorList[1]
-            }
-          }
-        },
-        {
-          name: '水喷淋',
-          type: 'line',
-          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          symbol: 'circle',
-          smooth: true,
-          showSymbol: false,
-          itemStyle: {
-            normal: {
-              color: colorList[2],
-              borderColor: colorList[2]
-            }
-          }
-        },
-        {
-          name: '风机负荷',
-          type: 'line',
-          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          symbol: 'circle',
-          smooth: true,
-          showSymbol: false,
-          itemStyle: {
-            normal: {
-              color: colorList[3],
-              borderColor: colorList[3]
-            }
-          }
-        },
-        {
-          name: '风量',
-          type: 'line',
-          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          symbol: 'circle',
-          smooth: true,
-          showSymbol: false,
-          itemStyle: {
-            normal: {
-              color: colorList[4],
-              borderColor: colorList[4]
-            }
-          }
-        },
-        {
-          name: '净化器电流',
-          type: 'line',
-          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          symbol: 'circle',
-          smooth: true,
-          showSymbol: false,
-          itemStyle: {
-            normal: {
-              color: colorList[5],
-              borderColor: colorList[5]
-            }
-          }
-        },
-        {
-          name: '净化负荷',
-          type: 'line',
-          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          symbol: 'circle',
-          smooth: true,
-          showSymbol: false,
-          itemStyle: {
-            normal: {
-              color: colorList[6],
-              borderColor: colorList[6]
-            }
-          }
-        },
-        {
-          name: '功率',
-          type: 'line',
-          data: [33.48, 33.52, 33.49, 33.47, 33.47, 33.45, 33.62, 33.52, 33.54, 33.6],
-          symbol: 'circle',
-          smooth: true,
-          showSymbol: false,
-          itemStyle: {
-            normal: {
-              color: colorList[0],
-              borderColor: colorList[0]
-            }
-          }
-        }
-        ]
+        series: series
       }
       historyCharts.setOption(option)
       // window.onresize = myChart3.resize
