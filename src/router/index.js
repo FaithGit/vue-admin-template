@@ -91,12 +91,24 @@ export const asyncRoutes = [
   {
     path: '/dashboard',
     component: Layout,
-    meta: { title: '企业首页', icon: 'dashboard', roles: ['qy'] },
+    meta: { title: '企业首页', icon: 'dashboard', roles: ['qy', 'kf'] },
     children: [{
       path: 'index',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '企业首页', icon: 'dashboard', roles: ['qy'] }
+      meta: { title: '企业首页', icon: 'dashboard', roles: ['qy', 'kf'] }
+    }]
+
+  },
+  {
+    path: '/hbj',
+    component: Layout,
+    meta: { title: '环保首页', icon: 'dashboard', roles: ['kf'] },
+    children: [{
+      path: 'index',
+      name: 'Hbj',
+      component: () => import('@/views/hbj/index'),
+      meta: { title: '环保首页', icon: 'dashboard', roles: ['kf'] }
     }]
 
   },

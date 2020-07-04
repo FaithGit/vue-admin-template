@@ -265,3 +265,10 @@ export function deletePicture(data) { // 删除图片
     data
   })
 }
+export function findDeviceNumByProcess(data) { // 环保局管理局首页生产治理设备按工业划分
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findDeviceNumByProcess',
+    method: 'POST',
+    data
+  })
+}
