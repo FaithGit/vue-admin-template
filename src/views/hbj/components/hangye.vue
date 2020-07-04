@@ -21,10 +21,7 @@ export default {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
-        toolbox: {
-          show: true
 
-        },
         legend: {
           type: 'scroll',
           orient: 'vertical',
@@ -38,15 +35,15 @@ export default {
         },
         series: [
           {
-            name: '业务警种',
+            name: '伪数据',
             type: 'pie',
             radius: [0, 80],
 
             data: [
-              { value: 20, name: '国宝' },
-              { value: 30, name: '治安' },
-              { value: 25, name: 'rose3' },
-              { value: 25, name: 'rose4' }
+              { value: 20, name: '伪数据1' },
+              { value: 30, name: '伪数据2' },
+              { value: 25, name: '伪数据3' },
+              { value: 25, name: '伪数据4' }
 
             ]
           }

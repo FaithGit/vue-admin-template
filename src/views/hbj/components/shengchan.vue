@@ -45,6 +45,16 @@ export default {
             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
           }
         },
+        toolbox: {
+          show: true,
+          feature: {
+            // mark: { show: true },
+            // dataView: { show: true, readOnly: false },
+            // magicType: { show: true, type: ['line', 'bar'] },
+            // restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
         grid: {
           left: '3%',
           right: '4%',

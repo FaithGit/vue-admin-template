@@ -55,9 +55,15 @@ export default {
           }
         // name:'记忆轮次'
         },
-        tooltip: {
-          show: true
-
+        toolbox: {
+          show: true,
+          feature: {
+            // mark: { show: true },
+            // dataView: { show: true, readOnly: false },
+            // magicType: { show: true, type: ['line', 'bar'] },
+            // restore: { show: true },
+            saveAsImage: { show: true }
+          }
         },
         grid: {
           left: 170,

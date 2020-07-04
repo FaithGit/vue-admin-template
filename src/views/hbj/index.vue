@@ -26,13 +26,35 @@
 
       <el-col :span="12" style="margin-top:20px;position: relative;">
         <div class="total">
-          检测仪点位：<span class="totalnum">10</span>个
+          检测仪点位：<span class="totalnum">{{ total }}</span>个
         </div>
         <div class="comBlock" style="background:#ffffff;height:400px;color:#000">
           <el-tabs v-model="activeName">
-            <el-tab-pane label="用户管理" name="first" style="height:345px"><shengchan v-if="activeName==='first'" :shengchan-list="shengchanList" /></el-tab-pane>
-            <el-tab-pane label="配置管理" name="second" style="height:345px"><zl v-if="activeName==='second'" :zl-list="zlList" /></el-tab-pane>
+            <el-tab-pane :label="'生产('+scNum+')'" name="first" style="height:345px"><shengchan v-if="activeName==='first'" :shengchan-list="shengchanList" /></el-tab-pane>
+            <el-tab-pane :label="'治理('+zlNum+')'" name="second" style="height:345px"><zl v-if="activeName==='second'" :zl-list="zlList" /></el-tab-pane>
           </el-tabs>
+        </div>
+      </el-col>
+      <el-col :span="12" style="margin-top:20px;">
+        <div class="comBlock" style="height:400px;background:#ffffff">
+          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000"> 年度异常统计次数</span><br></div>
+          <month style="height:345px" :month-list="monthList" />
+        </div>
+      </el-col>
+      <el-col :span="8" style="margin-top:20px;">
+        <div class="comBlock" style="height:400px;background:#ffffff">
+          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">治理设施异常点位（无数据）</span><br></div>
+        </div>
+      </el-col>
+      <el-col :span="8" style="margin-top:20px;">
+        <div class="comBlock" style="height:400px;background:#ffffff">
+          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">治理设施异常企业（无数据）</span><br></div>
+        </div>
+      </el-col>
+      <el-col :span="8" style="margin-top:20px;">
+        <div class="comBlock" style="height:400px;background:#ffffff">
+          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常分布及处理率（无数据）</span><br></div>
+          <fenbulv style="height:345px" />
         </div>
       </el-col>
 
@@ -42,26 +64,44 @@
 
 <script>
 
-import { findDeviceNumByProcess } from '@/api/table'
+import { findDeviceNumByProcess, findMonthSmsNum } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import hangye from './components/hangye'
 import shengchan from './components/shengchan'
 import zl from './components/zl'
+import month from './components/month'
+import fenbulv from './components/fenbulv'
 
 export default {
   name: 'Dashboard',
   components: {
     hangye,
     shengchan,
-    zl
+    zl,
+    month,
+    fenbulv
   },
   data() {
     return {
       hangyeList: [],
+      monthList: [],
       activeName: 'first',
       shengchanList: [],
-      zlList: []
+      zlList: [],
+      total: ''
 
+    }
+  },
+  computed: {
+    scNum: function() {
+      let sum = 0
+      this.shengchanList.forEach(v => {
+        sum += v.num
+      })
+      return sum
+    },
+    zlNum: function() {
+      return this.total - this.scNum
     }
   },
   mounted() {
@@ -70,6 +110,12 @@ export default {
     }).then(res => {
       this.shengchanList = res.retData.sc
       this.zlList = res.retData.zl
+      this.total = res.retData.total
+    })
+    findMonthSmsNum({
+      token: getToken()
+    }).then(res => {
+      this.monthList = res.retData
     })
   },
   destroyed() {
