@@ -3,13 +3,17 @@
     <el-row :gutter="20">
       <el-col :span="8">
         <div class="comBlock" style="background:#475867">
-          <div class="comTitle" style="text-align:left;margin-bottom:63px">
-            <svg-icon icon-class="comName" style="margin: 0 5px" />xxxx环保局/xxxx镇<br>
+          <div class="comTitle" style="text-align:left;margin-bottom:40px">
+            <svg-icon icon-class="where" style="margin: 0 5px" />{{ name }}<br>
           </div>
-          <el-col :span="8" class="comTitle "> 监测企业总数<br> <span class="comtitle">0</span>  </el-col>
-          <el-col :span="8" class="comTitle whiteBorder"> 产物设施总数<br> <span class="comtitle">0</span> </el-col>
-          <el-col :span="8" class="comTitle"> 产物设施总数<br> <span class="comtitle">0</span> </el-col>
-          <img src="@img/icon2.png" class="com" style="width:70px;margin-right:20px">
+          <el-col :span="24" class="comTitle" style="text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px"> 监测企业总数： <span class="comtitle" style="font-size:26px">{{ totalComNum }}</span> 家  </el-col>
+          <el-col :span="24" class="comTitle" style="text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px"> 监测设施总数： <span class="comtitle" style="font-size:26px">{{ totalDeviceNum }}</span> 个
+            <span style="margin:0 15px 0 20px">正常：{{ NormalNum }}个</span>异常：{{ WarNum }}个
+          </el-col>
+          <el-col :span="24" class="comTitle" style="text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px"> 产污设施总数： <span style="margin:0 30px 0 0">{{ scNum1 }}个</span> 治污设施总数： <span>{{ zlNum1 }}个</span>  </el-col>
+          <!-- <el-col :span="8" class="comTitle whiteBorder"> 产物设施总数<br> <span class="comtitle">0</span> </el-col>
+          <el-col :span="8" class="comTitle"> 产物设施总数<br> <span class="comtitle">0</span> </el-col> -->
+          <svg-icon icon-class="com" class="com" />
         </div>
       </el-col>
       <el-col :span="10">
@@ -43,17 +47,25 @@
       </el-col>
       <el-col :span="8" style="margin-top:20px;">
         <div class="comBlock" style="height:400px;background:#ffffff">
-          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">治理设施异常点位（无数据）</span><br></div>
+          <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">治理设施异常点位</span><br></div>
+          <el-tabs v-model="activeName1">
+            <el-tab-pane label="近7日" name="first1" style="height:345px;color:#000"><paihang :ph-list="phList" /></el-tab-pane>
+            <el-tab-pane label="今日" name="second1" style="height:345px;color:#000">123</el-tab-pane>
+          </el-tabs>
         </div>
       </el-col>
       <el-col :span="8" style="margin-top:20px;">
         <div class="comBlock" style="height:400px;background:#ffffff">
-          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">治理设施异常企业（无数据）</span><br></div>
+          <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">治理设施异常企业</span><br></div>
+          <el-tabs v-model="activeName1">
+            <el-tab-pane label="近7日" name="first1" style="height:345px;color:#000"><paihang :ph-list="phList" /></el-tab-pane>
+            <el-tab-pane label="今日" name="second1" style="height:345px;color:#000">123</el-tab-pane>
+          </el-tabs>
         </div>
       </el-col>
       <el-col :span="8" style="margin-top:20px;">
         <div class="comBlock" style="height:400px;background:#ffffff">
-          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常分布及处理率（无数据）</span><br></div>
+          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常分布及处理率</span><br></div>
           <fenbulv style="height:345px" />
         </div>
       </el-col>
@@ -64,13 +76,15 @@
 
 <script>
 
-import { findDeviceNumByProcess, findMonthSmsNum } from '@/api/table'
+import { findDeviceNumByProcess, findMonthSmsNum, findHbjBasicData } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import hangye from './components/hangye'
 import shengchan from './components/shengchan'
 import zl from './components/zl'
 import month from './components/month'
 import fenbulv from './components/fenbulv'
+import paihang from './components/paihang'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
@@ -79,7 +93,8 @@ export default {
     shengchan,
     zl,
     month,
-    fenbulv
+    fenbulv,
+    paihang
   },
   data() {
     return {
@@ -88,8 +103,15 @@ export default {
       activeName: 'first',
       shengchanList: [],
       zlList: [],
-      total: ''
-
+      total: '',
+      totalComNum: 0,
+      totalDeviceNum: 0,
+      NormalNum: 0,
+      WarNum: 0,
+      scNum1: 0,
+      zlNum1: 0,
+      activeName1: 'first1',
+      phList: ['模拟数据1', '模拟数据2', '模拟数据3', '模拟数据4', '模拟数据5', '模拟数据6', '模拟数据7']
     }
   },
   computed: {
@@ -102,7 +124,10 @@ export default {
     },
     zlNum: function() {
       return this.total - this.scNum
-    }
+    },
+    ...mapGetters([
+      'name'
+    ])
   },
   mounted() {
     findDeviceNumByProcess({
@@ -116,6 +141,16 @@ export default {
       token: getToken()
     }).then(res => {
       this.monthList = res.retData
+    })
+    findHbjBasicData({
+      token: getToken()
+    }).then(res => {
+      this.totalComNum = res.retData.totalComNum
+      this.totalDeviceNum = res.retData.totalDeviceNum
+      this.NormalNum = res.retData.NormalNum
+      this.WarNum = res.retData.WarNum
+      this.scNum1 = res.retData.scNum
+      this.zlNum1 = res.retData.zlNum
     })
   },
   destroyed() {
@@ -131,6 +166,11 @@ export default {
 >>> .el-tabs__nav-wrap{
   width: 160px;
   margin-left: 74%;
+  position: relative;
+  top: 10px;
+}
+>>> .el-tabs__nav-wrap::after{
+  width: 0px;
 }
 .dashboard-container{
   padding: 20px;
@@ -191,11 +231,11 @@ box-shadow: 4px 4px 40px rgba(0,0,0,.05);
   color: black;
 }
 .com{
-  position: absolute;
-  font-size: 77px;
-  z-index: 99;
-  top: 10px;
-  right: 10px;
+    position: absolute;
+    font-size: 108px;
+    z-index: 99;
+    top: 5px;
+    right: 23px;
 }
 .groupName{
   text-align: center;
@@ -238,15 +278,20 @@ box-shadow: 4px 4px 40px rgba(0,0,0,.05);
   font-size: 15px;
 }
 .total{
-position: absolute;
-    top: 3px;
-    left: 30px;
-    color: #000;
-    z-index: 5;
-    font-size: 16px;
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  color: #000;
+  z-index: 5;
+  font-size: 16px;
 }
 .totalnum{
     font-size: 34px;
     font-weight: 500;
+}
+.tabPane{
+  position: absolute;
+  top: 10px;
+  right: 100px;
 }
 </style>

@@ -279,3 +279,10 @@ export function findMonthSmsNum(data) { // 环保局管理局首页生产治理�
     data
   })
 }
+export function findHbjBasicData(data) { // 查询环保局首页企业及设施监测数据
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findHbjBasicData',
+    method: 'POST',
+    data
+  })
+}

@@ -34,8 +34,8 @@ export default {
           formatter: e => {
             return `
                 ${e.name}<br/>
-                人数: ${e.data.value}人<br/>
-                及格率: ${e.data.rate}%
+                次数: ${e.data.value}<br/>
+                处理率: ${e.data.rate}%
             `
           }
         },
@@ -74,7 +74,7 @@ export default {
               color: '#333',
               lineHeight: 14,
               formatter: e => {
-                return `${e.name}\n人数: ${e.data.value}人\n及格率: ${e.data.rate}%`
+                return `${e.name}\n次数: ${e.data.value}\n处理率: ${e.data.rate}%`
               }
             },
             labelLine: {
@@ -95,7 +95,7 @@ export default {
                 value: 45,
                 // 因为触发的是饼图的 tooltip，这里对应放极坐标的 data 值
                 rate: 78,
-                name: '一班',
+                name: '排放温度',
                 itemStyle: {
                   color: 'rgba(255, 198, 93, .4)'
                 }
@@ -103,7 +103,7 @@ export default {
               {
                 value: 47,
                 rate: 65,
-                name: '二班',
+                name: '风机',
                 itemStyle: {
                   color: 'rgba(127, 229, 253, .4)'
                 }
@@ -111,7 +111,7 @@ export default {
               {
                 value: 48,
                 rate: 50,
-                name: '三班',
+                name: '水喷淋',
                 itemStyle: {
                   color: 'rgba(145, 205, 241, .4)'
                 }
@@ -119,7 +119,7 @@ export default {
               {
                 value: 30,
                 rate: 80,
-                name: '四班',
+                name: '净化器',
                 itemStyle: {
                   color: 'rgba(152, 234, 220, .4)'
                 }
@@ -129,7 +129,7 @@ export default {
           // 极坐标 - 玫瑰图
           {
             type: 'bar',
-            name: '一班',
+            name: '排放温度',
             max: 100, // 100 的比例
             data: [78], // 控制半径占比
             barWidth: (45 / 170) * 100 + '%', // 控制和饼图角度一致
@@ -142,7 +142,7 @@ export default {
             coordinateSystem: 'polar'
           }, {
             type: 'bar',
-            name: '二班',
+            name: '风机',
             data: [65],
             max: 100,
             barWidth: (47 / 170) * 100 + '%',
@@ -155,7 +155,7 @@ export default {
             coordinateSystem: 'polar'
           }, {
             type: 'bar',
-            name: '三班',
+            name: '水喷淋',
             data: [50],
             max: 100,
             barWidth: (48 / 170) * 100 + '%',
@@ -168,7 +168,7 @@ export default {
             coordinateSystem: 'polar'
           }, {
             type: 'bar',
-            name: '四班',
+            name: '净化器',
             data: [80],
             max: 100,
             barWidth: (30 / 170) * 100 + '%',

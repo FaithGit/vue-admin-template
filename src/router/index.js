@@ -103,12 +103,12 @@ export const asyncRoutes = [
   {
     path: '/hbj',
     component: Layout,
-    meta: { title: '环保首页', icon: 'dashboard', roles: ['kf'] },
+    meta: { title: '环保首页', icon: 'dashboard', roles: ['kf', 'hbj'] },
     children: [{
       path: 'index',
       name: 'Hbj',
       component: () => import('@/views/hbj/index'),
-      meta: { title: '环保首页', icon: 'dashboard', roles: ['kf'] }
+      meta: { title: '环保首页', icon: 'dashboard', roles: ['kf', 'hbj'] }
     }]
 
   },
