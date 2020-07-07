@@ -286,3 +286,10 @@ export function findHbjBasicData(data) { // 查询环保局首页企业及设施
     data
   })
 }
+export function findComNumBusDstbt(data) { // 查询环保局首页企业及设施监测数据
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findComNumBusDstbt',
+    method: 'POST',
+    data
+  })
+}

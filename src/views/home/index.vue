@@ -32,6 +32,8 @@ export default {
         that.$router.replace({ name: 'Formlist' })
       } else if (that.roles[0] === 'kf') {
         that.$router.replace({ name: 'Pandect' })
+      } else if (that.roles[0] === 'hbj') {
+        that.$router.replace({ name: 'Hbj' })
       }
     }, 100)
   },

@@ -3,14 +3,20 @@
     <el-row :gutter="20">
       <el-col :span="8">
         <div class="comBlock" style="background:#475867">
-          <div class="comTitle" style="text-align:left;margin-bottom:40px">
+          <div class="comTitle" style="text-align:left;margin-bottom:30px">
             <svg-icon icon-class="where" style="margin: 0 5px" />{{ name }}<br>
           </div>
-          <el-col :span="24" class="comTitle" style="text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px"> 监测企业总数： <span class="comtitle" style="font-size:26px">{{ totalComNum }}</span> 家  </el-col>
-          <el-col :span="24" class="comTitle" style="text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px"> 监测设施总数： <span class="comtitle" style="font-size:26px">{{ totalDeviceNum }}</span> 个
-            <span style="margin:0 15px 0 20px">正常：{{ NormalNum }}个</span>异常：{{ WarNum }}个
+          <el-col :span="24" class="comTitle" style="line-height:25px;text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px"> 监测企业总数： <span class="comtitle" style="font-size:26px">{{ totalComNum }}</span> 家  </el-col>
+          <el-col :span="24" class="comTitle" style="line-height:25px;text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px"> 监测设施总数： <span class="comtitle" style="font-size:26px">{{ totalDeviceNum }}</span> 个
+            <!-- <span style="margin:0 15px 0 20px">生产：{{ scNum1 }}个</span>治理：{{ zlNum1 }}个 -->
           </el-col>
-          <el-col :span="24" class="comTitle" style="text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px"> 产污设施总数： <span style="margin:0 30px 0 0">{{ scNum1 }}个</span> 治污设施总数： <span>{{ zlNum1 }}个</span>  </el-col>
+          <el-col :span="24" class="comTitle" style="line-height:30px;text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px">
+            产污设施：正常 <span style="margin:0 26px 0 0">{{ scNormalNum }} 个</span>
+            异常：{{ scWarNum }} 个
+            <br>
+            治污设施：<span style="margin:0 26px 0 0">正常 {{ zlNormalNum }} 个</span>
+            异常：<span>{{ zlWarNum }}个</span>
+          </el-col>
           <!-- <el-col :span="8" class="comTitle whiteBorder"> 产物设施总数<br> <span class="comtitle">0</span> </el-col>
           <el-col :span="8" class="comTitle"> 产物设施总数<br> <span class="comtitle">0</span> </el-col> -->
           <svg-icon icon-class="com" class="com" />
@@ -19,7 +25,7 @@
       <el-col :span="10">
         <div class="comBlock" style="background:#ffffff">
           <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000"> 行业划分</span><br></div>
-          <hangye />
+          <hangye :bus-data="busData" />
         </div>
       </el-col>
       <el-col :span="6" style="height:260px">
@@ -47,19 +53,19 @@
       </el-col>
       <el-col :span="8" style="margin-top:20px;">
         <div class="comBlock" style="height:400px;background:#ffffff">
-          <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">治理设施异常点位</span><br></div>
+          <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常治理设施排名</span><br></div>
           <el-tabs v-model="activeName1">
             <el-tab-pane label="近7日" name="first1" style="height:345px;color:#000"><paihang :ph-list="phList" /></el-tab-pane>
-            <el-tab-pane label="今日" name="second1" style="height:345px;color:#000">123</el-tab-pane>
+            <el-tab-pane label="今日" name="second1" style="height:345px;color:#000;padding: 9px 40px;">空</el-tab-pane>
           </el-tabs>
         </div>
       </el-col>
       <el-col :span="8" style="margin-top:20px;">
         <div class="comBlock" style="height:400px;background:#ffffff">
-          <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">治理设施异常企业</span><br></div>
-          <el-tabs v-model="activeName1">
-            <el-tab-pane label="近7日" name="first1" style="height:345px;color:#000"><paihang :ph-list="phList" /></el-tab-pane>
-            <el-tab-pane label="今日" name="second1" style="height:345px;color:#000">123</el-tab-pane>
+          <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常企业排名</span><br></div>
+          <el-tabs v-model="activeName2">
+            <el-tab-pane label="近7日" name="first2" style="height:345px;color:#000"><paihang :ph-list="phList" /></el-tab-pane>
+            <el-tab-pane label="今日" name="second2" style="height:345px;color:#000;padding: 9px 40px;">空</el-tab-pane>
           </el-tabs>
         </div>
       </el-col>
@@ -76,7 +82,7 @@
 
 <script>
 
-import { findDeviceNumByProcess, findMonthSmsNum, findHbjBasicData } from '@/api/table'
+import { findDeviceNumByProcess, findMonthSmsNum, findHbjBasicData, findComNumBusDstbt } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import hangye from './components/hangye'
 import shengchan from './components/shengchan'
@@ -102,15 +108,19 @@ export default {
       monthList: [],
       activeName: 'first',
       shengchanList: [],
+      busData: [],
       zlList: [],
       total: '',
       totalComNum: 0,
       totalDeviceNum: 0,
-      NormalNum: 0,
-      WarNum: 0,
+      scNormalNum: 0,
+      scWarNum: 0,
+      zlNormalNum: 0,
+      zlWarNum: 0,
       scNum1: 0,
       zlNum1: 0,
       activeName1: 'first1',
+      activeName2: 'first2',
       phList: ['模拟数据1', '模拟数据2', '模拟数据3', '模拟数据4', '模拟数据5', '模拟数据6', '模拟数据7']
     }
   },
@@ -142,15 +152,22 @@ export default {
     }).then(res => {
       this.monthList = res.retData
     })
+    findComNumBusDstbt({
+      token: getToken()
+    }).then(res => {
+      this.busData = res.retData.busData
+    })
     findHbjBasicData({
       token: getToken()
     }).then(res => {
       this.totalComNum = res.retData.totalComNum
       this.totalDeviceNum = res.retData.totalDeviceNum
-      this.NormalNum = res.retData.NormalNum
-      this.WarNum = res.retData.WarNum
+      this.scNormalNum = res.retData.scNormalNum
+      this.scWarNum = res.retData.scWarNum
       this.scNum1 = res.retData.scNum
       this.zlNum1 = res.retData.zlNum
+      this.zlNormalNum = res.retData.zlNum
+      this.zlWarNum = res.retData.zlWarNum
     })
   },
   destroyed() {

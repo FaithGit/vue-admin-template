@@ -147,13 +147,13 @@ export const asyncRoutes = [
   {
     path: '/realTime',
     component: Layout,
-    meta: { title: '实时监控', roles: ['kf', 'gly', 'yw', 'qy'], icon: 'realTime' },
+    meta: { title: '实时监控', roles: ['kf', 'gly', 'yw', 'qy', 'hbj'], icon: 'realTime' },
     children: [
       {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: '实时数据', icon: 'table', roles: ['kf', 'gly', 'yw', 'qy'] }
+        meta: { title: '实时数据', icon: 'table', roles: ['kf', 'gly', 'yw', 'qy', 'hbj'] }
       },
       {
         path: 'craft',
@@ -167,13 +167,13 @@ export const asyncRoutes = [
   {
     path: '/data',
     component: Layout,
-    meta: { title: '数据查询', roles: ['kf', 'gly', 'yw', 'qy', 'sjfx'], icon: 'seacher' },
+    meta: { title: '数据查询', roles: ['kf', 'gly', 'yw', 'qy', 'sjfx', 'hbj'], icon: 'seacher' },
     children: [
       {
         path: 'history',
         name: 'History',
         component: () => import('@/views/history/index'),
-        meta: { title: '历史数据', icon: 'history', roles: ['kf', 'gly', 'yw', 'sjfx', 'qy'] }
+        meta: { title: '历史数据', icon: 'history', roles: ['kf', 'gly', 'yw', 'sjfx', 'qy', 'hbj'] }
       }
     ]
   },

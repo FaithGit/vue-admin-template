@@ -5,6 +5,7 @@ import { resetRouter } from '@/router'
 const state = {
   token: getToken(),
   name: '',
+  areaCode: '',
   avatar: '',
   roles: []
 }
@@ -15,6 +16,9 @@ const mutations = {
   },
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  SET_AREACODE: (state, name) => {
+    state.areaCode = name
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -52,6 +56,7 @@ const actions = {
         // console.log('SET_NAME', response.retData.userName)
         commit('SET_NAME', response.retData.userName)
         commit('SET_AVATAR', response.retData.userId)
+        commit('SET_AREACODE', response.retData.areaCode)
         const _arr = []
         _arr.push(response.retData.roleId)
         commit('SET_ROLES', _arr)
@@ -66,6 +71,7 @@ const actions = {
   logout({ commit, state }) {
     commit('SET_TOKEN', '')
     commit('SET_NAME', '')
+    commit('SET_AREACODE', '')
     commit('RESET_ROLES')
     removeToken()
     resetRouter()

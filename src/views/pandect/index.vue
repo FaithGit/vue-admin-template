@@ -2,7 +2,7 @@
   <div class="dashboard-container" @dblclick="buttoncli">
     <div class="dashboardHead">
       <img src="@img/hs_logo.png" style="height:56px;margin:7px">
-      <span class="hs_headTitle">海宁罗诗妮治理设施工况（电量）监测系统</span>
+      <span class="hs_headTitle">{{ areaCode=='330481'?'海宁市':areaCode=='330482'?'平湖市': areaCode }}治理设施工况（电量）监测系统</span>
       <span class="hs_headTitle" style="float:right;margin-right:20px;font-size:18px;cursor: pointer;" @click="gotoHome">
         返回首页
       </span>
@@ -196,6 +196,7 @@ import distribution from './components/distribution'
 import infowindow from './components/infoWindow'
 import { findComMap, findMapDataDetail, findIndexTotalData, warMonthSort } from '@/api/table'
 import { getToken } from '@/utils/auth'
+import { mapGetters } from 'vuex'
 import screenfull from 'screenfull'
 export default {
   name: 'Pandect',
@@ -239,6 +240,11 @@ export default {
 
     }
   },
+  computed: {
+    ...mapGetters([
+      'areaCode'
+    ])
+  },
   mounted() {
     // 拿取点位
     findComMap({ token: getToken() }).then(res => {
@@ -254,7 +260,8 @@ export default {
               level: 'city' // 查询行政级别为 市
             }
             var district = new AMap.DistrictSearch(opts)
-            district.search('海宁市', function(status, result) {
+            const areacodeWhere = that.areaCode === '330481' ? '海宁市' : that.areaCode === '330482' ? '平湖市' : '平湖市'
+            district.search(areacodeWhere, function(status, result) {
               // 查询成功时，result即为对应的行政区信息
               var bounds = result.districtList[0].boundaries
 
@@ -290,20 +297,42 @@ export default {
           })
         }
 
-        that.map = new AMap.Map('container1', {
+        if (that.areaCode === '330481') {
+          that.map = new AMap.Map('container1', {
           // center: [121.087157, 30.71595],
-          center: [120.680757, 30.510659],
-          zoom: 11,
-          mapStyle: 'amap://styles/darkblue'
-        })
-        addPolygonbox() // 添加行政区
+            center: [120.680757, 30.510659],
+            zoom: 11,
+            mapStyle: 'amap://styles/darkblue'
+          })
+          addPolygonbox() // 添加行政区
+        } else if (that.areaCode === '330482') {
+          that.map = new AMap.Map('container1', {
+            center: [121.087157, 30.71595],
+            // center: [120.680757, 30.510659],
+            zoom: 11,
+            mapStyle: 'amap://styles/darkblue'
+          })
+          addPolygonbox() // 添加行政区
+        } else {
+          that.map = new AMap.Map('container1', {
+          // center: [121.087157, 30.71595],
+            center: [120.680757, 30.510659],
+            zoom: 11,
+            mapStyle: 'amap://styles/darkblue'
+          })
+          addPolygonbox() // 添加行政区
+        }
 
         var infoWindow = new AMap.InfoWindow({
           offset: new AMap.Pixel(0, -30)
         })
 
         for (var j = 0; j < this.markList.length; j++) {
+          if (!this.markList[j].lon_lat) {
+            continue
+          }
           var marker = new AMap.Marker({
+
             position: this.markList[j].lon_lat.split(','),
             map: that.map,
             title: this.markList[j].com_short_name

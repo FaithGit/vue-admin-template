@@ -5,8 +5,22 @@
 <script>
 var echarts = require('echarts')
 export default {
+  props: {
+    busData: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
+    }
+  },
+  watch: {
+    busData: {
+      deep: true,
+      handler(nv) {
+        this.drawChart()
+      }
     }
   },
   mounted() {
@@ -15,6 +29,14 @@ export default {
   methods: {
     drawChart() {
       const myChart10 = echarts.init(document.getElementById('distribution10'))
+      const arr = []
+      for (var i = 0; i < this.busData.length; i++) {
+        arr.push({
+          value: this.busData[i].comNum,
+          name: this.busData[i].value
+        })
+      }
+
       var option = {
         color: ['#37a2da', '#32c5e9', '#9fe6b8', '#ffdb5c', '#ff9f7f', '#fb7293', '#e7bcf3', '#8378ea'],
         tooltip: {
@@ -35,17 +57,11 @@ export default {
         },
         series: [
           {
-            name: '伪数据',
+            name: '行业',
             type: 'pie',
             radius: [0, 80],
 
-            data: [
-              { value: 20, name: '伪数据1' },
-              { value: 30, name: '伪数据2' },
-              { value: 25, name: '伪数据3' },
-              { value: 25, name: '伪数据4' }
-
-            ]
+            data: arr
           }
         ]
       }
