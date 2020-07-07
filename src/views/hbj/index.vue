@@ -55,8 +55,15 @@
         <div class="comBlock" style="height:400px;background:#ffffff">
           <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常治理设施排名</span><br></div>
           <el-tabs v-model="activeName1">
-            <el-tab-pane label="近7日" name="first1" style="height:345px;color:#000"><paihang :ph-list="phList" /></el-tab-pane>
-            <el-tab-pane label="今日" name="second1" style="height:345px;color:#000;padding: 9px 40px;">空</el-tab-pane>
+            <el-tab-pane label="近7日" name="first1" style="height:345px;color:#000">
+              <!-- <paihang :ph-list="phList" /> -->
+              <div class="spaceTitle">
+                <div style="font-size:80px"><svg-icon icon-class="nodata" /></div>暂无数据</div>
+            </el-tab-pane>
+            <el-tab-pane label="今日" name="second1" style="height:345px;color:#000;">
+              <div class="spaceTitle">
+                <div style="font-size:80px"><svg-icon icon-class="nodata" /></div>暂无数据</div>
+            </el-tab-pane>
           </el-tabs>
         </div>
       </el-col>
@@ -64,8 +71,15 @@
         <div class="comBlock" style="height:400px;background:#ffffff">
           <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常企业排名</span><br></div>
           <el-tabs v-model="activeName2">
-            <el-tab-pane label="近7日" name="first2" style="height:345px;color:#000"><paihang :ph-list="phList" /></el-tab-pane>
-            <el-tab-pane label="今日" name="second2" style="height:345px;color:#000;padding: 9px 40px;">空</el-tab-pane>
+            <el-tab-pane label="近7日" name="first2" style="height:345px;color:#000">
+              <!-- <paihang :ph-list="phList" /> -->
+              <div class="spaceTitle">
+                <div style="font-size:80px"><svg-icon icon-class="nodata" /></div>暂无数据</div>
+            </el-tab-pane>
+            <el-tab-pane label="今日" name="second2" style="height:345px;color:#000;">
+              <div class="spaceTitle">
+                <div style="font-size:80px"><svg-icon icon-class="nodata" /></div>暂无数据</div>
+            </el-tab-pane>
           </el-tabs>
         </div>
       </el-col>
@@ -89,7 +103,7 @@ import shengchan from './components/shengchan'
 import zl from './components/zl'
 import month from './components/month'
 import fenbulv from './components/fenbulv'
-import paihang from './components/paihang'
+// import paihang from './components/paihang'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -99,8 +113,8 @@ export default {
     shengchan,
     zl,
     month,
-    fenbulv,
-    paihang
+    fenbulv
+    // paihang
   },
   data() {
     return {
@@ -310,5 +324,12 @@ box-shadow: 4px 4px 40px rgba(0,0,0,.05);
   position: absolute;
   top: 10px;
   right: 100px;
+}
+.spaceTitle{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
