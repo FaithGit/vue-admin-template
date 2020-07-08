@@ -120,18 +120,18 @@
               <div class="kuang-body-flex">
                 <table class="mian-table" style="  border: 1px solid #094198; width:94%">
                   <tr>
-                    <td class="main-td">今日用电量峰值</td>
-                    <td class="main-td">今日用电功率峰值</td>
+                    <td class="main-td">今日用电量</td>
+                    <td class="main-td">当年用电量</td>
 
                   </tr>
                   <tr>
                     <td class="main-tdNums">
                       <svg-icon icon-class="power" />
-                      <countTo :start-val="startVal4" :end-val="todayMaxEle" :duration="3000" />kw/h
+                      <countTo :start-val="startVal4" :end-val="todayMaxElc" :duration="3000" />kW·h
                     </td>
                     <td class="main-tdNums">
                       <svg-icon icon-class="powers" />
-                      <countTo :start-val="startVal4" :end-val="todayMaxPower" :duration="3000" />kw
+                      <countTo :start-val="startVal4" :end-val="yearMalElc" :duration="3000" />kW·h
                     </td>
 
                   </tr>
@@ -226,9 +226,9 @@ export default {
 
       },
       deviceNum: 0,
-      todayMaxPower: 0,
+      yearMalElc: 0,
       warComNum: 0,
-      todayMaxEle: 0,
+      todayMaxElc: 0,
       susComNum: 0,
       comNum: 0,
       startVal1: 0,
@@ -351,9 +351,9 @@ export default {
 
     findIndexTotalData({ token: getToken() }).then(res => {
       this.deviceNum = res.retData.deviceNum
-      this.todayMaxPower = res.retData.todayMaxPower
+      this.yearMalElc = res.retData.yearMalElc
       this.warComNum = res.retData.warComNum
-      this.todayMaxEle = res.retData.todayMaxEle
+      this.todayMaxElc = res.retData.todayMaxElc
       this.susComNum = res.retData.susComNum
       this.comNum = res.retData.comNum
     })
@@ -523,6 +523,9 @@ padding: 40px 0px 30px 0px;
 .main-tdNums{
   padding: 30px 0px;
   font-size: 24px;
+  @media screen and (max-width: 1743px){
+     font-size: 19px;
+  }
 }
 .kuang-body-ui{
   margin: 15px;

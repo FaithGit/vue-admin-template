@@ -10,32 +10,32 @@ export default {
       powerList: [
 
         {
-          month: '7-01',
+          month: '7-02',
           value: 2800
         },
         {
-          month: '7-02',
+          month: '7-03',
           value: 3000
         },
 
         {
-          month: '7-03',
+          month: '7-04',
           value: 2600
         },
         {
-          month: '7-04',
+          month: '7-05',
           value: 3500
         },
         {
-          month: '7-05',
+          month: '7-06',
           value: 3300
         },
         {
-          month: '7-06',
+          month: '7-07',
           value: 2800
         },
         {
-          month: '7-07',
+          month: '7-08',
           value: 800
         }
 

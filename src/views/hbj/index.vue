@@ -24,7 +24,7 @@
       </el-col>
       <el-col :span="10">
         <div class="comBlock" style="background:#ffffff">
-          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000"> 行业划分</span><br></div>
+          <div class="comTitle" style="text-align:left;padding: 15px 15px 0;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000"> 行业划分</span><br></div>
           <hangye :bus-data="busData" />
         </div>
       </el-col>

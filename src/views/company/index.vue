@@ -214,8 +214,8 @@
           <el-col :span="24">
             <el-form-item label="上传企业图片">
 
-              <el-button v-show="companyForm.comImage==''" type="primary" @click="toggleShow">上传<i class="el-icon-upload el-icon--right" /></el-button>
-              <div v-if="companyForm.comImage!=''" class="imgBox">
+              <el-button v-show="companyForm.comImage==''||companyForm.comImage==null" type="primary" @click="toggleShow">上传<i class="el-icon-upload el-icon--right" /></el-button>
+              <div v-if="companyForm.comImage!=''&&companyForm.comImage!=null" class="imgBox">
                 <i class="el-icon-close innerImgClose" @click="delPic" />
                 <img :src="companyForm.comImage" style="box-shadow: 1px 1px 4px rgba(0,0,0,0.4);">
               </div>
@@ -252,9 +252,9 @@
   </div>
 </template>
 <script>
-import { findData, selectAllCom, addCom, deleteCom, updateCom, deleteSmsPerson, deletePicture } from '@/api/table'
+import { findData, selectAllCom, addCom, deleteCom, updateCom, deleteSmsPerson, deletePicture, findComBus } from '@/api/table'
 import { getToken } from '@/utils/auth'
-import hyType from '@/utils/type.json'
+// import hyType from '@/utils/type.json'
 import ElSelectTree from 'el-select-tree'
 import myUpload from 'vue-image-crop-upload'
 export default {
@@ -342,6 +342,9 @@ export default {
         comShortName: [
           { required: true, message: '请输入企业简称', trigger: 'blur' }
         ],
+        busName: [
+          { required: true, message: '请输入行业类型', trigger: 'blur' }
+        ],
         adress: [
           { required: true, message: '请输入企业地址', trigger: 'blur' }
         ],
@@ -360,7 +363,6 @@ export default {
         envPersonTel: [
           { required: true, validator: moblie, trigger: 'blur' }
         ],
-        busName: '',
         smsStatus: ''
       },
       treeData: [
@@ -375,8 +377,11 @@ export default {
     this.findData()
     this.selectAllCom()
     // findSysBus().then(res => {
-    this.treeData = hyType
+    // this.treeData = hyType
     // })
+    findComBus().then(res => {
+      this.treeData = res.retData
+    })
   },
   methods: {
     toggleShow() {

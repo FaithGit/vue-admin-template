@@ -496,8 +496,8 @@ export default {
             this.deviceList = temp
             this.device = this.$route.params.device_name
             this.deviceValue = this.$route.params.device_id
-            this.deviceStyles = this.$route.params.style
             this.deviceStyle = this.$route.params.style
+            this.deviceStyles = this.$route.params.style.toString()
             this.time = [new Date(new Date() - 3600 * 1000 * 24 * 7), new Date()]
             this.startTime = this.time[0]
             this.endTime = this.time[1]

@@ -293,3 +293,10 @@ export function findComNumBusDstbt(data) { // 查询环保局首页企业及设�
     data
   })
 }
+export function findComBus(data) { // 查询企业行业
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findComBus',
+    method: 'POST',
+    data
+  })
+}
