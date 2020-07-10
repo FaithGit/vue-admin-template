@@ -5,41 +5,21 @@
 <script>
 var echarts = require('echarts')
 export default {
+  props: {
+    baojinglist: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
-      powerList: [
-
-        {
-          month: '7-02',
-          value: 2800
-        },
-        {
-          month: '7-03',
-          value: 3000
-        },
-
-        {
-          month: '7-04',
-          value: 2600
-        },
-        {
-          month: '7-05',
-          value: 3500
-        },
-        {
-          month: '7-06',
-          value: 3300
-        },
-        {
-          month: '7-07',
-          value: 2800
-        },
-        {
-          month: '7-08',
-          value: 800
-        }
-
-      ]
+    }
+  },
+  watch: {
+    baojinglist: {
+      handler() {
+        this.drawChart()
+      }
     }
   },
   mounted() {
@@ -50,15 +30,11 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       var xData = []
       var yData = []
-      var min = 50
-      this.powerList.map(function(a, b) {
-        xData.push(a.month)
-        if (a.value === 0) {
-          yData.push(a.value + min)
-        } else {
-          yData.push(a.value)
-        }
+      this.baojinglist.map(function(a, b) {
+        xData.push(a.name)
+        yData.push(a.num)
       })
+      console.log('baojinglist', this.baojinglist)
       console.log('xData', xData)
       console.log('yData', yData)
 
@@ -76,11 +52,7 @@ export default {
             }
           },
           formatter: function(prams) {
-            if (prams[0].data === min) {
-              return '用电量：0W'
-            } else {
-              return prams[0].axisValue + '号：' + prams[0].data + 'W'
-            }
+            return prams[0].axisValue + '：' + prams[0].data + ''
           }
         },
         legend: {
@@ -88,11 +60,10 @@ export default {
           show: false
         },
         grid: {
-          left: '5%',
-          right: '5%',
-          bottom: '5%',
-          top: '10%',
-          height: '85%',
+          left: '2%',
+          right: '2%',
+          bottom: '0%',
+          top: '13%',
           containLabel: true,
           z: 22
         },
@@ -111,12 +82,14 @@ export default {
           axisLabel: {
             show: true,
             color: 'rgb(170,170,170)',
-            fontSize: 16
+            fontSize: 12,
+            interval: 0,
+            rotate: 60
           }
         }],
         yAxis: [{
           type: 'value',
-          name: '单位:瓦',
+          name: '单位:次',
           nameTextStyle: {
             color: 'rgb(170,170,170)'
           },
@@ -142,7 +115,7 @@ export default {
         {
           type: 'value',
           gridIndex: 0,
-          min: min,
+          min: 0,
           max: 100,
           splitNumber: 12,
           splitLine: {
@@ -202,7 +175,7 @@ export default {
           xAxisIndex: 0,
           yAxisIndex: 1,
           barGap: '-135%',
-          data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+          data: xData,
           itemStyle: {
             normal: {
               color: 'rgba(255,255,255,0.1)'

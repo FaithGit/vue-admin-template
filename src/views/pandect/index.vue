@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container" @dblclick="buttoncli">
+  <div class="dashboard-container">
     <div class="dashboardHead">
       <img src="@img/hs_logo.png" style="height:56px;margin:7px">
       <span class="hs_headTitle">{{ areaCode=='330481'?'海宁市':areaCode=='330482'?'平湖市': areaCode }}治理设施工况（电量）监测系统</span>
@@ -62,12 +62,14 @@
                   <div><img src="@img/goodList.png" style="width:180px"></div>
                   <div style="color:white;position: absolute;bottom: 8%;">无异常</div>
                 </div>
-                <div v-for="(itemList,index) in list" :key="itemList.company" class="kuang-body-ui">
-                  {{ index+1 }}
-                  <span style="width:30%;display:inline-block;text-align:center;word-wrap: break-word">{{ itemList.company }}  </span>
-                  <span style="width:30%;display:inline-block;text-align:center;word-wrap: break-word;font-size:14px">{{ itemList.time }}  </span>
-                  <span style="width:30%;display:inline-block;text-align:center;word-wrap: break-word">{{ itemList.message }}  </span>
-                </div>
+                <el-row>
+                  <el-col v-for="(itemList,index) in list" :key="itemList.company" :span="24" class="kuang-body-ui">
+                    <el-col :span="3"> {{ index+1 }}</el-col>
+                    <el-col :span="7"> {{ itemList.name }}</el-col>
+                    <el-col :span="7"> {{ itemList.dataTime }}</el-col>
+                    <el-col :span="7"> {{ itemList.logName }}</el-col>
+                  </el-col>
+                </el-row>
               </div>
               <div class="four-jiao">
                 <img src="@img/02-1.png" class="jiao">
@@ -80,11 +82,15 @@
           </div>
           <div class="kuang height4 kuangEnd">
             <div class="kuang-content">
-              <div class="left-title">
-                用电量
+              <div class="left-title futitle">
+                街、镇异常次数
               </div>
+              <el-tabs v-model="activeName2" @tab-click="handleClick">
+                <el-tab-pane label="近7日" name="first2" />
+                <el-tab-pane label="近30日" name="second2" />
+              </el-tabs>
               <div class="kuang-body">
-                <userPower />
+                <userPower :baojinglist="baojinglist" />
               </div>
               <div class="four-jiao">
                 <img src="@img/02-1.png" class="jiao">
@@ -194,7 +200,7 @@ import userPower from './components/userPower'
 import error from './components/error'
 import distribution from './components/distribution'
 import infowindow from './components/infoWindow'
-import { findComMap, findMapDataDetail, findIndexTotalData, warMonthSort } from '@/api/table'
+import { findComMap, findMapDataDetail, findIndexTotalData, warMonthSort, findPictureDynamicInfo, findPictureAdminWarRange } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import { mapGetters } from 'vuex'
 import screenfull from 'screenfull'
@@ -236,7 +242,9 @@ export default {
       startVal3: 0,
       startVal4: 0,
       city: [],
-      num: []
+      num: [],
+      baojinglist: [],
+      activeName2: 'first2'
 
     }
   },
@@ -367,6 +375,19 @@ export default {
       }
       this.city = _city
     })
+
+    findPictureDynamicInfo({
+      token: getToken()
+    }).then(res => {
+      this.list = res.retData
+    })
+    findPictureAdminWarRange({
+      token: getToken(),
+      timeStyle: 1
+    }).then(res => {
+      console.log('res', res)
+      this.baojinglist = res.retData
+    })
   },
   destroyed() {
     this.map = null
@@ -380,6 +401,26 @@ export default {
     },
     buttoncli() {
       screenfull.toggle()
+    },
+    handleClick() {
+      console.log(this.activeName2)
+      if (this.activeName2 === 'second2') {
+        findPictureAdminWarRange({
+          token: getToken(),
+          timeStyle: 2
+        }).then(res => {
+          console.log('res', res)
+          this.baojinglist = res.retData
+        })
+      } else {
+        findPictureAdminWarRange({
+          token: getToken(),
+          timeStyle: 1
+        }).then(res => {
+          console.log('res', res)
+          this.baojinglist = res.retData
+        })
+      }
     }
   }
 }
@@ -389,6 +430,19 @@ export default {
 *{
   padding: 0;
   margin: 0;
+}
+>>> .el-tabs__nav-wrap{
+  width: 160px;
+  position: absolute;
+  right: -28px;
+  position: absolute;
+  top: 5px;
+}
+>>> .el-tabs__nav-wrap::after{
+  width: 0px;
+}
+>>> .el-tabs__item{
+  color: white;
 }
 // .dashboard {
 //   &-container {
@@ -527,9 +581,22 @@ padding: 40px 0px 30px 0px;
      font-size: 19px;
   }
 }
+.futitle{
+  @media screen and (max-width: 1720px){
+    font-size: 14px;
+  }
+  @media screen and (max-width: 1502px){
+    font-size: 12px;
+    letter-spacing: 0px;
+  }
+}
 .kuang-body-ui{
-  margin: 15px;
-  color:white
+  margin: 15px 0;
+  text-align: center;
+  color:white;
+  @media screen and (max-width: 2015px){
+     font-size: 14px;
+  }
 }
 
            /*ie滚动条样式*/

@@ -56,29 +56,23 @@
           <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常治理设施排名</span><br></div>
           <el-tabs v-model="activeName1">
             <el-tab-pane label="近7日" name="first1" style="height:345px;color:#000">
-              <!-- <paihang :ph-list="phList" /> -->
-              <div class="spaceTitle">
-                <div style="font-size:80px"><svg-icon icon-class="nodata" /></div>暂无数据</div>
+              <paihang :ph-list="phList" />
             </el-tab-pane>
             <el-tab-pane label="今日" name="second1" style="height:345px;color:#000;">
-              <div class="spaceTitle">
-                <div style="font-size:80px"><svg-icon icon-class="nodata" /></div>暂无数据</div>
+              <paihang :ph-list="phList2" />
             </el-tab-pane>
           </el-tabs>
         </div>
       </el-col>
       <el-col :span="8" style="margin-top:20px;">
-        <div class="comBlock" style="height:400px;background:#ffffff">
+        <div class="comBlock paihangBlock">
           <div class="comTitle" style="text-align:left;position: absolute"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常企业排名</span><br></div>
           <el-tabs v-model="activeName2">
             <el-tab-pane label="近7日" name="first2" style="height:345px;color:#000">
-              <!-- <paihang :ph-list="phList" /> -->
-              <div class="spaceTitle">
-                <div style="font-size:80px"><svg-icon icon-class="nodata" /></div>暂无数据</div>
+              <paihang :ph-list="phList3" />
             </el-tab-pane>
             <el-tab-pane label="今日" name="second2" style="height:345px;color:#000;">
-              <div class="spaceTitle">
-                <div style="font-size:80px"><svg-icon icon-class="nodata" /></div>暂无数据</div>
+              <paihang :ph-list="phList4" />
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -96,14 +90,14 @@
 
 <script>
 
-import { findDeviceNumByProcess, findMonthSmsNum, findHbjBasicData, findComNumBusDstbt } from '@/api/table'
+import { findDeviceNumByProcess, findMonthSmsNum, findHbjBasicData, findComNumBusDstbt, findDeviceWarRange, findComWarRange } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import hangye from './components/hangye'
 import shengchan from './components/shengchan'
 import zl from './components/zl'
 import month from './components/month'
 import fenbulv from './components/fenbulv'
-// import paihang from './components/paihang'
+import paihang from './components/paihang'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -113,8 +107,8 @@ export default {
     shengchan,
     zl,
     month,
-    fenbulv
-    // paihang
+    fenbulv,
+    paihang
   },
   data() {
     return {
@@ -135,7 +129,10 @@ export default {
       zlNum1: 0,
       activeName1: 'first1',
       activeName2: 'first2',
-      phList: ['模拟数据1', '模拟数据2', '模拟数据3', '模拟数据4', '模拟数据5', '模拟数据6', '模拟数据7']
+      phList: [],
+      phList2: [],
+      phList3: [],
+      phList4: []
     }
   },
   computed: {
@@ -182,6 +179,46 @@ export default {
       this.zlNum1 = res.retData.zlNum
       this.zlNormalNum = res.retData.zlNum
       this.zlWarNum = res.retData.zlWarNum
+    })
+    findDeviceWarRange({
+      token: getToken(),
+      timeStyle: 1
+    }).then(res => {
+      const arr = []
+      res.retData.forEach(value => {
+        arr.push(value.name)
+      })
+      this.phList = arr
+    })
+    findDeviceWarRange({
+      token: getToken(),
+      timeStyle: 2
+    }).then(res => {
+      const arr = []
+      res.retData.forEach(value => {
+        arr.push(value.name)
+      })
+      this.phList2 = arr
+    })
+    findComWarRange({
+      token: getToken(),
+      timeStyle: 1
+    }).then(res => {
+      const arr = []
+      res.retData.forEach(value => {
+        arr.push(value.name)
+      })
+      this.phList3 = arr
+    })
+    findComWarRange({
+      token: getToken(),
+      timeStyle: 2
+    }).then(res => {
+      const arr = []
+      res.retData.forEach(value => {
+        arr.push(value.name)
+      })
+      this.phList4 = arr
     })
   },
   destroyed() {
@@ -325,11 +362,44 @@ box-shadow: 4px 4px 40px rgba(0,0,0,.05);
   top: 10px;
   right: 100px;
 }
-.spaceTitle{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.paihangBlock{
+height:400px;
+background:#ffffff
 }
+* {
+               scrollbar-arrow-color: rgb(200,200,200);/*ok-上下三角箭头*/
+               scrollbar-3dlight-color: rgb(200,200,200);/*ok-3d滑块左上角高光部分颜色*/
+               scrollbar-highlight-color: rgb(200,200,200);/*ok-滑块左上角高光部分颜色*/
+               scrollbar-shadow-color: rgb(200,200,200);/*ok*/
+               scrollbar-darkshadow-color: rgb(200,200,200);/*ok-以上都是定义一些阴影高光等3D效果*/
+               scrollbar-face-color: rgb(200,200,200);/*ok-滑块*/
+               scrollbar-track-color: rgb(240,240,240);/*ok-滑道*/
+           }
+           /*chrome滚动条样式*/
+           ::-webkit-scrollbar {/*滚动条整体部分，其中的属性有width,height,background,border（就和一个块级元素一样）等。*/
+               width: 10px;
+               height: 10px;
+           }
+           ::-webkit-scrollbar-button {/*滚动条两端的按钮。可以用display:none让其不显示，也可以添加背景图片，颜色改变显示效果。*/
+               display: none;
+           }
+           ::-webkit-scrollbar-track {/*外层轨道。可以用display:none让其不显示，也可以添加背景图片，颜色改变显示效果。*/
+               display: none;
+           }
+           ::-webkit-scrollbar-track-piece {/*内层轨道，滚动条中间部分（除去）。*/
+               background: rgb(240,240,240);
+           }
+           ::-webkit-scrollbar-thumb {/*滚动条里面可以拖动的那部分*/
+               background: rgb(200,200,200);
+           }
+           ::-webkit-scrollbar-thumb:hover {/*滚动条里面可以拖动的那部分*/
+               background: rgb(180,180,180);
+           }
+           ::-webkit-scrollbar-corner {/*边角*/
+               background: rgb(200,200,200);
+           }
+           ::-webkit-scrollbar-resizer {/*定义右下角拖动块的样式*/
+               background: rgb(200,200,200);
+           }
 </style>

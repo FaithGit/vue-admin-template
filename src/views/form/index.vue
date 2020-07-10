@@ -223,7 +223,7 @@
                     :prop="`sysConditions[${workindex}].modelNum`"
                     :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
                   >
-                    <el-select v-model="work.modelNum" placeholder="请选择对应电表模块编号" style="width:80%">
+                    <el-select v-model="work.modelNum" placeholder="请选择工况模块编号" style="width:80%">
                       <el-option
                         v-for="(length,_index) in form.sysConditions"
                         :key="'lengthModel'+_index"
@@ -274,6 +274,7 @@
                           :value="_index+1"
                         />
                       </el-select>
+                      <span :class="{smallTitle:deviceName(work.ooToModel)!='没有匹配项',smallTitlered:deviceName(work.ooToModel)=='没有匹配项'}">{{ deviceName(work.ooToModel) }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -335,6 +336,7 @@
                           :value="_index+1"
                         />
                       </el-select>
+                      <span :class="{smallTitle:deviceName(work.ooToModel)!='没有匹配项',smallTitlered:deviceName(work.ooToModel)=='没有匹配项'}">{{ deviceName(work.otToModel) }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -396,6 +398,7 @@
                           :value="_index+1"
                         />
                       </el-select>
+                      <span :class="{smallTitle:deviceName(work.ooToModel)!='没有匹配项',smallTitlered:deviceName(work.ooToModel)=='没有匹配项'}">{{ deviceName(work.owToModel) }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -457,6 +460,7 @@
                           :value="_index+1"
                         />
                       </el-select>
+                      <span :class="{smallTitle:deviceName(work.ooToModel)!='没有匹配项',smallTitlered:deviceName(work.ooToModel)=='没有匹配项'}">{{ deviceName(work.ofToModel) }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -518,6 +522,7 @@
                           :value="_index+1"
                         />
                       </el-select>
+                      <span :class="{smallTitle:deviceName(work.ooToModel)!='没有匹配项',smallTitlered:deviceName(work.ooToModel)=='没有匹配项'}">{{ deviceName(work.aoToModel) }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -656,6 +661,8 @@
                           :value="_index+1"
                         />
                       </el-select>
+                      <span :class="{smallTitle:deviceName(work.ooToModel)!='没有匹配项',smallTitlered:deviceName(work.ooToModel)=='没有匹配项'}">{{ deviceName(work.atToModel) }}</span>
+
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -794,6 +801,8 @@
                           :value="_index+1"
                         />
                       </el-select>
+                      <span :class="{smallTitle:deviceName(work.ooToModel)!='没有匹配项',smallTitlered:deviceName(work.ooToModel)=='没有匹配项'}">{{ deviceName(work.awToModel) }}</span>
+
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -932,6 +941,8 @@
                           :value="_index+1"
                         />
                       </el-select>
+                      <span :class="{smallTitle:deviceName(work.ooToModel)!='没有匹配项',smallTitlered:deviceName(work.ooToModel)=='没有匹配项'}">{{ deviceName(work.afToModel) }}</span>
+
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -1236,6 +1247,22 @@ export default {
     this.changeLine(this.form.comId)
   },
   methods: {
+    deviceName(value) {
+      if (value === '') { // 未选对应电表模块编号时
+        return ''
+      } else {
+        for (var i = 0; i < this.form.sysDevices.length; i++) {
+          if (this.form.sysDevices[i].modelNum === value) {
+            if (this.form.sysDevices[i].deviceName === '') {
+              return '(未填写设备名)'
+            } else {
+              return this.form.sysDevices[i].deviceName
+            }
+          }
+        }
+        return '没有匹配项'
+      }
+    },
     onSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
@@ -1500,6 +1527,20 @@ export default {
 }
 .card-content {
   margin: 0 5px;
+}
+.smallTitle{
+    font-size: 10px;
+    color: #46d8d1;
+    position: absolute;
+    top: 0px;
+    left: 52px;
+}
+.smallTitlered{
+  font-size: 10px;
+    color: #df4040;
+    position: absolute;
+    top: 0px;
+    left: 52px;
 }
 </style>
 

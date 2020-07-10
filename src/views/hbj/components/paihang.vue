@@ -3,6 +3,12 @@
     <div v-for="(item,index) in phList" :key="'phlist'+index">
       <div class="phlist"><span class="itemList3" :class="{itemList:index<3}">{{ index+1 }}</span>{{ item }}</div>
     </div>
+    <div>
+      <div v-if="phList.length==0" class="spaceTitle">
+        <div style="font-size:80px"><svg-icon icon-class="nodata" /></div>
+        暂无数据
+      </div>
+    </div>
   </div>
 </template>
 
@@ -39,5 +45,12 @@ export default {
 .itemList{
     background: rgb(49, 70, 89);
     color: white;
+}
+.spaceTitle{
+    width: 100%;
+    height: 345px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

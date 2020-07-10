@@ -300,3 +300,39 @@ export function findComBus(data) { // 查询企业行业
     data
   })
 }
+export function findPictureDynamicInfo(data) { // 查询一张图动态信息
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findPictureDynamicInfo',
+    method: 'POST',
+    data
+  })
+}
+export function findDeviceWarRange(data) { // 环保局首页异常治理设施排名接口
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findDeviceWarRange',
+    method: 'POST',
+    data
+  })
+}
+export function findComWarRange(data) { // 环保局首页异常企业排名接口
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findComWarRange',
+    method: 'POST',
+    data
+  })
+}
+export function findPictureAdminWarRange(data) { // 环保局首页异常企业排名接口
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findPictureAdminWarRange',
+    method: 'POST',
+    data
+  })
+}
+
+export function findAlldAministrativeCode(data) { // 环保局首页异常企业排名接口
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findAlldAministrativeCode',
+    method: 'POST',
+    data
+  })
+}

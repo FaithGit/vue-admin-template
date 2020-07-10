@@ -30,3 +30,8 @@ Mq20180606
 登录名：administrator
 密码：Hs20200425
 路径：D:\software\nginx-1.16.1\webapp
+
+
+    @media screen and (max-width: 2015px){
+     font-size: 19px;
+  }

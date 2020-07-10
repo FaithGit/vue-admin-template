@@ -127,16 +127,13 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="企业所属行政区" prop="comAreaCode">
-              <el-select v-model="companyForm.comAreaCode">
-                <el-option label="南湖区" value="3304020" />
-                <el-option label="秀洲区" value="3304110" />
-                <el-option label="嘉善县" value="3304210" />
-                <el-option label="海盐县" value="3304240" />
-                <el-option label="海宁市" value="3304810" />
-                <el-option label="海盐县" value="3304240" />
-                <el-option label="平湖市" value="3304820" />
-                <el-option label="桐乡市" value="3304830" />
-              </el-select>
+              <el-select-tree
+                v-model="companyForm.comAreaCode"
+                width="120px"
+                placeholder="请选择内容"
+                :data="comAreaCodeTree"
+                :disabled-values="disabledValues"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -252,7 +249,7 @@
   </div>
 </template>
 <script>
-import { findData, selectAllCom, addCom, deleteCom, updateCom, deleteSmsPerson, deletePicture, findComBus } from '@/api/table'
+import { findData, selectAllCom, addCom, deleteCom, updateCom, deleteSmsPerson, deletePicture, findComBus, findAlldAministrativeCode } from '@/api/table'
 import { getToken } from '@/utils/auth'
 // import hyType from '@/utils/type.json'
 import ElSelectTree from 'el-select-tree'
@@ -368,7 +365,8 @@ export default {
       treeData: [
 
       ],
-      disabledValues: []
+      disabledValues: [],
+      comAreaCodeTree: []
     }
   },
 
@@ -381,6 +379,9 @@ export default {
     // })
     findComBus().then(res => {
       this.treeData = res.retData
+    })
+    findAlldAministrativeCode().then(res => {
+      this.comAreaCodeTree = res.retData
     })
   },
   methods: {
