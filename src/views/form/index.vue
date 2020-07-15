@@ -1248,7 +1248,7 @@ export default {
   },
   methods: {
     deviceName(value) {
-      if (value === '') { // 未选对应电表模块编号时
+      if (value === '' || value === null) { // 未选对应电表模块编号时
         return ''
       } else {
         for (var i = 0; i < this.form.sysDevices.length; i++) {
