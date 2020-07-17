@@ -254,6 +254,7 @@ import { getToken } from '@/utils/auth'
 // import hyType from '@/utils/type.json'
 import ElSelectTree from 'el-select-tree'
 import myUpload from 'vue-image-crop-upload'
+import { moblie } from '@/utils/asyncValidator'
 export default {
   name: 'Company',
   components: {
@@ -261,13 +262,6 @@ export default {
     myUpload
   },
   data() {
-    var moblie = (rule, value, callback) => {
-      if (value.length !== 11) {
-        callback(new Error('请输入11位手机号'))
-      } else {
-        callback()
-      }
-    }
     return {
       show: false,
       params: {

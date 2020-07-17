@@ -336,3 +336,17 @@ export function findAlldAministrativeCode(data) { // 环保局首页异常企业
     data
   })
 }
+export function selectUserList(data) { // 查询所有用户列表
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/selectUserList',
+    method: 'POST',
+    data
+  })
+}
+export function findAllRoles(data) { // 查找所有角色
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findAllRoles',
+    method: 'POST',
+    data
+  })
+}
