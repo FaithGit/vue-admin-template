@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="form-head">工况采集仪信息配置</div>
-    <el-form ref="form" :model="form" :rules="rules" label-width="120px" status-icon>
+    <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-row>
         <el-col :span="12">
           <el-form-item label="mn号" prop="mn" label-width="60px">
@@ -28,7 +28,7 @@
             enter-active-class="animate__fadeInDown"
             leave-active-class="animate__fadeOutUp animate__faster "
           >
-            <el-col v-for="(item,index) in form.sysDevices" :key="'sysDevices'+index" :span="24" class="animate__animated ">
+            <el-col v-for="(item,index) in form.sysDevices" :key="'sysDevices'+index" :span="24" class="animate__animated xuxuankuang">
               <el-col :span="1" class="xuhao" style="  border-left: 4px solid #ff8800;">{{ index +1 }}</el-col>
               <el-col :span="4">
                 <el-form-item
@@ -116,7 +116,10 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="4" :offset="10">
+              <el-col :span="2 " class="xuhao">
+                <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
+              </el-col>
+              <el-col :span="4" :offset="1">
                 <el-form-item
                   :key="'isWar'+index"
                   label-width="80px"
@@ -134,10 +137,10 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="5">
                 <el-form-item
                   :key="'deviceStatus'+index"
-                  label-width="80px"
+                  label-width="120px"
                   label="设备状态"
                   :prop="`sysDevices[${index}].deviceStatus`"
                   :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
@@ -155,7 +158,7 @@
               <el-col :span="4">
                 <el-form-item
                   :key="'isTest'+index"
-                  label-width="80px"
+                  label-width="120px"
                   label="测试数据"
                   :prop="`sysDevices[${index}].isTest`"
                   :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
@@ -171,17 +174,16 @@
                 </el-form-item>
               </el-col>
 
-              <el-col v-if="sprot==2" :span="1" class="xuhao">
+              <!-- <el-col v-if="sprot==2" :span="1" class="xuhao">
                 <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceListCloud(item,index)" />
-              </el-col>
-              <el-col v-else :span="2 " class="xuhao">
-                <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
-              </el-col>
-              <el-col v-if="sprot==2" :span="1" class="xuhao">
+              </el-col> -->
+
+              <!-- <el-col v-if="sprot==2" :span="1" class="xuhao">
                 <el-button type="success" circle @click="saveOrUp(item,index)">
                   <svg-icon :icon-class="item.deviceId?'save':'up'" />
                 </el-button>
-              </el-col>
+              </el-col> -->
+              <div class="xuxian" />
             </el-col>
           </transition-group>
           <div style="text-align:center;margin-bottom:20px">
@@ -1061,7 +1063,8 @@
 </template>
 
 <script>
-import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, deleteSysdevice, addSysdevice, updateByDeviceId, addSysCondition, deleteSysCondition, updateSysCondition } from '@/api/table'
+import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, addSysCondition, deleteSysCondition, updateSysCondition, updateAllDevice } from '@/api/table'
+// import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, deleteSysdevice, addSysdevice, updateByDeviceId, addSysCondition, deleteSysCondition, updateSysCondition } from '@/api/table'
 import { getToken } from '@/utils/auth'
 
 export default {
@@ -1080,7 +1083,7 @@ export default {
     // 检测mn
     var checkmn = (rule, value, callback) => {
       var reg = new RegExp('^[0-9]*$') // 纯数字
-      console.log(reg.test(value))
+      // console.log(reg.test(value))
       if (!(value.length === 20)) {
         return callback(new Error('请输入20位数字'))
       } else if (!reg.test(value)) {
@@ -1251,7 +1254,34 @@ export default {
   },
   methods: {
     saveClick() {
-      console.dir(this.form.sysDevices)
+      // console.log(this.form.sysDevices)
+      // console.log(this.form.mn)
+      // console.log(this.form.comId)
+      // console.log(this.form.sysDevices)
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          // alert('submit!')
+          this.form.sysDevices.forEach((item, index) => {
+            item.mn = this.form.mn
+            item.comId = this.form.comId
+          })
+          updateAllDevice(this.form.sysDevices).then(res => {
+            this.form.sysDevices = res.retData
+            this.$message({
+              type: 'success',
+              message: res.retMsg
+            })
+          })
+        } else {
+          // console.log('error submit!!')
+          this.$notify.error({
+            title: '错误',
+            message: '请检查无错误项后再次提交'
+          })
+          return false
+        }
+      })
+      // updateAllDevice
     },
     deviceName(value) {
       if (value === '' || value === null) { // 未选对应电表模块编号时
@@ -1379,45 +1409,45 @@ export default {
       this.form.sysDevices.splice(index, 1)
       // this.$forceUpdate()
     },
-    DelDeviceListCloud(item, index) {
-      if (item.id) {
-        deleteSysdevice({
-          deviceId: item.deviceId
-        }).then(res => {
-          console.log(res)
-          if (res.retData === 1) {
-            this.$message({
-              type: 'success',
-              message: '已从服务器中删除'
-            })
-            this.DelDeviceList(index)
-          }
-        })
-      } else {
-        this.DelDeviceList(index)
-      }
-    },
-    saveOrUp(item, index) {
-      item.mn = this.form.mn
-      if (item.deviceId) {
-        updateByDeviceId(item).then(res => {
-          this.$message({
-            type: 'success',
-            message: '设备信息已经更新'
-          })
-          console.log('更新', res)
-        })
-      } else {
-        addSysdevice(item).then(res => {
-          console.log(res)
-          this.$set(this.form.sysDevices[index], 'deviceId', res.retData.deviceId)
-          this.$message({
-            type: 'success',
-            message: '设备信息已经添加'
-          })
-        })
-      }
-    },
+    // DelDeviceListCloud(item, index) {
+    //   if (item.id) {
+    //     deleteSysdevice({
+    //       deviceId: item.deviceId
+    //     }).then(res => {
+    //       console.log(res)
+    //       if (res.retData === 1) {
+    //         this.$message({
+    //           type: 'success',
+    //           message: '已从服务器中删除'
+    //         })
+    //         this.DelDeviceList(index)
+    //       }
+    //     })
+    //   } else {
+    //     this.DelDeviceList(index)
+    //   }
+    // },
+    // saveOrUp(item, index) {
+    //   item.mn = this.form.mn
+    //   if (item.deviceId) {
+    //     updateByDeviceId(item).then(res => {
+    //       this.$message({
+    //         type: 'success',
+    //         message: '设备信息已经更新'
+    //       })
+    //       console.log('更新', res)
+    //     })
+    //   } else {
+    //     addSysdevice(item).then(res => {
+    //       console.log(res)
+    //       this.$set(this.form.sysDevices[index], 'deviceId', res.retData.deviceId)
+    //       this.$message({
+    //         type: 'success',
+    //         message: '设备信息已经添加'
+    //       })
+    //     })
+    //   }
+    // },
     DelModelList(index, item) {
       if (item.id) {
         item.mn = this.form.mn
@@ -1504,6 +1534,7 @@ export default {
   line-height: 40px;
   padding: 0 12px 0 0;
   text-align: center;
+
 }
 .card {
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -1547,6 +1578,18 @@ export default {
     position: absolute;
     top: 0px;
     left: 52px;
+}
+.xuxuankuang{
+  position: relative;
+}
+.xuxian{
+  width: 96%;
+  height: 2px;
+  position: absolute;
+  bottom: 10px;
+  border-bottom: 1px  dashed #3e3e3e30;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>
 

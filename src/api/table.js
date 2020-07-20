@@ -371,3 +371,10 @@ export function updateUser(data) { // 更新用户
     data
   })
 }
+export function updateAllDevice(data) { // 更新设备信息
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/updateAllDevice',
+    method: 'POST',
+    data
+  })
+}
