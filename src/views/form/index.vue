@@ -186,6 +186,9 @@
           </transition-group>
           <div style="text-align:center;margin-bottom:20px">
             <el-button type="success" icon="el-icon-plus" circle @click="addDeviceList" />
+            <el-button type="success" circle @click="saveClick">
+              <svg-icon icon-class="save" />
+            </el-button>
           </div>
         </el-row>
       </div>
@@ -1247,6 +1250,9 @@ export default {
     this.changeLine(this.form.comId)
   },
   methods: {
+    saveClick() {
+      console.dir(this.form.sysDevices)
+    },
     deviceName(value) {
       if (value === '' || value === null) { // 未选对应电表模块编号时
         return ''

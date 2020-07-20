@@ -350,3 +350,24 @@ export function findAllRoles(data) { // 查找所有角色
     data
   })
 }
+export function addUser(data) { // 新增用户
+  return request({
+    url: 'http://47.96.147.99.:8081/hbjk/addUser',
+    method: 'POST',
+    data
+  })
+}
+export function deleteUser(data) { // 删除用户
+  return request({
+    url: 'http://47.96.147.99.:8081/hbjk/deleteUser',
+    method: 'POST',
+    data
+  })
+}
+export function updateUser(data) { // 更新用户
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/updateUser',
+    method: 'POST',
+    data
+  })
+}

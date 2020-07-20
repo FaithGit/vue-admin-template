@@ -91,7 +91,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="风机电流" align="center">
+      <el-table-column label="风机电流(A)" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.fans_current">
             <svg-icon icon-class="anpei" />
@@ -102,7 +102,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="风机负荷" align="center">
+      <el-table-column label="风机负荷(Hz)" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.fans_load">
             <svg-icon icon-class="fuhe" />
@@ -113,7 +113,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="净化器电流" align="center">
+      <el-table-column label="净化器电流(A)" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.purifier_current">
             <svg-icon icon-class="anpei" />
@@ -124,7 +124,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="净化负荷" align="center">
+      <el-table-column label="净化负荷(Hz)" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.purifier_load">
             <svg-icon icon-class="fuhe" />
@@ -135,7 +135,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="风量" align="center">
+      <el-table-column label="风量(m³/s)" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.fans_volume">
             <svg-icon icon-class="fan" />
@@ -146,7 +146,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="功率" align="center">
+      <el-table-column label="功率(KW)" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.active_power">
             <svg-icon icon-class="powerss" />

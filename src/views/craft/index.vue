@@ -128,6 +128,8 @@ export default {
           })
         }
         this.comList = temp
+        this.com = this.comList[0].value
+        this.searchClick()
       })
     },
     searchClick() {
@@ -274,6 +276,7 @@ to {
   width: 1200px;
   height: 2000px;
   margin: 0 auto;
+  overflow: auto;
 }
 .leftIMG{
   width: 371px;

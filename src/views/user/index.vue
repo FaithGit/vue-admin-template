@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div>
-      <span>用户：</span>
+      <span>用户名称：</span>
       <el-input v-model="search" class="userSeachInput" />
       <el-button type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
       <el-button type="primary" icon="el-icon-refresh-right" @click="restClick">重置</el-button>
@@ -83,16 +83,15 @@
         <el-form-item label="用户名称" prop="userName">
           <el-input v-model="form.userName" />
         </el-form-item>
-        <el-form-item label="登陆密码">
+        <el-form-item v-if="lineTitle!='编辑用户'" label="登陆密码" prop="userPwd">
           <el-input v-model="form.userPwd" />
         </el-form-item>
-        <el-form-item label="核实密码">
+        <el-form-item v-if="lineTitle!='编辑用户'" label="核实密码" prop="userPwd2">
           <el-input v-model="form.userPwd2" />
         </el-form-item>
-        <el-form-item label="角色" prop="roleld">
-          <el-select v-model="form.roleld">
+        <el-form-item label="角色" prop="roleId">
+          <el-select v-model="form.roleId" @change="changeRole">
             <el-option v-for="(item,index) in roleList" :key="'role'+index" :label="item.label" :value="item.value" />
-
           </el-select>
         </el-form-item>
         <el-form-item v-if="form.roleld==='qy'" label="所属企业" prop="comId">
@@ -113,8 +112,9 @@
           />
         </el-form-item>
         <div class="dialogButtonGroup">
-          <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button>取消</el-button>
+          <el-button v-if="lineTitle!='编辑用户'" type="primary" @click="onSubmit">创建</el-button>
+          <el-button v-else type="primary" @click="upDataSubmit">更新</el-button>
+          <el-button @click="addVisible=false">取消</el-button>
         </div>
 
       </el-form>
@@ -123,16 +123,27 @@
   </div>
 </template>
 <script>
-import { selectUserList, findAllRoles, findAlldAministrativeCode, findData } from '@/api/table'
+import { selectUserList, findAllRoles, findAlldAministrativeCode, findData, addUser, deleteUser, updateUser } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import ElSelectTree from 'el-select-tree'
-import { moblie } from '@/utils/asyncValidator'
+import { moblie, password } from '@/utils/asyncValidator'
 export default {
   name: 'User',
   components: {
     ElSelectTree
   },
   data() {
+    // 重复密码验证
+    const passwordAgain = async(rule, value, callback) => {
+      if (value.length < 1) {
+        return callback(new Error('重复密码不能为空！'))
+      } else if (this.form.userPwd !== this.form.userPwd2) {
+        return callback(new Error('两次输入密码不一致！'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       lineTitle: '',
       addVisible: false,
@@ -150,8 +161,10 @@ export default {
         userPwd: '',
         userPwd2: '',
         telephone: '',
-        roleld: '',
-        areaCode: ''
+        roleId: '',
+        areaCode: '',
+        comId: -1,
+        status: true
       },
       rules: {
         userId: [
@@ -160,10 +173,16 @@ export default {
         telephone: [
           { required: false, validator: moblie, trigger: 'blur' }
         ],
+        userPwd: [
+          { required: true, validator: password, trigger: 'blur' }
+        ],
+        userPwd2: [
+          { required: true, validator: passwordAgain, trigger: 'blur' }
+        ],
         userName: [
           { required: true, message: '请输入用户名称', trigger: 'blur' }
         ],
-        roleld: [
+        roleId: [
           { required: true, message: '请输入角色', trigger: 'change' }
         ],
         areaCode: [
@@ -206,16 +225,48 @@ export default {
       })
     },
     handleEdit(index, row) {
-
+      this.form = row
+      delete this.form.userPwd
+      delete this.form.userPwd2
+      delete this.form.createTime
+      this.form.id = row.id
+      this.addVisible = true
+      this.lineTitle = '编辑用户'
+      setTimeout(() => {
+        this.$refs.userForm.clearValidate()
+      }, 500)
     },
     handleDelete(index, row) {
-
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteUser({ userId: row.userId }).then(res => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.selectUserList()
+        })
+      }).catch(() => {
+      })
     },
-    handleSizeChange() {
-
+    handleSizeChange(e) {
+      this.pageSize = e
+      this.selectUserList()
     },
-    handleCurrentChange() {
-
+    handleCurrentChange(e) {
+      this.pageIndex = e
+      this.selectUserList()
+    },
+    changeRole(e) {
+      console.log(e)
+      if (e === 'qy') {
+        this.form.comId = ''
+      } else {
+        this.form.comId = -1
+      }
     },
     searchClick() {
       this.selectUserList(this.search, 1, this.pageSize)
@@ -225,14 +276,51 @@ export default {
     },
     addLineList() {
       this.addVisible = true
+      this.form = {
+        userId: '',
+        userName: '',
+        userPwd: '',
+        userPwd2: '',
+        telephone: '',
+        roleId: '',
+        areaCode: '',
+        comId: -1,
+        status: true
+      }
       this.lineTitle = '新建用户'
+      setTimeout(() => {
+        this.$refs.userForm.clearValidate()
+      }, 500)
     },
     onSubmit() {
       this.$refs['userForm'].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          delete this.form.userPwd2
+          addUser(this.form).then(res => {
+            this.addVisible = false
+            this.selectUserList()
+            this.$message({
+              type: 'success',
+              message: '用户添加成功'
+            })
+          })
         } else {
-          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    upDataSubmit() {
+      this.$refs['userForm'].validate((valid) => {
+        if (valid) {
+          updateUser(this.form).then(res => {
+            this.addVisible = false
+            this.selectUserList()
+            this.$message({
+              type: 'success',
+              message: '用户已更新'
+            })
+          })
+        } else {
           return false
         }
       })
