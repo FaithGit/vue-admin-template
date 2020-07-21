@@ -38,8 +38,11 @@
                 :title="sc.device_name"
                 width="200"
                 trigger="hover"
-                :content="'生产设备开关:'+(sc.switch_data ==true?'开':'关')"
               >
+                <div>
+                  生产设备开关: {{ sc.switch_data ==true?'开':'关' }}<br>
+                  生产功率:{{ sc.active_power }} KW
+                </div>
                 <svg-icon slot="reference" icon-class="create" :class="[sc.device_name==true?'redSvgCreate':'greenSvgCreate']" style="margin:0 5px" class="hoverHref" @click="gotoHistory(sc,scope.row,1)" />
               </el-popover>
 
@@ -84,7 +87,7 @@
       <el-table-column label="水喷淋" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.water_spray">
-            <svg-icon icon-class="water_switch" :class="[scope.row.water_spray!==true?'redSvg':'greenSvg']" />
+            <svg-icon icon-class="water_switch" :class="[scope.row.water_spray!==true?'huiSvg':'greenSvg']" />
           </div>
           <div v-else>
             /
@@ -374,10 +377,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.redSvg{
-  color: red !important;
+.huiSvg{
+  color: rgb(92, 92, 92) !important;
   font-size: 20px;
-  fill: red !important;
+  fill: rgb(92, 92, 92) !important;
 }
 .greenSvg{
   color: green !important;
@@ -385,9 +388,9 @@ export default {
     fill: green !important;
 }
 .redSvgCreate{
-  color: red !important;
+  color: rgb(92, 92, 92) !important;
   font-size: 20px;
-  fill: red !important;
+  fill: rgb(92, 92, 92) !important;
 }
 .greenSvgCreate{
   color: green !important;

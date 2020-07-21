@@ -2,7 +2,7 @@
   <div class="infowindow-main">
     <div style="overflow: hidden;">
       <div class="leftImg">
-        <img src="" alt="" style="width:210px" onerror="this.src='http://47.96.147.99:8080/MQJK/uploadFile/images/20190510153240_92.jpg'">
+        <img src="" alt="" style="width:210px" onerror="this.src='https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2464079983,2760388720&fm=26&gp=0.jpg'">
       </div>
 
       <div class="rightText">
@@ -35,7 +35,7 @@
                 trigger="hover"
                 :content="'生产设备开关:'+(sc.switch_data ==true?'开':'关')"
               >
-                <svg-icon slot="reference" icon-class="create" :class="[sc.device_name!==true?'redSvg':'greenSvg']" style="margin:0 5px" />
+                <svg-icon slot="reference" icon-class="create" :class="[sc.device_name==true?'redSvg':'greenSvg']" style="margin:0 5px" />
               </el-popover>
             </span>
           </template>
@@ -71,7 +71,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="风机电流" align="center">
+        <el-table-column label="风机电流(A)" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.fans_current">
               <svg-icon icon-class="anpei" />
@@ -82,7 +82,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="风机负荷" align="center">
+        <el-table-column label="风机负荷(Hz)" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.fans_load">
               <svg-icon icon-class="fuhe" />
@@ -93,7 +93,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="净化器电流" align="center">
+        <el-table-column label="净化器电流(A)" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.purifier_current">
               <svg-icon icon-class="anpei" />
@@ -104,7 +104,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="净化负荷" align="center">
+        <el-table-column label="净化负荷(Hz)" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.purifier_load">
               <svg-icon icon-class="fuhe" />
@@ -115,7 +115,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="风量" align="center">
+        <el-table-column label="风量(m³/s)" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.fans_volume">
               <svg-icon icon-class="fan" />
@@ -126,7 +126,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="功率" align="center">
+        <el-table-column label="功率(KW)" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.active_power">
               <svg-icon icon-class="powerss" />
@@ -279,8 +279,8 @@ export default {
 
 <style lang="scss" scoped>
 .infowindow-main{
-  width: 600px;
-  height: 330px;
+  width: 760px;
+  height: 350px;
 }
 .leftImg{
   display: inline;
@@ -304,7 +304,7 @@ export default {
   margin-right: 4px;
 }
 .redSvg{
-  color: red;
+  color: rgb(92, 92, 92);
   font-size: 20px;
 }
 .greenSvg{

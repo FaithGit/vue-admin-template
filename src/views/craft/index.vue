@@ -26,9 +26,10 @@
 
           <div class="imgBody">
             <div class="imgBlock">
+              <div v-if="item.scData.length==0" class="zhanwei335">123</div>
+              <div v-if="item.scData.length==1" class="zhanwei">123</div>
               <div v-for="(_item,_index) in item.scData" :key="'xxxxxx'+_index" class="leftIMG">
                 <img src="@img/left-creat.png">
-
                 <img src="@img/gyticon.png" :class="{gyticon1:true,rotation:_item.switch_data!=0}">
                 <img src="@img/gyticon.png" :class="{gyticon2:true,rotation:_item.switch_data!=0}">
                 <img src="@img/gyticon.png" :class="{gyticon3:true,rotation:_item.switch_data!=0}">
@@ -393,5 +394,49 @@ to {
   font-size: 20px;
   color: #ff3c3c;
 }
-
+.zhanwei{
+  height: 120px;
+  opacity: 0;
+}
+.zhanwei335{
+  height: 335px;
+    opacity: 0;
+}
+           /*ie滚动条样式*/
+           * {
+               scrollbar-arrow-color: rgb(200,200,200);/*ok-上下三角箭头*/
+               scrollbar-3dlight-color: rgb(200,200,200);/*ok-3d滑块左上角高光部分颜色*/
+               scrollbar-highlight-color: rgb(200,200,200);/*ok-滑块左上角高光部分颜色*/
+               scrollbar-shadow-color: rgb(200,200,200);/*ok*/
+               scrollbar-darkshadow-color: rgb(200,200,200);/*ok-以上都是定义一些阴影高光等3D效果*/
+               scrollbar-face-color: rgb(200,200,200);/*ok-滑块*/
+               scrollbar-track-color: rgb(240,240,240);/*ok-滑道*/
+           }
+           /*chrome滚动条样式*/
+           ::-webkit-scrollbar {/*滚动条整体部分，其中的属性有width,height,background,border（就和一个块级元素一样）等。*/
+               width: 0px;
+               height: 10px;
+               position: absolute;
+           }
+           ::-webkit-scrollbar-button {/*滚动条两端的按钮。可以用display:none让其不显示，也可以添加背景图片，颜色改变显示效果。*/
+               display: none;
+           }
+           ::-webkit-scrollbar-track {/*外层轨道。可以用display:none让其不显示，也可以添加背景图片，颜色改变显示效果。*/
+               display: none;
+           }
+           ::-webkit-scrollbar-track-piece {/*内层轨道，滚动条中间部分（除去）。*/
+               background: rgb(240,240,240);
+           }
+           ::-webkit-scrollbar-thumb {/*滚动条里面可以拖动的那部分*/
+               background: rgb(200,200,200);
+           }
+           ::-webkit-scrollbar-thumb:hover {/*滚动条里面可以拖动的那部分*/
+               background: rgb(180,180,180);
+           }
+           ::-webkit-scrollbar-corner {/*边角*/
+               background: rgb(200,200,200);
+           }
+           ::-webkit-scrollbar-resizer {/*定义右下角拖动块的样式*/
+               background: rgb(200,200,200);
+           }
 </style>
