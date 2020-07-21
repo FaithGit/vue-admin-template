@@ -156,6 +156,12 @@ export const asyncRoutes = [
     meta: { title: '实时监控', roles: ['kf', 'gly', 'yw', 'qy', 'hbj'], icon: 'realTime' },
     children: [
       {
+        path: 'status',
+        name: 'Status',
+        component: () => import('@/views/status/index'),
+        meta: { title: '实时状态', icon: 'status2', roles: ['kf', 'gly', 'hbj'] }
+      },
+      {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
@@ -167,7 +173,6 @@ export const asyncRoutes = [
         component: () => import('@/views/craft/index'),
         meta: { title: '工艺图', icon: 'craft', roles: ['kf', 'gly', 'qy'] }
       }
-
     ]
   },
   {

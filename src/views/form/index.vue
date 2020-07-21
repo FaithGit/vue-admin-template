@@ -213,12 +213,12 @@
             >
               <div class="card-close">
                 <i class="el-icon-close" @click="DelModelList(workindex,work)" />
-                <span v-if="sprot==2&&work.id" @click=" saveModelListCloud(workindex,work)">
+                <!-- <span v-if="sprot==2&&work.id" @click=" saveModelListCloud(workindex,work)">
                   <svg-icon icon-class="save" />
                 </span>
                 <span v-if="sprot==2&&!work.id" @click="addModelListCloud(workindex,work)">
                   <svg-icon icon-class="up" />
-                </span>
+                </span> -->
               </div>
               <el-row>
                 <el-col :span="6" :offset="18">
@@ -1051,7 +1051,11 @@
           </transition-group>
           <div style="text-align:center;margin-bottom:20px">
             <el-button type="success" icon="el-icon-plus" circle @click="addModelList" />
+            <el-button type="success" circle @click="saveModeClick">
+              <svg-icon icon-class="save" />
+            </el-button>
           </div>
+
         </el-row>
       </div>
       <el-form-item v-if="sprot==1" style="text-align:center">
@@ -1063,7 +1067,7 @@
 </template>
 
 <script>
-import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, addSysCondition, deleteSysCondition, updateSysCondition, updateAllDevice } from '@/api/table'
+import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, addSysCondition, updateSysCondition, updateAllDevice, updateAllCondition } from '@/api/table'
 // import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, deleteSysdevice, addSysdevice, updateByDeviceId, addSysCondition, deleteSysCondition, updateSysCondition } from '@/api/table'
 import { getToken } from '@/utils/auth'
 
@@ -1283,6 +1287,31 @@ export default {
       })
       // updateAllDevice
     },
+    saveModeClick() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          // alert('submit!')
+          this.form.sysConditions.forEach((item, index) => {
+            item.mn = this.form.mn
+            item.comId = this.form.comId
+          })
+          updateAllCondition(this.form.sysConditions).then(res => {
+            console.log(res)
+            this.$message({
+              type: 'success',
+              message: res.retMsg
+            })
+          })
+        } else {
+          // console.log('error submit!!')
+          this.$notify.error({
+            title: '错误',
+            message: '请检查无错误项后再次提交'
+          })
+          return false
+        }
+      })
+    },
     deviceName(value) {
       if (value === '' || value === null) { // 未选对应电表模块编号时
         return ''
@@ -1449,19 +1478,18 @@ export default {
     //   }
     // },
     DelModelList(index, item) {
-      if (item.id) {
-        item.mn = this.form.mn
-        deleteSysCondition(item).then(res => {
-          this.form.sysConditions.splice(index, 1)
-          this.$message({
-            type: 'success',
-            message: '工况信息已经从服务器中删除'
-          })
-        })
-      } else {
-        this.form.sysConditions.splice(index, 1)
-      }
-
+      // if (item.id) {
+      //   item.mn = this.form.mn
+      //   deleteSysCondition(item).then(res => {
+      //     this.form.sysConditions.splice(index, 1)
+      //     this.$message({
+      //       type: 'success',
+      //       message: '工况信息已经从服务器中删除'
+      //     })
+      //   })
+      // } else {
+      this.form.sysConditions.splice(index, 1)
+      // }
       // this.$forceUpdate()
     },
     changeWorkStatus(workindex, value1, value2) {

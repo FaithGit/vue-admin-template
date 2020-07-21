@@ -45,12 +45,17 @@
           {{ scope.row.status== true ?'启用':'停用' }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="250">
         <template slot-scope="scope">
           <el-button
             size="mini"
             @click="handleEdit(scope.$index, scope.row)"
           >编辑</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="handleRestPaw(scope.$index, scope.row)"
+          >重置密码</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -123,7 +128,7 @@
   </div>
 </template>
 <script>
-import { selectUserList, findAllRoles, findAlldAministrativeCode, findData, addUser, deleteUser, updateUser } from '@/api/table'
+import { selectUserList, findAllRoles, findAlldAministrativeCode, findData, addUser, deleteUser, updateUser, resetPwd } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import ElSelectTree from 'el-select-tree'
 import { moblie, password } from '@/utils/asyncValidator'
@@ -248,6 +253,21 @@ export default {
             message: '删除成功!'
           })
           this.selectUserList()
+        })
+      }).catch(() => {
+      })
+    },
+    handleRestPaw(index, row) {
+      this.$confirm('此操作将该用户重置密码, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        resetPwd({ id: row.id }).then(res => {
+          this.$message({
+            type: 'success',
+            message: '密码重置成功!'
+          })
         })
       }).catch(() => {
       })

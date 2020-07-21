@@ -12,6 +12,11 @@
         label="#"
         align="center"
       />
+      <el-table-column label="企业名称" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.comName }}
+        </template>
+      </el-table-column>
       <el-table-column label="MN" align="center">
         <template slot-scope="scope">
           {{ scope.row.mn }}
@@ -32,7 +37,7 @@
           {{ scope.row.meterNum }}
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"

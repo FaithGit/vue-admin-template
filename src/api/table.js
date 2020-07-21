@@ -378,3 +378,17 @@ export function updateAllDevice(data) { // 更新设备信息
     data
   })
 }
+export function resetPwd(data) { // 重置密码
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/resetPwd',
+    method: 'POST',
+    data
+  })
+}
+export function updateAllCondition(data) { // 更新所有工况信息
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/sysCondition/updateAllCondition',
+    method: 'POST',
+    data
+  })
+}
