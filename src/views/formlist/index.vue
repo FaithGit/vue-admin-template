@@ -116,7 +116,11 @@ export default {
       this.diglogTitle = '编辑配置表'
       this.sprot = 2 // 1新增 2编辑
       console.log(row)
-      this.form = row
+      const obj = row
+      for (var i = 0; i < obj.sysDevices.length; i++) {
+        obj.sysDevices[i].listDisabled = obj.sysDevices[i].modelNum
+      }
+      this.form = obj
     },
     handleDelete(index, row) {
       this.$confirm('此操作将永久删除该配置表, 是否继续?', '提示', {
@@ -141,7 +145,7 @@ export default {
       this.form = {
         mn: '',
         comId: '',
-        sysDevices: [{ deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1 }],
+        sysDevices: [{ deviceName: '', modelNum: 1, deviceStyle: '', listDisabled: 1, deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1, meterNum: '-1' }],
         sysConditions: [
           {
             modelNum: 1,

@@ -44,17 +44,35 @@
               <el-col :span="5">
                 <el-form-item
                   :key="'modelNum'+index"
-                  label="电表模块编号"
+                  label="设备模块编号"
                   :prop="`sysDevices[${index}].modelNum`"
                   :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
                 >
-                  <el-select v-model="item.modelNum" placeholder="请选择电表模块编号" clearable @change="changeListDisable" @clear="clearListDisable">
+                  <el-select v-model="item.modelNum" placeholder="请选择设备模块编号" clearable @change="changeListDisable" @clear="clearListDisable">
                     <el-option
                       v-for="(length,_index) in form.sysDevices"
                       :key="'length'+_index"
                       :label="_index+1"
                       :value="_index+1"
-                      :disabled="length.listDisabled==1"
+                      :disabled="length.listDisabled==_index+1"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item
+                  :key="'meterNum'+index"
+                  label="设备电表编号"
+                  :prop="`sysDevices[${index}].meterNum`"
+                  :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
+                >
+                  <el-select v-model="item.meterNum" placeholder="请选择设备类别">
+                    <el-option label="无" value="-1" />
+                    <el-option
+                      v-for="(length,_index) in form.sysDevices"
+                      :key="'length'+_index"
+                      :label="_index+1"
+                      :value="_index+1"
                     />
                   </el-select>
                 </el-form-item>
@@ -98,7 +116,11 @@
                   <el-select v-else v-model="item.deviceProcess" clearable placeholder="请选择设备类别" />
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+
+              <el-col :span="2 " class="xuhao">
+                <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
+              </el-col>
+              <el-col :span="4" :offset="1">
                 <el-form-item
                   :key="'groupId'+index"
                   label-width="80px"
@@ -116,13 +138,10 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="2 " class="xuhao">
-                <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
-              </el-col>
-              <el-col :span="4" :offset="1">
+              <el-col :span="5">
                 <el-form-item
                   :key="'isWar'+index"
-                  label-width="80px"
+                  label-width="120px"
                   label="是否异常"
                   :prop="`sysDevices[${index}].isWar`"
                   :rules="{ required: true, message: '此为必填项', trigger: 'blur' }"
@@ -137,7 +156,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="5">
+              <el-col :span="4">
                 <el-form-item
                   :key="'deviceStatus'+index"
                   label-width="120px"
@@ -266,12 +285,12 @@
                   <el-col :span="6">
                     <el-form-item
                       :ref="`${workindex}ooStatus1`"
-                      label="对应电表模块编号"
+                      label="对应设备模块编号"
                       label-width="134px"
                       :prop="`sysConditions[${workindex}].ooToModel`"
                       :rules="work.ooStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-select v-model="work.ooToModel " clearable placeholder="请选择对应电表模块编号">
+                      <el-select v-model="work.ooToModel " clearable placeholder="请选择对应设备模块编号">
                         <el-option
                           v-for="(length,_index) in form.sysDevices"
                           :key="'lengthDui'+_index"
@@ -328,12 +347,12 @@
                   <el-col :span="6">
                     <el-form-item
                       :ref="`${workindex}otStatus1`"
-                      label="对应电表模块编号"
+                      label="对应设备模块编号"
                       label-width="134px"
                       :prop="`sysConditions[${workindex}].otToModel`"
                       :rules="work.otStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-select v-model="work.otToModel " clearable placeholder="请选择对应电表模块编号">
+                      <el-select v-model="work.otToModel " clearable placeholder="请选择对应设备模块编号">
                         <el-option
                           v-for="(length,_index) in form.sysDevices"
                           :key="'lengthDui'+_index"
@@ -390,12 +409,12 @@
                   <el-col :span="6">
                     <el-form-item
                       :ref="`${workindex}owStatus1`"
-                      label="对应电表模块编号"
+                      label="对应设备模块编号"
                       label-width="134px"
                       :prop="`sysConditions[${workindex}].owToModel`"
                       :rules="work.owStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-select v-model="work.owToModel " clearable placeholder="请选择对应电表模块编号">
+                      <el-select v-model="work.owToModel " clearable placeholder="请选择对应设备模块编号">
                         <el-option
                           v-for="(length,_index) in form.sysDevices"
                           :key="'lengthDui'+_index"
@@ -452,12 +471,12 @@
                   <el-col :span="6">
                     <el-form-item
                       :ref="`${workindex}ofStatus1`"
-                      label="对应电表模块编号"
+                      label="对应设备模块编号"
                       label-width="134px"
                       :prop="`sysConditions[${workindex}].ofToModel`"
                       :rules="work.ofStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-select v-model="work.ofToModel " clearable placeholder="请选择对应电表模块编号">
+                      <el-select v-model="work.ofToModel " clearable placeholder="请选择对应设备模块编号">
                         <el-option
                           v-for="(length,_index) in form.sysDevices"
                           :key="'lengthDui'+_index"
@@ -514,12 +533,12 @@
                   <el-col :span="6">
                     <el-form-item
                       :ref="`${workindex}aoStatus1`"
-                      label="对应电表模块编号"
+                      label="对应设备模块编号"
                       label-width="134px"
                       :prop="`sysConditions[${workindex}].aoToModel`"
                       :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-select v-model="work.aoToModel" clearable placeholder="请选择对应电表模块编号">
+                      <el-select v-model="work.aoToModel" clearable placeholder="请选择对应设备模块编号">
                         <el-option
                           v-for="(length,_index) in form.sysDevices"
                           :key="'lengthDui'+_index"
@@ -653,12 +672,12 @@
                   <el-col :span="6">
                     <el-form-item
                       :ref="`${workindex}atStatus1`"
-                      label="对应电表模块编号"
+                      label="对应设备模块编号"
                       label-width="134px"
                       :prop="`sysConditions[${workindex}].atToModel`"
                       :rules="work.atStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-select v-model="work.atToModel" clearable placeholder="请选择对应电表模块编号">
+                      <el-select v-model="work.atToModel" clearable placeholder="请选择对应设备模块编号">
                         <el-option
                           v-for="(length,_index) in form.sysDevices"
                           :key="'lengthDui'+_index"
@@ -793,12 +812,12 @@
                   <el-col :span="6">
                     <el-form-item
                       :ref="`${workindex}awStatus1`"
-                      label="对应电表模块编号"
+                      label="对应设备模块编号"
                       label-width="134px"
                       :prop="`sysConditions[${workindex}].awToModel`"
                       :rules="work.awStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-select v-model="work.awToModel" clearable placeholder="请选择对应电表模块编号">
+                      <el-select v-model="work.awToModel" clearable placeholder="请选择对应设备模块编号">
                         <el-option
                           v-for="(length,_index) in form.sysDevices"
                           :key="'lengthDui'+_index"
@@ -933,12 +952,12 @@
                   <el-col :span="6">
                     <el-form-item
                       :ref="`${workindex}afStatus1`"
-                      label="对应电表模块编号"
+                      label="对应设备模块编号"
                       label-width="134px"
                       :prop="`sysConditions[${workindex}].afToModel`"
                       :rules="work.afStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-select v-model="work.afToModel" clearable placeholder="请选择对应电表模块编号">
+                      <el-select v-model="work.afToModel" clearable placeholder="请选择对应设备模块编号">
                         <el-option
                           v-for="(length,_index) in form.sysDevices"
                           :key="'lengthDui'+_index"
@@ -1354,8 +1373,9 @@ export default {
       this.$refs.form.clearValidate()
     },
     addDeviceList() {
-      const _obj = { deviceName: '', modelNum: '', deviceStyle: '', listDisabled: '', deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1 }
+      const _obj = { deviceName: '', meterNum: '-1', modelNum: this.form.sysDevices.length + 1, deviceStyle: '', listDisabled: this.form.sysDevices.length + 1, deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1 }
       this.form.sysDevices.push(_obj)
+      this.changeListDisable()
     },
     addModelListCloud(index, item) {
       item.mn = this.form.mn

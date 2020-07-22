@@ -43,7 +43,7 @@
                   生产设备开关: {{ sc.switch_data ==true?'开':'关' }}<br>
                   生产功率:{{ sc.active_power }} KW
                 </div>
-                <svg-icon slot="reference" icon-class="create" :class="[sc.device_name==true?'redSvgCreate':'greenSvgCreate']" style="margin:0 5px" class="hoverHref" @click="gotoHistory(sc,scope.row,1)" />
+                <svg-icon slot="reference" icon-class="create" :class="[sc.switch_data==true?'greenSvgCreate':'redSvgCreate']" style="margin:0 5px" class="hoverHref" @click="gotoHistory(sc,scope.row,1)" />
               </el-popover>
 
             </span>
@@ -87,7 +87,7 @@
       <el-table-column label="水喷淋" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.water_spray">
-            <svg-icon icon-class="water_switch" :class="[scope.row.water_spray!==true?'huiSvg':'greenSvg']" />
+            <svg-icon icon-class="water_switch" :class="[scope.row.water_spray=='1'?'greenSvg':'huiSvg']" />
           </div>
           <div v-else>
             /
