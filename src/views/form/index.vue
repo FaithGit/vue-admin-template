@@ -580,7 +580,7 @@
                       :prop="`sysConditions[${workindex}].aoAcquisitionRangeMin`"
                       :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.aoAcquisitionRangeMin" />
+                      <el-input-number v-model.number="work.aoAcquisitionRangeMin" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -591,7 +591,7 @@
                       :prop="`sysConditions[${workindex}].aoAcquisitionRangeMax`"
                       :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.aoAcquisitionRangeMax" />
+                      <el-input-number v-model.number="work.aoAcquisitionRangeMax" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -602,7 +602,7 @@
                       :prop="`sysConditions[${workindex}].aoRealRangeMin`"
                       :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.aoRealRangeMin" />
+                      <el-input-number v-model.number="work.aoRealRangeMin" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -613,7 +613,7 @@
                       :prop="`sysConditions[${workindex}].aoRealRangeMax`"
                       :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.aoRealRangeMax" />
+                      <el-input-number v-model.number="work.aoRealRangeMax" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -624,7 +624,7 @@
                       :prop="`sysConditions[${workindex}].aoCriticalValue`"
                       :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.aoCriticalValue" />
+                      <el-input-number v-model.number="work.aoCriticalValue" controls-position="right" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
@@ -635,8 +635,9 @@
                       :prop="`sysConditions[${workindex}].aoLoadCoefficient`"
                       :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.aoLoadCoefficient" />
+                      <el-input-number v-model.number="work.aoLoadCoefficient" controls-position="right" />
                     </el-form-item>
+                    <div v-if="work.aoStatus" class="gpsz">工频设置为0</div>
                   </el-col>
                   <el-col :span="6">
                     <el-form-item
@@ -646,7 +647,7 @@
                       :prop="`sysConditions[${workindex}].aoAir`"
                       :rules="work.aoStatus!=0? requiredRules: NorequiredRules"
                     >
-                      <el-input-number v-model.number="work.aoAir" />
+                      <el-input-number v-model.number="work.aoAir" controls-position="right" />
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -777,6 +778,7 @@
                     >
                       <el-input-number v-model.number="work.atLoadCoefficient" controls-position="right" />
                     </el-form-item>
+                    <div v-if="work.atStatus" class="gpsz">工频设置为0</div>
                   </el-col>
                   <el-col :span="6">
                     <el-form-item
@@ -917,6 +919,7 @@
                     >
                       <el-input-number v-model.number="work.awLoadCoefficient" controls-position="right" />
                     </el-form-item>
+                    <div v-if="work.awStatus" class="gpsz">工频设置为0</div>
                   </el-col>
                   <el-col :span="6">
                     <el-form-item
@@ -1057,6 +1060,7 @@
                     >
                       <el-input-number v-model.number="work.afLoadCoefficient" controls-position="right" />
                     </el-form-item>
+                    <div v-if="work.afStatus" class="gpsz">工频设置为0</div>
                   </el-col>
                   <el-col :span="6">
                     <el-form-item
@@ -1660,6 +1664,13 @@ export default {
   border-bottom: 1px  dashed #3e3e3e30;
   left: 50%;
   transform: translateX(-50%);
+}
+.gpsz{
+  position: absolute;
+    top: 139px;
+    left: 321px;
+    font-size: 12px;
+    color: #4c8aca;
 }
 </style>
 
