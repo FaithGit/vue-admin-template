@@ -99,7 +99,7 @@
             <el-option v-for="(item,index) in roleList" :key="'role'+index" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="form.roleld==='qy'" label="所属企业" prop="comId">
+        <el-form-item v-if="form.roleId=='qy'" label="所属企业" prop="comId">
           <el-select v-model="form.comId">
             <el-option v-for="(item,index) in comList" :key="'comId'+index" :label="item.comShortName" :value="item.id" />
           </el-select>

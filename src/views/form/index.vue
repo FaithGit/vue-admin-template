@@ -3,12 +3,17 @@
     <div class="form-head">工况采集仪信息配置</div>
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-row>
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="mn号" prop="mn" label-width="60px">
             <el-input v-model="form.mn" placeholder="20位数字不能为空" :disabled="sprot==2" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
+          <el-form-item label="卡号" prop="physicalLinkCard" label-width="60px">
+            <el-input v-model="form.physicalLinkCard" placeholder="13位数字不能为空" :disabled="sprot==2" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
           <el-form-item label="企业名称" prop="comId">
             <el-select v-model="form.comId" placeholder="请选择企业名称" style="width:100%" :disabled="sprot==2" @change="changeLine">
               <el-option v-for="com in com_list" :key="com.id" :label="com.com_name" :value="com.id" />
@@ -67,7 +72,7 @@
                   :rules="{ required: true, message: '此为必填项', trigger: ['blur','change'] }"
                 >
                   <el-select v-model="item.meterNum" placeholder="请选择设备类别">
-                    <el-option label="无" value="-1" />
+                    <el-option label="无" :value="noValue" />
                     <el-option
                       v-for="(length,_index) in form.sysDevices"
                       :key="'length'+_index"
@@ -207,7 +212,7 @@
           </transition-group>
           <div style="text-align:center;margin-bottom:20px">
             <el-button type="success" icon="el-icon-plus" circle @click="addDeviceList" />
-            <el-button type="success" circle @click="saveClick">
+            <el-button v-show="sprot==2" type="success" circle @click="saveClick">
               <svg-icon icon-class="save" />
             </el-button>
           </div>
@@ -1070,7 +1075,7 @@
           </transition-group>
           <div style="text-align:center;margin-bottom:20px">
             <el-button type="success" icon="el-icon-plus" circle @click="addModelList" />
-            <el-button type="success" circle @click="saveModeClick">
+            <el-button v-show="sprot==2" type="success" circle @click="saveModeClick">
               <svg-icon icon-class="save" />
             </el-button>
           </div>
@@ -1109,6 +1114,19 @@ export default {
       // console.log(reg.test(value))
       if (!(value.length === 20)) {
         return callback(new Error('请输入20位数字'))
+      } else if (!reg.test(value)) {
+        console.log(reg.test(value))
+        return callback(new Error('不能包含字符串'))
+      } else {
+        callback()
+      }
+    }
+    // 检测kh
+    var checkkh = (rule, value, callback) => {
+      var reg = new RegExp('^[0-9]*$') // 纯数字
+      // console.log(reg.test(value))
+      if (!(value.length === 13)) {
+        return callback(new Error('请输入13位数字'))
       } else if (!reg.test(value)) {
         console.log(reg.test(value))
         return callback(new Error('不能包含字符串'))
@@ -1179,8 +1197,10 @@ export default {
       //     }
       //   ]
       // },
+      noValue: -1,
       rules: {
         mn: [{ validator: checkmn, required: true, trigger: 'blur' }],
+        physicalLinkCard: [{ validator: checkkh, required: true, trigger: 'blur' }],
         comId: [{ required: true, trigger: 'blur', message: '此为必填项' }]
       },
       requiredRules: {
@@ -1281,9 +1301,11 @@ export default {
       // console.log(this.form.mn)
       // console.log(this.form.comId)
       // console.log(this.form.sysDevices)
+      console.log('1')
       this.$refs.form.validate(valid => {
         if (valid) {
           // alert('submit!')
+
           this.form.sysDevices.forEach((item, index) => {
             item.mn = this.form.mn
             item.comId = this.form.comId
@@ -1373,7 +1395,7 @@ export default {
       this.$refs.form.clearValidate()
     },
     addDeviceList() {
-      const _obj = { deviceName: '', meterNum: '-1', modelNum: this.form.sysDevices.length + 1, deviceStyle: '', listDisabled: this.form.sysDevices.length + 1, deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1 }
+      const _obj = { deviceName: '', meterNum: -1, modelNum: this.form.sysDevices.length + 1, deviceStyle: '', listDisabled: this.form.sysDevices.length + 1, deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1 }
       this.form.sysDevices.push(_obj)
       this.changeListDisable()
     },
