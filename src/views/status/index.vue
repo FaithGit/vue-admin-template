@@ -63,6 +63,41 @@
 </template>
 <script>
 import Vue2OrgTree from 'vue-tree-color'
+[{
+  comName: '海宁牛仔织造有限公司', // 公司名
+  status: true, // 状态
+  errorPoint: 1, // 异常点位
+  createOn: 0, // 生产设施开启
+  createOff: 1, // 生产设施关闭
+  zlOn: 0, // 治理设施开启
+  zlOff: 1, // 治理设施关闭
+  list: [
+    {
+      groupName: '1#线', // 组名
+      children: [
+        {
+          label: '压延机1#', // 设备名
+          error: true // 是否异常  true正常 false异常
+        }, {
+          label: '治理设施1#',
+          error: false
+        }
+      ]
+    },
+    {
+      groupName: '3#线', // 组名
+      children: [
+        {
+          label: '压延机3#', // 设备名
+          error: true // 是否异常
+        }, {
+          label: '治理设施3#',
+          error: true
+        }
+      ]
+    }
+  ]
+}]
 export default {
   name: 'Status',
   components: {
@@ -198,3 +233,4 @@ export default {
     font-weight: bold;
   }
 </style>
+

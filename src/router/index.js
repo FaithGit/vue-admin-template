@@ -158,7 +158,7 @@ export const asyncRoutes = [
       {
         path: 'status',
         name: 'Status',
-        component: () => import('@/views/status/index'),
+        component: () => import('@/views/status2/index'),
         meta: { title: '实时状态', icon: 'status2', roles: ['kf', 'gly', 'hbj'] }
       },
       {

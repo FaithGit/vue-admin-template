@@ -392,3 +392,10 @@ export function updateAllCondition(data) { // 更新所有工况信息
     data
   })
 }
+export function findSysComDeviceStatus(data) { // 查询企业设备状态
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findSysComDeviceStatus',
+    method: 'POST',
+    data
+  })
+}
