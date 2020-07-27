@@ -113,6 +113,19 @@ export const asyncRoutes = [
 
   },
   {
+    path: '/fenxi',
+    component: Layout,
+    meta: { title: '数据分析', roles: ['kf', 'gly', 'az'], icon: 'fenxisvg' },
+    children: [
+      {
+        path: 'dataCom',
+        name: 'DataCom',
+        component: () => import('@/views/dataCom/index'),
+        meta: { title: '功率对比', icon: 'dataCom', roles: ['kf', 'gly'] }
+      }
+    ]
+  },
+  {
     path: '/system',
     component: Layout,
     meta: { title: '系统管理', roles: ['kf', 'gly', 'az'], icon: 'system' },
@@ -158,7 +171,7 @@ export const asyncRoutes = [
       {
         path: 'status',
         name: 'Status',
-        component: () => import('@/views/status2/index'),
+        component: () => import('@/views/status/index'),
         meta: { title: '实时状态', icon: 'status2', roles: ['kf', 'gly', 'hbj'] }
       },
       {

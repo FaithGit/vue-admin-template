@@ -25,7 +25,7 @@
           <div class="createLineTime">时间：{{ item.dataTime }}</div>
 
           <div class="imgBody">
-            <div class="imgBlock">
+            <div :class="{imgBlock:item.zlData.length<=1,imgBlock2:item.zlData.length==2,imgBlock3:item.zlData.length==3}">
               <div v-if="item.scData.length==0" class="zhanwei335">123</div>
               <div v-if="item.scData.length==1" class="zhanwei">123</div>
               <div v-for="(_item,_index) in item.scData" :key="'xxxxxx'+_index" class="leftIMG">
@@ -47,14 +47,18 @@
                 </div>
               </div>
 
-              <img src="@img/right-zl.png" class="right-zl">
-              <div class="middle-zl">
+              <div v-for="(zlItem,zlIndex) in item.zlData" :key="'zlItem'+zlIndex" :class="{middleZl:zlIndex==0,middleZl2:zlIndex==1,middleZl3:zlIndex==2}">
+                <div v-if="zlIndex!=0" class="leftGuan2" />
+                <div v-if="zlIndex!=0" :class="{jiantou:true,opacityFu:tableDataCss[index]==true}" style="transform: rotate(180deg);left: -12px;top: 377px;z-index: 1;" />
+                <div v-if="zlIndex!=0" :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true}" style="transform: rotate(180deg);left: -12px;top: 294px;z-index: 1;" />
+                <img v-if="zlIndex+1==item.zlData.length" src="@img/right-zl.png" class="right-zl">
+                <img v-else src="@img/right-zl2.png" class="right-zl2">
                 <img src="@img/middle-zl.png">
-                <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true}" style="right: -24px;transform: scale(1.3) rotate(180deg);top:-148px;" />
+                <div v-if="zlIndex!=0||item.zlData.length==1" :class="{jiantou:true,opacityFu:tableDataCss[index]==true}" style="right: -24px;transform: scale(1.3) rotate(180deg);top:-148px;" />
                 <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 48px;" />
                 <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 228px;" />
-                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 328px;" />
-                <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 368px;" />
+                <div v-if="zlIndex+1!=item.zlData.length||zlIndex==0" :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 328px;" />
+                <div v-if="zlIndex+1!=item.zlData.length||zlIndex==0" :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="right: -24px;transform: scale(1.3) rotate(180deg);top: 368px;" />
                 <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true} " style="left: 29px;transform: scale(1) rotate(-90deg);top: 214px;" />
                 <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="left: 99px;transform: scale(1) rotate(-90deg);top: 214px;" />
                 <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true} " style="left: 488px;transform: scale(1.3) rotate(-90deg);top: 265px;" />
@@ -63,20 +67,19 @@
                 <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="left: 430px;transform: scale(1) rotate(-90deg);top: 10px;" />
                 <div :class="{jiantou:true,opacityFu:tableDataCss[index]==true} " style="left: 456px;transform: scale(1);top:80px;" />
                 <div :class="{jiantou2:true,opacityFu2:tableDataCss[index]==true} " style="left: 456px;transform: scale(1);top: 180px;" />
-
                 <div class="left-content left-content-zl">
-                  <div>监测仪：{{ item.zlData[0].device_name }}</div>
-                  <div v-if="item.zlData[0].active_power!=null">功率：{{ item.zlData[0].active_power }} kw</div>
-                  <div v-if="item.zlData[0].ph_value!=null">ph值：{{ item.zlData[0].ph_value }}</div>
-                  <div v-if="item.zlData[0].purifier_load!=null">净化器负荷：{{ item.zlData[0].purifier_load }} Hz</div>
-                  <div v-if="item.zlData[0].purifier_current!=null">净化器电流：{{ item.zlData[0].purifier_current }} A</div>
-                  <div v-if="item.zlData[0].fans_load!=null">风机负荷：{{ item.zlData[0].fans_load }} Hz</div>
-                  <div v-if="item.zlData[0].fans_current!=null">风机电流：{{ item.zlData[0].fans_current }} A</div>
-                  <div v-if="item.zlData[0].water_spray!=null">水喷淋开关：
-                    <svg-icon icon-class="water_switch" :class="[item.zlData[0].water_spray!==true?'redSvg':'greenSvg']" />
+                  <div>监测仪：{{ zlItem.device_name }}</div>
+                  <div v-if="zlItem.active_power!=null">功率：{{ zlItem.active_power }} kw</div>
+                  <div v-if="zlItem.ph_value!=null">ph值：{{ zlItem.ph_value }}</div>
+                  <div v-if="zlItem.purifier_load!=null">净化器负荷：{{ zlItem.purifier_load }} Hz</div>
+                  <div v-if="zlItem.purifier_current!=null">净化器电流：{{ zlItem.purifier_current }} A</div>
+                  <div v-if="zlItem.fans_load!=null">风机负荷：{{ zlItem.fans_load }} Hz</div>
+                  <div v-if="zlItem.fans_current!=null">风机电流：{{ zlItem.fans_current }} A</div>
+                  <div v-if="zlItem.water_spray!=null">水喷淋开关：
+                    <svg-icon icon-class="water_switch" :class="[zlItem.water_spray!==true?'redSvg':'greenSvg']" />
                   </div>
-                  <div v-if="item.zlData[0].emission_tem_out!=null">排放口温度：{{ item.zlData[0].emission_tem_out }} ℃</div>
-                  <div v-if="item.zlData[0].emission_tem_in!=null">净化温度：{{ item.zlData[0].emission_tem_in }} ℃</div>
+                  <div v-if="zlItem.emission_tem_out!=null">排放口温度：{{ zlItem.emission_tem_out }} ℃</div>
+                  <div v-if="zlItem.emission_tem_in!=null">净化温度：{{ zlItem.emission_tem_in }} ℃</div>
                 </div>
               </div>
             </div>
@@ -288,10 +291,28 @@ to {
   position: relative;
   margin: 150px 0 0 100px;
 }
-.middle-zl{
+.imgBlock2{
+  position: relative;
+  margin: 575px 0 0 100px;
+}
+.imgBlock3{
+  position: relative;
+  margin: 575px 0 0 100px;
+}
+.middleZl{
   position: absolute;
   left: 371px;
   bottom: -110px;
+}
+.middleZl2{
+  position: absolute;
+  left: 371px;
+  bottom: 307px;
+}
+.middleZl3{
+  position: absolute;
+  left: 371px;
+  bottom: 741px;
 }
 .leftGuan{
   height: 217px;
@@ -301,6 +322,15 @@ to {
   right: 0px;
   z-index: 2;
   top: 40px;
+}
+.leftGuan2{
+  width: 20px;
+  background: #bdbdbd;
+  position: absolute;
+  top: 218px;
+  height: 350px;
+  z-index: 1;
+  left: -20px;
 }
 .left-content{
     width: 180px;
@@ -324,9 +354,15 @@ to {
 }
 .right-zl{
   position: absolute;
-  bottom: -94px;
-  right: 20px;
-  z-index: 5;
+  bottom: 18px;
+  right: -59px;
+  z-index: 6;
+}
+.right-zl2{
+  position: absolute;
+  bottom: 18px;
+  right: -59px;
+  z-index: 6;
 }
 .gyticon1{
     position: absolute;
@@ -439,4 +475,5 @@ to {
            ::-webkit-scrollbar-resizer {/*定义右下角拖动块的样式*/
                background: rgb(200,200,200);
            }
+
 </style>
