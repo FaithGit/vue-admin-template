@@ -399,3 +399,10 @@ export function findSysComDeviceStatus(data) { // 查询企业设备状态
     data
   })
 }
+export function findTodayScZlPower(data) { // 查找今日生产治理功率对比
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findTodayScZlPower',
+    method: 'POST',
+    data
+  })
+}
