@@ -70,7 +70,7 @@ export default {
     selectAllGroups() {
       selectAllGroups({
         pageIndex: 1,
-        pageSize: 999,
+        pageSize: 99,
         comId: this.com || ''
       }).then(res => {
         this.scxList = res.retData.data
