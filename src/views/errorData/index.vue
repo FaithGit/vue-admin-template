@@ -10,9 +10,27 @@
           :value="item.value"
         />
       </el-select>
+      <span class="demonstration">检测仪：</span>
+      <el-select v-model="device" clearable placeholder="非必填项">
+        <el-option
+          v-for="item in deviceList"
+          :key="item.value"
+          :label="item.deviceName"
+          :value="item.deviceId"
+        />
+      </el-select>
+      <span class="demonstration">日期: </span>
+      <el-date-picker
+        v-model="date"
+        type="datetimerange"
+        :picker-options="pickerOptions"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+      />
+
       <el-button type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
       <el-button type="primary" icon="el-icon-refresh-right" @click="restClick">重置</el-button>
-      <el-button type="success" icon="el-icon-plus" @click="addLineList">添加</el-button>
     </div>
 
     <el-table v-loading="loadable" border :data="tableData" style="margin:10px 0px 0px 0px">
@@ -22,42 +40,37 @@
         label="#"
         align="center"
       />
+      <el-table-column label="点位" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.device_name }}
+        </template>
+      </el-table-column>
       <el-table-column label="企业名称" align="center">
         <template slot-scope="scope">
           {{ scope.row.com_name }}
         </template>
       </el-table-column>
-      <el-table-column label="生产线组名称" align="center">
+      <el-table-column label="时间" align="center">
         <template slot-scope="scope">
-          {{ scope.row.group_name }}
+          {{ scope.row.data_time }}
         </template>
       </el-table-column>
-      <el-table-column label="组号" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.group_no }}
-        </template>
+      <el-table-column label="数据" align="center">
+        <el-table-column label="监测项" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.warType }}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="监测值" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.warData }}
+          </template>
+        </el-table-column>
       </el-table-column>
-      <el-table-column label="是否使用中" align="center">
+      <el-table-column label="异常类型" align="center">
         <template slot-scope="scope">
-          {{ scope.row.is_use == true ?'是':'否' }}
-        </template>
-      </el-table-column>
-      <el-table-column label="是否测试数据" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.is_test== true ?'是':'否' }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleEdit(scope.$index, scope.row)"
-          >编辑</el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-          >删除</el-button>
+          {{ scope.row.type_name }}
         </template>
       </el-table-column>
     </el-table>
@@ -72,63 +85,23 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
-
-    <el-dialog
-      :title="lineTitle"
-      :visible.sync="addVisible"
-      width="700px"
-    >
-      <el-row :gutter="20">
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          企业：
-          <el-select v-model="comId" placeholder="请选择">
-            <el-option
-              v-for="item in comList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            /></el-select>
-        </el-col>
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          <span>生产线组名称：</span>
-          <el-input v-model="groupName" style="width:60%" />
-        </el-col>
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          <span>组号：</span>
-          <el-input v-model="groupNo" style="width:70%" />
-        </el-col>
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          <span>是否使用中：</span>
-          <el-select v-model="isUse" placeholder="请选择" style="width:70%">
-            <el-option v-for="(isItem,index) in isList" :key="'key1'+index" :label="isItem.label" :value="isItem.value" />
-          </el-select>
-        </el-col>
-        <el-col :span="12" style="margin:0px 0px 20px 0px">
-          <span>是否测试数据：</span>
-          <el-select v-model="isTest" placeholder="请选择" style="width:60%">
-            <el-option v-for="(isItem,index) in isList" :key="'key2'+index" :label="isItem.label" :value="isItem.value" />
-          </el-select>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addVisible = false">取 消</el-button>
-        <el-button v-if="showUpdata" type="primary" icon="el-icon-refresh" @click="upSure">更 新</el-button>
-        <el-button v-else type="primary" @click="addSure">确 定</el-button>
-      </span>
-    </el-dialog>
-
   </div>
 </template>
 <script>
-import { findData, selectAllGroups, addGroup, deleteGroup, updateGroup } from '@/api/table'
+import { findData, findWarData, selectAllDevices } from '@/api/table'
 import { getToken } from '@/utils/auth'
+import { DateHandle } from '@/utils/validate'
 export default {
   name: 'LineList',
   data() {
     return {
       com: '',
+      date: '',
       comList: [],
-      searchReal: '',
+      deviceList: [],
+      device: '',
+      searchReal: '', // 公司id 真实搜索条件
+      deviceReal: '', // 设备id 真实搜索条件
       loadable: true,
       tableData: [],
       pageIndex: 1,
@@ -152,58 +125,123 @@ export default {
           label: '否',
           value: false
         }
-      ]
+      ],
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      }
     }
   },
   mounted() {
-    this.findData()
-    this.selectAllGroups()
-  },
-  methods: {
-    selectAllGroups() {
-      this.loadable = true
-      selectAllGroups({
-        comId: this.searchReal,
+    findData({
+      token: getToken(),
+      comName: '',
+      pageIndex: 1,
+      pageSize: 100
+    }).then(res => {
+      // console.log(res.retData.data)
+      var arr = res.retData.data
+      var temp = []
+      for (var i = 0; i < arr.length; i++) {
+        temp.push({
+          label: arr[i].comShortName,
+          value: arr[i].id
+        })
+      }
+      this.comList = temp
+      this.com = this.comList[0].value
+      findWarData({
+        comId: this.com,
         pageIndex: this.pageIndex,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        startTime: '',
+        endTime: '',
+        deviceId: ''
       }).then(res => {
         console.log(res)
         this.tableData = res.retData.data
         this.total = res.retData.total
         this.loadable = false
       })
+    })
+  },
+  methods: {
+    findWarData() {
+      this.loadable = true
+      console.log(this.date)
+      if (this.date) {
+        findWarData({
+          comId: this.searchReal,
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize,
+          startTime: DateHandle(this.date[0]),
+          endTime: DateHandle(this.date[1]),
+          deviceId: this.deviceReal
+        }).then(res => {
+          console.log(res)
+          this.tableData = res.retData.data
+          this.total = res.retData.total
+          this.loadable = false
+        })
+      } else {
+        findWarData({
+          comId: this.searchReal,
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize,
+          deviceId: this.deviceReal
+        }).then(res => {
+          console.log(res)
+          this.tableData = res.retData.data
+          this.total = res.retData.total
+          this.loadable = false
+        })
+      }
     },
     handleSizeChange(val) {
       console.log(val)
       this.pageSize = val
       this.pageIndex = 1
-      this.selectAllGroups()
+      this.findWarData()
     },
     handleCurrentChange(val) {
       console.log(val)
       this.pageIndex = val
-      this.selectAllGroups()
-    },
-    addLineList() { // 添加
-      this.addVisible = true
-      this.lineTitle = '新增生产线信息表'
-      this.comId = ''
-      this.groupName = ''
-      this.groupNo = ''
-      this.isTest = true
-      this.isUse = true
-      this.showUpdata = false
+      this.findWarData()
     },
     searchClick() {
       this.searchReal = this.com
+      this.deviceReal = this.device
       this.pageIndex = 1
-      this.selectAllGroups()
+      this.findWarData()
     },
     restClick() {
       this.com = ''
       this.searchReal = ''
       this.pageIndex = 1
-      this.selectAllGroups()
+      this.findWarData()
     },
     findData() {
       findData({
@@ -225,75 +263,23 @@ export default {
       })
     },
     changeCom(val) {
-      console.log(val)
-      this.com = val
-    },
-    addSure() {
-      if (this.comId === '' && this.groupName === '' && this.groupNo === '' && this.isTest === '' && this.isUse === '') {
-        this.$message({
-          type: 'info',
-          message: '还有未填项'
-        })
-        return
-      }
-      addGroup({ comId: this.comId, groupName: this.groupName, groupNo: this.groupNo, isTest: this.isTest, isUse: this.isUse
+      selectAllDevices({
+        token: getToken(),
+        comId: this.com
       }).then(res => {
         console.log(res)
-        this.addVisible = false
-        this.selectAllGroups()
-      })
-    },
-    handleEdit(index, item) {
-      console.log(index, item)
-      this.addVisible = true
-      this.lineTitle = '编辑生产线'
-      this.comId = item.com_id
-      this.groupName = item.group_name
-      this.groupNo = item.group_no
-      this.isTest = item.is_test
-      this.isUse = item.is_use
-      this.showUpdata = true
-      this.groupId = item.group_id
-    },
-    handleDelete(index, item) {
-      this.$confirm('此操作将永久删除该生产线, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        deleteGroup({ groupId: item.group_id }).then(res => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-          this.selectAllGroups()
-        })
-      }).catch(() => {
-      })
-    },
-    upSure() {
-      updateGroup({
-        comId: this.comId,
-        groupName: this.groupName,
-        groupNo: this.groupNo,
-        isTest: this.isTest,
-        isUse: this.isUse,
-        groupId: this.groupId
-      }).then(res => {
-        this.$message({
-          type: 'success',
-          message: '更新成功!'
-        })
-        this.addVisible = false
-        this.selectAllGroups()
+        this.deviceList = res.retData.data
+        this.device = ''
       })
     }
-
   }
 }
 </script>
 <style lang="scss" scoped>
 .app-container {
     padding: 20px;
+}
+.demonstration{
+  margin-left: 10px;
 }
 </style>

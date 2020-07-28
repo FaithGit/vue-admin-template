@@ -406,3 +406,17 @@ export function findTodayScZlPower(data) { // 查找今日生产治理功率对�
     data
   })
 }
+export function selectAllDevices(data) { // 查询所有设备
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/selectAllDevices',
+    method: 'POST',
+    data
+  })
+}
+export function findWarData(data) { // 查询异常数据
+  return request({
+    url: 'http://47.96.147.99:8081/hbjk/findWarData',
+    method: 'POST',
+    data
+  })
+}
