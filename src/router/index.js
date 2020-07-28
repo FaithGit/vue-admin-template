@@ -115,6 +115,7 @@ export const asyncRoutes = [
   {
     path: '/fenxi',
     component: Layout,
+    alwaysShow: true,
     meta: { title: '数据分析', roles: ['kf', 'gly', 'az'], icon: 'fenxisvg' },
     children: [
       {
@@ -128,6 +129,7 @@ export const asyncRoutes = [
   {
     path: '/system',
     component: Layout,
+    alwaysShow: true,
     meta: { title: '系统管理', roles: ['kf', 'gly', 'az'], icon: 'system' },
     children: [
       {
@@ -166,6 +168,7 @@ export const asyncRoutes = [
   {
     path: '/realTime',
     component: Layout,
+    alwaysShow: true,
     meta: { title: '实时监控', roles: ['kf', 'gly', 'yw', 'qy', 'hbj'], icon: 'realTime' },
     children: [
       {
@@ -191,6 +194,7 @@ export const asyncRoutes = [
   {
     path: '/data',
     component: Layout,
+    alwaysShow: true,
     meta: { title: '数据查询', roles: ['kf', 'gly', 'yw', 'qy', 'sjfx', 'hbj'], icon: 'seacher' },
     children: [
       {
@@ -198,6 +202,12 @@ export const asyncRoutes = [
         name: 'History',
         component: () => import('@/views/history/index'),
         meta: { title: '历史数据', icon: 'history', roles: ['kf', 'gly', 'yw', 'sjfx', 'qy', 'hbj'] }
+      },
+      {
+        path: 'errorData',
+        name: 'ErrorData',
+        component: () => import('@/views/errorData/index'),
+        meta: { title: '异常数据', icon: 'line', roles: ['kf', 'gly'] }
       }
     ]
   },
