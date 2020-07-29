@@ -128,6 +128,18 @@ export default {
       ],
       pickerOptions: {
         shortcuts: [{
+          text: '今日',
+          onClick(picker) {
+            const end = new Date()
+            var date = new Date()
+            // 2. 时分秒归零
+            date.setHours(0)
+            date.setMinutes(0)
+            date.setSeconds(0)
+            const start = date
+            picker.$emit('pick', [start, end])
+          }
+        }, {
           text: '最近一周',
           onClick(picker) {
             const end = new Date()
@@ -172,7 +184,6 @@ export default {
         })
       }
       this.comList = temp
-      this.com = this.comList[0].value
       findWarData({
         comId: this.com,
         pageIndex: this.pageIndex,
@@ -181,7 +192,6 @@ export default {
         endTime: '',
         deviceId: ''
       }).then(res => {
-        console.log(res)
         this.tableData = res.retData.data
         this.total = res.retData.total
         this.loadable = false
@@ -201,7 +211,6 @@ export default {
           endTime: DateHandle(this.date[1]),
           deviceId: this.deviceReal
         }).then(res => {
-          console.log(res)
           this.tableData = res.retData.data
           this.total = res.retData.total
           this.loadable = false
@@ -213,7 +222,6 @@ export default {
           pageSize: this.pageSize,
           deviceId: this.deviceReal
         }).then(res => {
-          console.log(res)
           this.tableData = res.retData.data
           this.total = res.retData.total
           this.loadable = false
@@ -238,8 +246,9 @@ export default {
       this.findWarData()
     },
     restClick() {
-      this.com = ''
-      this.searchReal = ''
+      this.deviceReal = this.device = ''
+      this.searchReal = this.com = ''
+      this.date = ''
       this.pageIndex = 1
       this.findWarData()
     },

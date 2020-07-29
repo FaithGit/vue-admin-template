@@ -62,14 +62,26 @@
                   <div><img src="@img/goodList.png" style="width:180px"></div>
                   <div style="color:white;position: absolute;bottom: 8%;">无异常</div>
                 </div>
-                <el-row>
+                <swiper ref="swiperList1" :options="swiperOption" style="width:100%;height:100%;">
+                  <swiper-slide v-for="(itemList,index) in list" :key="'itemList'+index">
+                    <el-row style="color:white">
+                      <el-col :span="2" style="padding-left:5px"> {{ index+1 }}</el-col>
+                      <el-col :span="8"> {{ itemList.name }}</el-col>
+                      <el-col :span="7"> {{ itemList.dataTime }}</el-col>
+                      <el-col :span="7" style="text-align:center"> {{ itemList.logName }}</el-col>
+                    </el-row>
+                  </swiper-slide>
+                  <div slot="scrollbar" class="swiper-scrollbar" />
+                </swiper>
+
+                <!-- <el-row>
                   <el-col v-for="(itemList,index) in list" :key="itemList.company" :span="24" class="kuang-body-ui">
                     <el-col :span="3"> {{ index+1 }}</el-col>
                     <el-col :span="7"> {{ itemList.name }}</el-col>
                     <el-col :span="7"> {{ itemList.dataTime }}</el-col>
                     <el-col :span="7"> {{ itemList.logName }}</el-col>
                   </el-col>
-                </el-row>
+                </el-row> -->
               </div>
               <div class="four-jiao">
                 <img src="@img/02-1.png" class="jiao">
@@ -215,6 +227,17 @@ export default {
   },
   data() {
     return {
+      swiperOption: {
+        direction: 'vertical',
+        scrollbar: '.swiper-scrollbar',
+        scrollbarHide: false,
+        scrollbarDraggable: true,
+        initialSlide: 0,
+        slidesPerView: 5,
+        autoplay: 2000,
+        autoplayDisableOnInteraction: false,
+        speed: 1000
+      },
       map: null,
       list: [],
       markList: [
@@ -254,6 +277,11 @@ export default {
     ])
   },
   mounted() {
+    findPictureDynamicInfo({
+      token: getToken()
+    }).then(res => {
+      this.list = res.retData
+    })
     // 拿取点位
     findComMap({ token: getToken() }).then(res => {
       this.markList = res.retData
@@ -376,11 +404,6 @@ export default {
       this.city = _city
     })
 
-    findPictureDynamicInfo({
-      token: getToken()
-    }).then(res => {
-      this.list = res.retData
-    })
     findPictureAdminWarRange({
       token: getToken(),
       timeStyle: 1
@@ -427,6 +450,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+>>>.swiper-scrollbar-drag{
+  background:rgb(9,65,152)
+}
 *{
   padding: 0;
   margin: 0;
@@ -559,7 +585,7 @@ padding: 40px 0px 30px 0px;
   width: 100%;
   height: 100%;
   padding: 20px 15px 15px 15px;
-  overflow: auto;
+  overflow: hidden;
 }
 .mian-table{
   font-size: 16px;

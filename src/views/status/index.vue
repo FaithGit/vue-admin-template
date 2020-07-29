@@ -20,8 +20,20 @@
             离线
           </div>
           <div class="percentage">
-            <el-progress :percentage="jisuan(listItem.activePower)" :show-text="false" :color="customColors" />
+            <el-progress :percentage="jisuan(listItem.openTime)" :show-text="false" :color="customColors" />
           </div>
+          <el-popover
+            placement="top-start"
+            title="今日开启时长"
+            width="200"
+            trigger="hover"
+            :content="(listItem.openTime!=undefined?listItem.openTime:'0')+'小时'"
+          >
+
+            <div slot="reference" class="popoverTime" />
+          </el-popover>
+
+          <div />
         </div>
         <div v-if="item.list.length==0" class="imgK">
           <img src="@img/none2.png" alt="" style="vertical-align: middle;">
@@ -59,12 +71,12 @@ export default {
   methods: {
     jisuan(value) {
       if (value) {
-        if (value / 2 < 0) {
+        if (value / 0.24 < 0) {
           return 0
-        } else if (value / 2 > 100) {
+        } else if (value / 0.24 > 100) {
           return 100
         } else {
-          return value / 2
+          return value / 0.24
         }
       } else {
         return 0
@@ -182,6 +194,12 @@ export default {
                                          background-size: 30px 30px;
 
     background-position: 0 0,15px 15px;
+  }
+  .popoverTime{
+    width: 100px;
+    height: 116px;
+    position: absolute;
+    bottom: 0;
   }
 </style>
 
