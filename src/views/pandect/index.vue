@@ -185,7 +185,7 @@
               <div class="left-title">
                 当月异常分布
               </div>
-              <distribution />
+              <distribution :echart-data="echartData" />
               <div class="four-jiao">
                 <img src="@img/02-1.png" class="jiao">
                 <img src="@img/02-1.png" class="jiao2">
@@ -212,7 +212,7 @@ import userPower from './components/userPower'
 import error from './components/error'
 import distribution from './components/distribution'
 import infowindow from './components/infoWindow'
-import { findComMap, findMapDataDetail, findIndexTotalData, warMonthSort, findPictureDynamicInfo, findPictureAdminWarRange } from '@/api/table'
+import { findComMap, findMapDataDetail, findIndexTotalData, warMonthSort, findPictureDynamicInfo, findPictureAdminWarRange, findWarTypeNum } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import { mapGetters } from 'vuex'
 import screenfull from 'screenfull'
@@ -251,6 +251,7 @@ export default {
           type: 1
         }
       ],
+      echartData: [],
       deviceInfo: {
 
       },
@@ -277,10 +278,16 @@ export default {
     ])
   },
   mounted() {
-    findPictureDynamicInfo({
-      token: getToken()
-    }).then(res => {
-      this.list = res.retData
+    findIndexTotalData({ token: getToken() }).then(res => {
+      this.deviceNum = res.retData.deviceNum
+      this.yearMalElc = res.retData.yearMalElc
+      this.warComNum = res.retData.warComNum
+      this.todayMaxElc = res.retData.todayMaxElc
+      this.susComNum = res.retData.susComNum
+      this.comNum = res.retData.comNum
+    })
+    findWarTypeNum({ token: getToken() }).then(res => {
+      this.echartData = res.retData
     })
     // 拿取点位
     findComMap({ token: getToken() }).then(res => {
@@ -385,14 +392,6 @@ export default {
       })
     })
 
-    findIndexTotalData({ token: getToken() }).then(res => {
-      this.deviceNum = res.retData.deviceNum
-      this.yearMalElc = res.retData.yearMalElc
-      this.warComNum = res.retData.warComNum
-      this.todayMaxElc = res.retData.todayMaxElc
-      this.susComNum = res.retData.susComNum
-      this.comNum = res.retData.comNum
-    })
     warMonthSort({
       token: getToken()
     }).then(res => {
@@ -411,6 +410,13 @@ export default {
       console.log('res', res)
       this.baojinglist = res.retData
     })
+    setTimeout(() => {
+      findPictureDynamicInfo({
+        token: getToken()
+      }).then(res => {
+        this.list = res.retData
+      })
+    }, 1000)
   },
   destroyed() {
     this.map = null

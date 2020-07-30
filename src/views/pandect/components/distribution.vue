@@ -5,8 +5,24 @@
 <script>
 var echarts = require('echarts')
 export default {
+  props: {
+    echartData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
+  },
   data() {
     return {
+    }
+  },
+  watch: {
+    echartData: {
+      deep: true,
+      handler(nv) {
+        this.drawChart()
+      }
     }
   },
   mounted() {
@@ -18,33 +34,12 @@ export default {
       const bgColor = '#041a51'
       const title = '总量'
       const color = ['#0E7CE2', '#FF8352', '#E271DE', '#F8456B', '#00FFFF', '#4AEAB0']
-      const echartData = [{
-        name: '静电电流',
-        value: '0'
-      },
-      {
-        name: '风机异常',
-        value: '0'
-      },
-      {
-        name: '排放温度',
-        value: '0'
-      },
-      {
-        name: '水喷淋',
-        value: '0'
-      },
-      {
-        name: '生产温度',
-        value: '0'
-      }
-      ]
 
       const formatNumber = function(num) {
         const reg = /(?=(\B)(\d{3})+$)/g
         return num.toString().replace(reg, ',')
       }
-      const total = echartData.reduce((a, b) => {
+      const total = this.echartData.reduce((a, b) => {
         return a + b.value * 1
       }, 0)
 
@@ -94,7 +89,8 @@ export default {
           type: 'pie',
           radius: ['30%', '40%'],
           center: ['50%', '55%'],
-          data: echartData,
+          data: this.echartData,
+          minAngle: 10,
           hoverAnimation: false,
           itemStyle: {
             normal: {
@@ -105,7 +101,7 @@ export default {
           labelLine: {
             normal: {
               length: 19,
-              length2: 90,
+              length2: 40,
               lineStyle: {
                 color: '#e6e6e6'
               }
@@ -113,27 +109,22 @@ export default {
           },
           label: {
             normal: {
-              formatter: params => {
-                return (
-                  '{icon|●}{name|' + params.name + '}{value|' +
-                        formatNumber(params.value) + '}'
-                )
-              },
-              padding: [0, -100, 25, -100],
-              rich: {
-                icon: {
-                  fontSize: 16
-                },
-                name: {
-                  fontSize: 14,
-                  padding: [0, 10, 0, 4],
-                  color: '#ffffff'
-                },
-                value: {
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: '#ffffff'
-                }
+              // formatter(v) {
+              //   let text = Math.round(v.percent) + '%' + '' + v.name
+              //   if (text.length <= 8) {
+              //     return text
+              //   } else if (text.length > 8 && text.length <= 16) {
+              //     return text = `${text.slice(0, 8)}\n${text.slice(8)}`
+              //   } else if (text.length > 16 && text.length <= 24) {
+              //     return text = `${text.slice(0, 8)}\n${text.slice(8, 16)}\n${text.slice(16)}`
+              //   } else if (text.length > 24 && text.length <= 30) {
+              //     return text = `${text.slice(0, 8)}\n${text.slice(8, 16)}\n${text.slice(16, 24)}\n${text.slice(24)}`
+              //   } else if (text.length > 30) {
+              //     return text = `${text.slice(0, 8)}\n${text.slice(8, 16)}\n${text.slice(16, 24)}\n${text.slice(24, 30)}\n${text.slice(30)}`
+              //   }
+              // },
+              textStyle: {
+                fontSize: 14
               }
             }
           }

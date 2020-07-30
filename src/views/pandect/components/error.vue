@@ -120,8 +120,7 @@ export default {
           data: this.city
         }],
         yAxis: [{
-          min: 0,
-          max: 100,
+
           splitLine: {
             show: true,
             lineStyle: {
