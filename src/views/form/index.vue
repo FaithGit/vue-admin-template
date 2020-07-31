@@ -122,8 +122,11 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="2 " class="xuhao">
+              <el-col v-if="sprot==1" :span="2 " class="xuhao">
                 <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceList(index)" />
+              </el-col>
+              <el-col v-if="sprot==2" :span="2 " class="xuhao">
+                <el-button type="danger" icon="el-icon-delete" circle @click="DelDeviceListCloud(item,index)" />
               </el-col>
               <el-col :span="4" :offset="1">
                 <el-form-item
@@ -1095,7 +1098,7 @@
 </template>
 
 <script>
-import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, addSysCondition, updateSysCondition, updateAllDevice, updateAllCondition } from '@/api/table'
+import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, addSysCondition, updateSysCondition, updateAllDevice, updateAllCondition, deleteSysdevice, deleteSysCondition } from '@/api/table'
 // import { findAllCom, findAllCode, addBoard, findProncess, selectAllGroups, deleteSysdevice, addSysdevice, updateByDeviceId, addSysCondition, deleteSysCondition, updateSysCondition } from '@/api/table'
 import { getToken } from '@/utils/auth'
 
@@ -1484,24 +1487,24 @@ export default {
       this.form.sysDevices.splice(index, 1)
       // this.$forceUpdate()
     },
-    // DelDeviceListCloud(item, index) {
-    //   if (item.id) {
-    //     deleteSysdevice({
-    //       deviceId: item.deviceId
-    //     }).then(res => {
-    //       console.log(res)
-    //       if (res.retData === 1) {
-    //         this.$message({
-    //           type: 'success',
-    //           message: '已从服务器中删除'
-    //         })
-    //         this.DelDeviceList(index)
-    //       }
-    //     })
-    //   } else {
-    //     this.DelDeviceList(index)
-    //   }
-    // },
+    DelDeviceListCloud(item, index) {
+      if (item.id) {
+        deleteSysdevice({
+          deviceId: item.deviceId
+        }).then(res => {
+          console.log(res)
+          if (res.retData === 1) {
+            this.$message({
+              type: 'success',
+              message: '已从服务器中删除'
+            })
+            this.DelDeviceList(index)
+          }
+        })
+      } else {
+        this.DelDeviceList(index)
+      }
+    },
     // saveOrUp(item, index) {
     //   item.mn = this.form.mn
     //   if (item.deviceId) {
@@ -1524,18 +1527,18 @@ export default {
     //   }
     // },
     DelModelList(index, item) {
-      // if (item.id) {
-      //   item.mn = this.form.mn
-      //   deleteSysCondition(item).then(res => {
-      //     this.form.sysConditions.splice(index, 1)
-      //     this.$message({
-      //       type: 'success',
-      //       message: '工况信息已经从服务器中删除'
-      //     })
-      //   })
-      // } else {
-      this.form.sysConditions.splice(index, 1)
-      // }
+      if (item.id) {
+        item.mn = this.form.mn
+        deleteSysCondition(item).then(res => {
+          this.form.sysConditions.splice(index, 1)
+          this.$message({
+            type: 'success',
+            message: '工况信息已经从服务器中删除'
+          })
+        })
+      } else {
+        this.form.sysConditions.splice(index, 1)
+      }
       // this.$forceUpdate()
     },
     changeWorkStatus(workindex, value1, value2) {

@@ -45,8 +45,8 @@
                 </div>
                 <svg-icon slot="reference" icon-class="create" :class="[sc.switch_data==true?'greenSvgCreate':'redSvgCreate']" style="margin:0 5px" class="hoverHref" @click="gotoHistory(sc,scope.row,1)" />
               </el-popover>
-
             </span>
+            <span v-if="scope.row.scData.length==0">/</span>
           </div>
           <div v-else>
             /
@@ -87,7 +87,10 @@
       <el-table-column label="水喷淋" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.water_spray">
-            <svg-icon icon-class="water_switch" :class="[scope.row.water_spray=='1'?'greenSvg':'huiSvg']" />
+            <span v-for=" (_water,_index) in formatData(scope.row.water_spray)" :key="'water_spray'+_index">
+              <svg-icon icon-class="water_switch" :class="[_water=='1'?'greenSvg':'huiSvg']" />
+            </span>
+
           </div>
           <div v-else>
             /
@@ -97,8 +100,10 @@
       <el-table-column label="风机电流(A)" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.fans_current">
-            <svg-icon icon-class="anpei" />
-            {{ scope.row.fans_current }}
+            <div v-for=" (_fan,_index) in formatData(scope.row.fans_current)" :key="'fans_current'+_index">
+              <svg-icon icon-class="anpei" />
+              {{ _fan }}
+            </div>
           </div>
           <div v-else>
             /
@@ -207,7 +212,10 @@ export default {
     this.findData()
   },
   methods: {
-  // 表格合并方法
+    formatData(fa) {
+      return fa.split(',')
+    },
+    // 表格合并方法
     arraySpanMethod({
       row,
       column,

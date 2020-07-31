@@ -2,7 +2,8 @@
   <div class="infowindow-main">
     <div style="overflow: hidden;">
       <div class="leftImg">
-        <img src="" alt="" style="width:210px" onerror="this.src='https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2464079983,2760388720&fm=26&gp=0.jpg'">
+        <img :src="isImgUrL(deviceInfos.comImage)" alt="" style="width:210px">
+        <!-- <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2464079983,2760388720&fm=26&gp=0.jpg" alt="" style="width:210px"> -->
       </div>
 
       <div class="rightText">
@@ -64,7 +65,10 @@
         <el-table-column label="水喷淋" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.water_spray">
-              <svg-icon icon-class="water_switch" :class="[scope.row.water_spray!==true?'redSvg':'greenSvg']" />
+              <span v-for=" (_water,_index) in formatData(scope.row.water_spray)" :key="'water_spray'+_index">
+                <svg-icon icon-class="water_switch" :class="[_water=='1'?'greenSvg':'huiSvg']" />
+              </span>
+
             </div>
             <div v-else>
               /
@@ -74,8 +78,10 @@
         <el-table-column label="风机电流(A)" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.fans_current">
-              <svg-icon icon-class="anpei" />
-              {{ scope.row.fans_current }}
+              <div v-for=" (_fan,_index) in formatData(scope.row.fans_current)" :key="'fans_current'+_index">
+                <svg-icon icon-class="anpei" />
+                {{ _fan }}
+              </div>
             </div>
             <div v-else>
               /
@@ -168,6 +174,16 @@ export default {
     }
   },
   methods: {
+    isImgUrL(url) {
+      if (url === null || url === '' || url === ' ' || url === undefined) {
+        return require('@img/comImgNull.png')
+      } else {
+        return url
+      }
+    },
+    formatData(fa) {
+      return fa.split(',')
+    },
     init() {
       this.tableData = []
       this.tableData.push(this.deviceInfos)

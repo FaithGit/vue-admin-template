@@ -29,9 +29,9 @@
       </el-table-column>
       <!-- <el-table-column label="行业类型" align="center">
         <template slot-scope="scope">
-          {{ scope.row.busName }}
+          {{ scope.row.comStyle }}
           <el-select-tree
-            v-model="scope.row.busName"
+            v-model="scope.row.comStyle"
             width="120px"
             placeholder="请选择内容"
             :data="treeData"
@@ -166,9 +166,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="行业类型" prop="busName">
+            <el-form-item label="行业类型" prop="comStyle">
               <el-select-tree
-                v-model="companyForm.busName"
+                v-model="companyForm.comStyle"
                 width="120px"
                 placeholder="请选择内容"
                 :data="treeData"
@@ -333,7 +333,7 @@ export default {
         comShortName: [
           { required: true, message: '请输入企业简称', trigger: 'blur' }
         ],
-        busName: [
+        comStyle: [
           { required: true, message: '请输入行业类型', trigger: 'blur' }
         ],
         adress: [
@@ -467,7 +467,7 @@ export default {
         socialCreditCode: '',
         envPerson: '',
         envPersonTel: '',
-        busName: '',
+        comStyle: '',
         smsStatus: false,
         sysSmsPersons: [{
           smsPerson: '',
@@ -548,7 +548,7 @@ export default {
         socialCreditCode: item.socialCreditCode,
         envPerson: item.envPerson,
         envPersonTel: item.envPersonTel,
-        busName: item.busName,
+        comStyle: item.comStyle,
         smsStatus: item.smsStatus,
         sysSmsPersons: item.sysSmsPersons,
         comImage: item.comImage

@@ -117,7 +117,10 @@
           <el-table-column v-if="deviceStyles=='2'" key="4" label="水喷淋" align="center">
             <template slot-scope="scope">
               <div v-if="scope.row.water_spray">
-                <svg-icon icon-class="water_switch" :class="[scope.row.water_spray!==true?'redSvg':'greenSvg']" />
+                <span v-for=" (_water,_index) in formatData(scope.row.water_spray)" :key="'water_spray'+_index">
+                  <svg-icon icon-class="water_switch" :class="[_water=='1'?'greenSvg':'huiSvg']" />
+                </span>
+
               </div>
               <div v-else>
                 /
@@ -127,8 +130,10 @@
           <el-table-column v-if="deviceStyles=='2'" key="5" label="风机电流" align="center">
             <template slot-scope="scope">
               <div v-if="scope.row.fans_current">
-                <svg-icon icon-class="anpei" />
-                {{ scope.row.fans_current }}
+                <div v-for=" (_fan,_index) in formatData(scope.row.fans_current)" :key="'fans_current'+_index">
+                  <svg-icon icon-class="anpei" />
+                  {{ _fan }}
+                </div>
               </div>
               <div v-else>
                 /
@@ -309,6 +314,9 @@ export default {
     this.init()
   },
   methods: {
+    formatData(fa) {
+      return fa.split(',')
+    },
     // 导出excel
     handleDownloadAll() {
       import('@/vendor/Export2Excel').then(excel => {

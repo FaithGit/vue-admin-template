@@ -278,17 +278,6 @@ export default {
     ])
   },
   mounted() {
-    findIndexTotalData({ token: getToken() }).then(res => {
-      this.deviceNum = res.retData.deviceNum
-      this.yearMalElc = res.retData.yearMalElc
-      this.warComNum = res.retData.warComNum
-      this.todayMaxElc = res.retData.todayMaxElc
-      this.susComNum = res.retData.susComNum
-      this.comNum = res.retData.comNum
-    })
-    findWarTypeNum({ token: getToken() }).then(res => {
-      this.echartData = res.retData
-    })
     // 拿取点位
     findComMap({ token: getToken() }).then(res => {
       this.markList = res.retData
@@ -391,6 +380,17 @@ export default {
         console.log('地图加载失败', e)
       })
     })
+    findIndexTotalData({ token: getToken() }).then(res => {
+      this.deviceNum = res.retData.deviceNum
+      this.yearMalElc = res.retData.yearMalElc
+      this.warComNum = res.retData.warComNum
+      this.todayMaxElc = res.retData.todayMaxElc
+      this.susComNum = res.retData.susComNum
+      this.comNum = res.retData.comNum
+    })
+    findWarTypeNum({ token: getToken() }).then(res => {
+      this.echartData = res.retData
+    })
 
     warMonthSort({
       token: getToken()
@@ -410,13 +410,11 @@ export default {
       console.log('res', res)
       this.baojinglist = res.retData
     })
-    setTimeout(() => {
-      findPictureDynamicInfo({
-        token: getToken()
-      }).then(res => {
-        this.list = res.retData
-      })
-    }, 1000)
+    findPictureDynamicInfo({
+      token: getToken()
+    }).then(res => {
+      this.list = res.retData
+    })
   },
   destroyed() {
     this.map = null
