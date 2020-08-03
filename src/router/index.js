@@ -162,6 +162,12 @@ export const asyncRoutes = [
         name: 'User',
         component: () => import('@/views/user/index'),
         meta: { title: '用户管理', icon: 'users', roles: ['kf', 'gly'] }
+      },
+      {
+        path: 'loginlog',
+        name: 'Loginlog',
+        component: () => import('@/views/loginlog/index'),
+        meta: { title: '登录日志', icon: 'loginlog', roles: ['kf', 'gly'] }
       }
     ]
   },
@@ -207,7 +213,7 @@ export const asyncRoutes = [
         path: 'errorData',
         name: 'ErrorData',
         component: () => import('@/views/errorData/index'),
-        meta: { title: '异常数据', icon: 'line', roles: ['kf', 'gly'] }
+        meta: { title: '异常数据', icon: 'line', roles: ['kf', 'gly', 'hbj'] }
       }
     ]
   },

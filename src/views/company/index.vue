@@ -254,7 +254,7 @@ import { getToken } from '@/utils/auth'
 // import hyType from '@/utils/type.json'
 import ElSelectTree from 'el-select-tree'
 import myUpload from 'vue-image-crop-upload'
-import { moblie } from '@/utils/asyncValidator'
+import { moblie, lonAndLat } from '@/utils/asyncValidator'
 export default {
   name: 'Company',
   components: {
@@ -340,7 +340,7 @@ export default {
           { required: true, message: '请输入企业地址', trigger: 'blur' }
         ],
         lonLat: [
-          { required: true, message: '请输入经纬度', trigger: 'blur' }
+          { required: true, validator: lonAndLat, trigger: 'blur' }
         ],
         comAreaCode: [
           { required: true, message: '请输入企业所属行政区', trigger: 'blur' }

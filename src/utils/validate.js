@@ -17,7 +17,7 @@ export function DateHandle(objDate) {
   var hours = objDate.getHours()
   var minutes = objDate.getMinutes()
   var seconds = objDate.getSeconds()
-  var fdate = year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + (seconds < 10 ? '0' + seconds : seconds)
+  var fdate = year + '-' + month + '-' + date + ' ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds)
   return fdate
 }
 
