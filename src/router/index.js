@@ -194,6 +194,12 @@ export const asyncRoutes = [
         name: 'Craft',
         component: () => import('@/views/craft/index'),
         meta: { title: '工艺图', icon: 'craft', roles: ['kf', 'gly', 'qy'] }
+      },
+      {
+        path: 'canvas',
+        name: 'Canvas',
+        component: () => import('@/views/canvas/index'),
+        meta: { title: '平面图', icon: 'craft', roles: ['kf', 'gly'] }
       }
     ]
   },

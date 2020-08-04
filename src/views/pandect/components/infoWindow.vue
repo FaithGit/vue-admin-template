@@ -91,8 +91,10 @@
         <el-table-column label="风机负荷(Hz)" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.fans_load">
-              <svg-icon icon-class="fuhe" />
-              {{ scope.row.fans_load }}
+              <div v-for=" (_fan,_index) in formatData(scope.row.fans_load)" :key="'fans_load'+_index">
+                <svg-icon icon-class="fuhe" />
+                {{ _fan }}
+              </div>
             </div>
             <div v-else>
               /

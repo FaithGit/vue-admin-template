@@ -1,38 +1,99 @@
-
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>给多个点添加信息窗体</title>
-    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=30e1690c958f1abdf298a620474abea2	">
-    </script>
-    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <meta charset="UTF-8">
+    <title>题2</title>
+    <style type="text/css">
+        textarea{
+            height: 100px;
+        }
+        .btns{
+            margin: 10px;
+        }
+        button{
+            width: 80px;
+        }
+    </style>
 </head>
 <body>
-<div id="container"></div>
-<script type="text/javascript">
-    //初始化地图对象，加载地图
-    var map = new AMap.Map("container", {resizeEnable: true});
-    var lnglats = [
-        [116.368904, 39.923423],
-        [116.382122, 39.921176],
-        [116.387271, 39.922501],
-        [116.398258, 39.914600]
-    ];
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <div>
+        <label>坐标</label><textarea id="dots" type='text'></textarea>
+        <button id='change'>修改</button>
+    </div>
+    <br/>
+    <div class="btns">
+        <button id='start'>开始</button>
+        <button id='stop'>暂停</button>
+        <button id='continue'>继续</button>
+    </div>
+    <script>
+        //获取指定的canvas元素
+        var canvas = document.getElementById('canvas');
+        //调用canvas元素的getContext 方法访问获取2d渲染的上下文
+        var context = canvas.getContext('2d');
+        var dotarr = [{"x":280,"y":200},{"x":180,"y":150},{"x":100,"y":250},{"x":280,"y":300},{"x":180,"y":400},
+{"x":80,"y":350}];
+        var isStop = false;
+        document.getElementById('dots').value=JSON.stringify(dotarr);
+        function drawline(dots){
+            for(var i in dots){
+                //context.clearRect(0, 0, canvas.width, canvas.height)
+                //window.requestAnimationFrame(drawline,canvas);
+                var dot=dots[i];
+                var todot=dots[i];
+                var time='';
+                localStorage.setItem('length',dots.length);
+                if((parseInt(i)+1)<dots.length){
+                    todot=dots[parseInt(i)+1];
+                }
+                (function(dot,todot,time,i){
+                    time=setTimeout(function(){
+                        //context.clearRect(0, 0, canvas.width, canvas.height)
+                        context.beginPath();
+                        context.moveTo(dot.x,dot.y);
+                        context.lineTo(todot.x,todot.y);
+                        localStorage.setItem('index',i);
+                        localStorage.setItem("t", time);
+                        context.closePath();
+                        context.stroke();
+                    },(parseInt(i)+1)*1000);
+                })(dot,todot,time,i)
+            }
+        }
+        document.getElementById("change").onclick=function(){
+            dotarr=JSON.parse(document.getElementById('dots').value);
+        }
+        document.getElementById("start").onclick=function(){
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            var t=parseInt(localStorage.getItem("t"));
+            var length=parseInt(localStorage.getItem('length'));
+            isStop=true;
+            for(var i=t;i<=(t+length);i++){
+                clearTimeout(i);
+            }
+            drawline(dotarr);
+        }
+        document.getElementById("stop").onclick=function(){
+            var t=parseInt(localStorage.getItem("t"));
+            var length=parseInt(localStorage.getItem('length'));
+            isStop=true;
+            for(var i=t;i<=(t+length);i++){
+                clearTimeout(i);
+            }
+            console.log('暂停');
 
-    for (var i = 0, marker; i < lnglats.length; i++) {
-        var marker = new AMap.Marker({
-            position: lnglats[i],
-            map: map,
-            title:i
-        });
-
-    }
-    map.setFitView();
-    
-</script>
+        }
+        document.getElementById("continue").onclick=function(){
+            if(isStop){
+                var index=parseInt(localStorage.getItem('index'));
+                var newdots=dotarr.slice(index+1);
+                console.log(newdots);
+                drawline(newdots);
+                isStop=false;
+                console.log('继续');
+            }
+        }
+    </script>
 </body>
 </html>

@@ -10,12 +10,14 @@
           <el-col :span="24" class="comTitle" style="line-height:25px;text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px"> 监测设施总数： <span class="comtitle" style="font-size:26px">{{ totalDeviceNum }}</span> 个
             <!-- <span style="margin:0 15px 0 20px">生产：{{ scNum1 }}个</span>治理：{{ zlNum1 }}个 -->
           </el-col>
-          <el-col :span="24" class="comTitle" style="line-height:30px;text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px">
-            产污设施：正常 <span style="margin:0 26px 0 0">{{ scNormalNum }} 个</span>
-            异常：{{ scWarNum }} 个
-            <br>
-            治污设施：<span style="margin:0 26px 0 0">正常 {{ zlNormalNum }} 个</span>
-            异常：<span>{{ zlWarNum }}个</span>
+          <el-col :span="24" class="comTitle" style="line-height:30px;text-align:left;padding-left: 22px;padding-top:5px;padding-bottom:5px;cursor: pointer;">
+            <div>
+              产污设施： <span @click="gotoTable">正常 <span style="margin:0 26px 0 0">{{ scNormalNum }} 个</span></span>
+              <span @click="gotoErrorData">异常：{{ scWarNum }} 个</span>
+              <br>
+              治污设施： <span @click="gotoTable"><span style="margin:0 26px 0 0">正常 {{ zlNormalNum }} 个</span></span>
+              <span @click="gotoErrorData">异常：<span>{{ zlWarNum }}个</span></span>
+            </div>
           </el-col>
           <!-- <el-col :span="8" class="comTitle whiteBorder"> 产物设施总数<br> <span class="comtitle">0</span> </el-col>
           <el-col :span="8" class="comTitle"> 产物设施总数<br> <span class="comtitle">0</span> </el-col> -->
@@ -225,7 +227,12 @@ export default {
 
   },
   methods: {
-
+    gotoErrorData() {
+      this.$router.push({ name: 'ErrorData' })
+    },
+    gotoTable() {
+      this.$router.push({ name: 'Table' })
+    }
   }
 }
 </script>
