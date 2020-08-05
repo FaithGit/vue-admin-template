@@ -1,5 +1,10 @@
 <template>
-  <canvas id="Canvas" />
+  <div>
+    <canvas id="Canvas" />
+    <el-button @click="drawSmile" />
+
+  </div>
+
 </template>
 <script>
 let canvas
@@ -15,9 +20,16 @@ export default {
     initCanvas() {
       canvas = document.getElementById('Canvas')
       ctx = canvas.getContext('2d')
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-      this.drawSmile()
+      canvas.width = 1200
+      canvas.height = 800
+      ctx.fillStyle = '#ddd'
+      ctx.fillRect(0, 0, 1200, 800)
+      var img = new Image()
+      img.onload = function() {
+        // 将图片画到canvas上面上去！
+        ctx.drawImage(img, 0, 0)
+      }
+      img.src = require('@img/company.jpg')
     },
     drawSmile() {
       ctx.beginPath()

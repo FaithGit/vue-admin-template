@@ -431,6 +431,7 @@ export default {
     selectAllCom() {
       // this.loadable = true
       selectAllCom({
+        token: getToken(),
         comName: this.searchReal,
         comAreaCode: this.comAreaCode,
         pageIndex: this.pageIndex,
