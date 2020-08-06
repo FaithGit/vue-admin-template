@@ -144,7 +144,7 @@ export default {
       this.diglogTitle = '新增配置表'
       this.form = {
         mn: '',
-        physicalLinkCard: '',
+        physicalLinkCard: 1111111111111,
         comId: '',
         sysDevices: [{ deviceName: '', modelNum: 1, deviceStyle: '', listDisabled: 1, deviceProcess: '', groupId: '', isWar: false, deviceStatus: true, isTest: false, orderNum: 1, meterNum: -1 }],
         sysConditions: [

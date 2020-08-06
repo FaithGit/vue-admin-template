@@ -1290,14 +1290,20 @@ export default {
     }).catch(res => {
 
     })
-    findAllCode({}).then(res => {
+    findAllCode({ token: getToken() }).then(res => {
       this.hb_code_list = res.retData
     }).catch(res => {
     })
-    findProncess({ deviceStyle: 1 }).then(res => {
+    findProncess({
+      token: getToken(),
+      deviceStyle: 1
+    }).then(res => {
       this.createList = res.retData
     })
-    findProncess({ deviceStyle: 2 }).then(res => {
+    findProncess({
+      token: getToken(),
+      deviceStyle: 2 }
+    ).then(res => {
       this.zlList = res.retData
     })
     this.changeLine(this.form.comId)

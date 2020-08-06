@@ -1,99 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>题2</title>
-    <style type="text/css">
-        textarea{
-            height: 100px;
-        }
-        .btns{
-            margin: 10px;
-        }
-        button{
-            width: 80px;
-        }
-    </style>
-</head>
-<body>
-    <canvas id="canvas" width="500" height="500"></canvas>
-    <div>
-        <label>坐标</label><textarea id="dots" type='text'></textarea>
-        <button id='change'>修改</button>
-    </div>
-    <br/>
-    <div class="btns">
-        <button id='start'>开始</button>
-        <button id='stop'>暂停</button>
-        <button id='continue'>继续</button>
-    </div>
-    <script>
-        //获取指定的canvas元素
-        var canvas = document.getElementById('canvas');
-        //调用canvas元素的getContext 方法访问获取2d渲染的上下文
-        var context = canvas.getContext('2d');
-        var dotarr = [{"x":280,"y":200},{"x":180,"y":150},{"x":100,"y":250},{"x":280,"y":300},{"x":180,"y":400},
-{"x":80,"y":350}];
-        var isStop = false;
-        document.getElementById('dots').value=JSON.stringify(dotarr);
-        function drawline(dots){
-            for(var i in dots){
-                //context.clearRect(0, 0, canvas.width, canvas.height)
-                //window.requestAnimationFrame(drawline,canvas);
-                var dot=dots[i];
-                var todot=dots[i];
-                var time='';
-                localStorage.setItem('length',dots.length);
-                if((parseInt(i)+1)<dots.length){
-                    todot=dots[parseInt(i)+1];
-                }
-                (function(dot,todot,time,i){
-                    time=setTimeout(function(){
-                        //context.clearRect(0, 0, canvas.width, canvas.height)
-                        context.beginPath();
-                        context.moveTo(dot.x,dot.y);
-                        context.lineTo(todot.x,todot.y);
-                        localStorage.setItem('index',i);
-                        localStorage.setItem("t", time);
-                        context.closePath();
-                        context.stroke();
-                    },(parseInt(i)+1)*1000);
-                })(dot,todot,time,i)
-            }
-        }
-        document.getElementById("change").onclick=function(){
-            dotarr=JSON.parse(document.getElementById('dots').value);
-        }
-        document.getElementById("start").onclick=function(){
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            var t=parseInt(localStorage.getItem("t"));
-            var length=parseInt(localStorage.getItem('length'));
-            isStop=true;
-            for(var i=t;i<=(t+length);i++){
-                clearTimeout(i);
-            }
-            drawline(dotarr);
-        }
-        document.getElementById("stop").onclick=function(){
-            var t=parseInt(localStorage.getItem("t"));
-            var length=parseInt(localStorage.getItem('length'));
-            isStop=true;
-            for(var i=t;i<=(t+length);i++){
-                clearTimeout(i);
-            }
-            console.log('暂停');
 
-        }
-        document.getElementById("continue").onclick=function(){
-            if(isStop){
-                var index=parseInt(localStorage.getItem('index'));
-                var newdots=dotarr.slice(index+1);
-                console.log(newdots);
-                drawline(newdots);
-                isStop=false;
-                console.log('继续');
-            }
-        }
-    </script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <form class="form-inline" method="post" action="/xiugai/">
+    <label class="my-1 mr-2" for="inlineFormCustomSelectPref">医保等级</label>
+    <select class="custom-select my-1 mr-sm-2" name="new_yibaodj" id="inlineFormCustomSelectPref">
+      <option selected>Choose...</option>
+      <option value="甲" selected>甲</option>
+      <option value="乙">乙</option>
+      <option value="丙">丙</option>
+    </select>
+
+    <div class="custom-control custom-checkbox my-1 mr-sm-2">
+      <input type="checkbox" class="custom-control-input" id="makesure">
+      <label class="custom-control-label" for="makesure">Remember my preference</label>
+    </div>
+
+    <button type="submit" id="xiugaigo" class="btn btn-primary my-1">Submit</button>
+  </form>
 </body>
+<script>
+
+  $("#xiugaigo").attr('disabled', true);
+  $('#xiugaigo').css('cursor','not-allowed');
+
+  $("#makesure").change(function (e) {
+    if($('#makesure').is(':checked')) {
+        console.log("checked")
+      $("#xiugaigo").attr('disabled',  false);
+      $('#xiugaigo').css('cursor','default');
+    } else {
+        console.log("check")
+      $("#xiugaigo").attr('disabled',  true);
+      $('#xiugaigo').css('cursor','not-allowed');
+    }
+  });
+
+</script>
+
 </html>

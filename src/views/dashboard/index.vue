@@ -37,8 +37,8 @@
             <svg-icon icon-class="error" style="margin:0 5px 0 14px" />
             异常分布
           </div>
-          <div style="height:220px">
-            <error />
+          <div style="height:240px;width:100%">
+            <error :echart-data="echartData" />
           </div>
         </div>
       </el-col>
@@ -118,7 +118,7 @@
 <script>
 
 var echarts = require('echarts')
-import { findComBasicData, findComElc, findUseElcByGroup, findComDeviceRealData, findComDeviceWarRange } from '@/api/table'
+import { findComBasicData, findComElc, findUseElcByGroup, findComDeviceRealData, findComDeviceWarRange, findWarTypeNum } from '@/api/table'
 import { getToken } from '@/utils/auth'
 // import createHour from './components/createHour'
 import XChart from '@/components/charts'
@@ -141,6 +141,7 @@ export default {
         speed: 1000
       },
       comName: '',
+      echartData: [],
       adress: '',
       scNum: '',
       scClose: '',
@@ -235,6 +236,19 @@ export default {
     }
   },
   mounted() {
+    findWarTypeNum({
+      token: getToken()
+    }).then(res => {
+      console.log('echartData', res)
+      this.echartData = res.retData
+      console.log(this.echartData)
+      // var _city = res.retData.date
+      // this.num = res.retData.value
+      // for (var i = 0; i < _city.length; i++) {
+      //   _city[i] = _city[i].slice(5, _city[i].length)
+      // }
+      // this.city = _city
+    })
     findComBasicData({
       token: getToken()
     }).then(res => {

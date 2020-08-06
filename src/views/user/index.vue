@@ -100,8 +100,8 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="form.roleId=='qy'" label="所属企业" prop="comId">
-          <el-select v-model="form.comId">
-            <el-option v-for="(item,index) in comList" :key="'comId'+index" :label="item.comShortName" :value="item.id" />
+          <el-select v-model="form.comId" value-key="id" @change="currentSel">
+            <el-option v-for="(item,index) in comList" :key="'comId'+index" :label="item.com_name" :value="item" />
           </el-select>
         </el-form-item>
         <el-form-item label="电话" prop="telephone">
@@ -128,7 +128,7 @@
   </div>
 </template>
 <script>
-import { selectUserList, findAllRoles, findAlldAministrativeCode, findData, addUser, deleteUser, updateUser, resetPwd } from '@/api/table'
+import { selectUserList, findAllRoles, findAlldAministrativeCode, findAllCom, addUser, deleteUser, updateUser, resetPwd } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import ElSelectTree from 'el-select-tree'
 import { moblie, password } from '@/utils/asyncValidator'
@@ -201,22 +201,27 @@ export default {
   },
   mounted() {
     this.selectUserList()
-    findAllRoles().then(res => {
-      this.roleList = res.retData
-    })
-    findAlldAministrativeCode().then(res => {
-      this.comAreaCodeTree = res.retData
-    })
-    findData({
-      comName: '',
-      pageIndex: 1,
-      pageSize: 999,
+    findAllRoles({
       token: getToken()
     }).then(res => {
-      this.comList = res.retData.data
+      this.roleList = res.retData
+    })
+    findAlldAministrativeCode({
+      token: getToken()
+    }).then(res => {
+      this.comAreaCodeTree = res.retData
+    })
+    findAllCom({
+      token: getToken()
+    }).then(res => {
+      this.comList = res.retData
     })
   },
   methods: {
+    currentSel(val) {
+      console.log(val)
+      this.form.areaCode = val.com_area_code
+    },
     selectUserList(search, pageIndex, pageSize) {
       selectUserList({
         token: getToken(),

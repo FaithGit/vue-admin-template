@@ -1,12 +1,28 @@
 <template>
-  <div id="distribution9" style="height:100%" />
+  <div id="distribution9" style="height:100%;width:100%" />
 </template>
 
 <script>
 var echarts = require('echarts')
 export default {
+  props: {
+    echartData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
+  },
   data() {
     return {
+    }
+  },
+  watch: {
+    echartData: {
+      deep: true,
+      handler(nv) {
+        this.drawChart()
+      }
     }
   },
   mounted() {
@@ -18,27 +34,7 @@ export default {
       const bgColor = '#FFFFFF'
       const title = '总量'
       const color = ['#0E7CE2', '#FF8352', '#E271DE', '#F8456B', '#00FFFF', '#4AEAB0']
-      const echartData = [{
-        name: '静电电流',
-        value: '0'
-      },
-      {
-        name: '风机异常',
-        value: '0'
-      },
-      {
-        name: '排放温度',
-        value: '0'
-      },
-      {
-        name: '水喷淋',
-        value: '0'
-      },
-      {
-        name: '生产温度',
-        value: '0'
-      }
-      ]
+      const echartData = this.echartData
 
       const formatNumber = function(num) {
         const reg = /(?=(\B)(\d{3})+$)/g
@@ -94,6 +90,7 @@ export default {
           type: 'pie',
           radius: ['30%', '40%'],
           center: ['50%', '75%'],
+          minAngle: 20,
           data: echartData,
           hoverAnimation: false,
           itemStyle: {
