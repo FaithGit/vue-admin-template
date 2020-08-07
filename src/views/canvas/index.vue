@@ -1,17 +1,21 @@
 <template>
   <div>
     <canvas id="Canvas" />
-    <el-button @click="addPointCreate">编辑事件</el-button>
-    <el-button @click="removePointCreate">去除编辑事件</el-button>
-    <el-button @click="addPointClick">点位触发事件</el-button>
-    <el-button @click="drawLine">画线</el-button>
-    <el-button @click="drawCreate">画设备</el-button>
+    <div class="rightButton">
+      <el-button @click="addPointCreate">编辑事件</el-button>
+      <el-button @click="removePointCreate">去除编辑事件</el-button>
+      <el-button @click="addPointClick">点位触发事件</el-button>
+      <el-button @click="drawLine">画线</el-button>
+      <el-button @click="drawCreate">画设备</el-button>
+    </div>
 
   </div>
 
 </template>
 <script>
 let canvas
+var boardWidth = '1200'
+var boardHeight = '800'
 let ctx
 var postition = []
 var fu = ''
@@ -77,16 +81,18 @@ export default {
     initCanvas() {
       canvas = document.getElementById('Canvas')
       ctx = canvas.getContext('2d')
-      canvas.width = 1200
-      canvas.height = 800
+      canvas.width = boardWidth
+      canvas.height = boardHeight
       ctx.fillStyle = '#ddd'
-      ctx.fillRect(0, 0, 1200, 800)
+      ctx.fillRect(0, 0, boardWidth, boardHeight)
       var img = new Image()
-      img.onload = function() {
-        // 将图片画到canvas上面上去！
-        ctx.drawImage(img, 250, 50, 700, 700)
-      }
       img.src = require('@img/company.jpg')
+
+      img.onload = function(e) {
+        // 将图片画到canvas上面上去！
+        console.log('图片的宽' + img.width, '图片的高' + img.height)
+        ctx.drawImage(img, (boardWidth - img.width) / 2, (boardHeight - img.height) / 2, img.width, img.height)
+      }
     },
     addPointCreate() {
       canvas.addEventListener('click', pointCreate, false)
@@ -106,3 +112,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+#Canvas{
+  margin: 50px 20px 50px 50px;
+  float: left;
+}
+.rightButton{
+  margin-top: 50px;
+}
+</style>
