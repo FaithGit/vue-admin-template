@@ -44,15 +44,11 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
+    console.log(res)
     // if the custom code is not 20000, it is judged as an error.
     if (res.retCode !== 1) {
-      Message({
-        message: res.retMsg || 'retCodeError',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
       if (res.retCode === 0) {
+        console.log(' ')
         Message({
           message: res.retMsg || 'retCodeError',
           type: 'error',
@@ -61,8 +57,14 @@ service.interceptors.response.use(
         setTimeout(() => {
           store.dispatch('user/logout')
         }, 1000)
+      } else {
+        Message({
+          message: res.retMsg || 'retCodeError',
+          type: 'error',
+          duration: 5 * 1000
+        })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(res.retMsg || 'Error'))
     } else {
       return res
     }

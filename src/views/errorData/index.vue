@@ -185,6 +185,7 @@ export default {
       }
       this.comList = temp
       findWarData({
+        token: getToken(),
         comId: this.com,
         pageIndex: this.pageIndex,
         pageSize: this.pageSize,
@@ -199,11 +200,13 @@ export default {
     })
   },
   methods: {
+
     findWarData() {
       this.loadable = true
       console.log(this.date)
       if (this.date) {
         findWarData({
+          token: getToken(),
           comId: this.searchReal,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
@@ -217,6 +220,7 @@ export default {
         })
       } else {
         findWarData({
+          token: getToken(),
           comId: this.searchReal,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,

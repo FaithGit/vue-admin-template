@@ -123,6 +123,7 @@ import { getToken } from '@/utils/auth'
 // import createHour from './components/createHour'
 import XChart from '@/components/charts'
 import error from './components/error'
+import { DateHandle } from '@/utils/validate'
 
 export default {
   name: 'Dashboard',
@@ -237,7 +238,9 @@ export default {
   },
   mounted() {
     findWarTypeNum({
-      token: getToken()
+      token: getToken(),
+      startTime: DateHandle(this.setToday()),
+      endTime: DateHandle(new Date())
     }).then(res => {
       console.log('echartData', res)
       this.echartData = res.retData
@@ -350,6 +353,14 @@ export default {
     this.getId = null
   },
   methods: {
+    setToday() {
+      var date = new Date()
+      // 2. 时分秒归零
+      date.setHours(0)
+      date.setMinutes(0)
+      date.setSeconds(0)
+      return date
+    },
     forId: function(index) {
       return 'geo_' + index
     },

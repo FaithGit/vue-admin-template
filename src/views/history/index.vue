@@ -273,6 +273,18 @@ export default {
       time: [],
       pickerOptions: {
         shortcuts: [{
+          text: '今日',
+          onClick(picker) {
+            const end = new Date()
+            var date = new Date()
+            // 2. 时分秒归零
+            date.setHours(0)
+            date.setMinutes(0)
+            date.setSeconds(0)
+            const start = date
+            picker.$emit('pick', [start, end])
+          }
+        }, {
           text: '最近一周',
           onClick(picker) {
             const end = new Date()

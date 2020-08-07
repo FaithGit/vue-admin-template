@@ -54,8 +54,8 @@
 
           <div class="kuang kuangMiddle">
             <div class="kuang-content">
-              <div class="left-title">
-                动态栏
+              <div class="left-title futitle">
+                今日异常动态栏
               </div>
               <div class="kuang-body">
                 <div v-show="!list.length>0" style="display:flex;justify-content: center;align-items: center;width: 100%;height: 100%;">
