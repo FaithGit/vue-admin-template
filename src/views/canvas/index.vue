@@ -2,11 +2,17 @@
   <div>
     <canvas id="Canvas" />
     <div class="rightButton">
+      <el-card class="box-card">
+        <div v-for="o in 4" :key="o" class="text item">
+          {{ '列表内容 ' + o }}
+        </div>
+      </el-card>
       <el-button @click="addPointCreate">编辑事件</el-button>
       <el-button @click="removePointCreate">去除编辑事件</el-button>
       <el-button @click="addPointClick">点位触发事件</el-button>
       <el-button @click="drawLine">画线</el-button>
       <el-button @click="drawCreate">画设备</el-button>
+      <el-button @click="boardClear">清除画布</el-button>
     </div>
 
   </div>
@@ -69,6 +75,24 @@ function drawLine() { // 画路径
 
   ctx.stroke()
 }
+function init() {
+  canvas.width = boardWidth
+  canvas.height = boardHeight
+  ctx.fillStyle = '#ddd'
+  ctx.fillRect(0, 0, boardWidth, boardHeight)
+  var img = new Image()
+  img.src = require('@img/company.jpg')
+
+  img.onload = function(e) {
+    // 将图片画到canvas上面上去！
+    console.log('图片的宽' + img.width, '图片的高' + img.height)
+    ctx.drawImage(img, (boardWidth - img.width) / 2, (boardHeight - img.height) / 2, img.width, img.height)
+  }
+}
+function boardClear() {
+  ctx.clearRect(0, 0, boardWidth, boardHeight)
+  init()
+}
 export default {
 
   name: 'Canvas',
@@ -81,18 +105,8 @@ export default {
     initCanvas() {
       canvas = document.getElementById('Canvas')
       ctx = canvas.getContext('2d')
-      canvas.width = boardWidth
-      canvas.height = boardHeight
-      ctx.fillStyle = '#ddd'
-      ctx.fillRect(0, 0, boardWidth, boardHeight)
-      var img = new Image()
-      img.src = require('@img/company.jpg')
 
-      img.onload = function(e) {
-        // 将图片画到canvas上面上去！
-        console.log('图片的宽' + img.width, '图片的高' + img.height)
-        ctx.drawImage(img, (boardWidth - img.width) / 2, (boardHeight - img.height) / 2, img.width, img.height)
-      }
+      init()
     },
     addPointCreate() {
       canvas.addEventListener('click', pointCreate, false)
@@ -108,6 +122,9 @@ export default {
     },
     drawCreate() {
       drawCreate()
+    },
+    boardClear() {
+      boardClear()
     }
   }
 }
