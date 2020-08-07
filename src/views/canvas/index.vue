@@ -4,7 +4,7 @@
     <el-button @click="drawSmile">drawSmile</el-button>
     <el-button @click="addListenerClick">addListenerClick</el-button>
     <el-button @click="removeListenerClick">removeListenerClick</el-button>
-    <el-button @click="drawLine">drawLine</el-button>
+    <el-button @click="drawLine">drawLine1</el-button>
 
   </div>
 
