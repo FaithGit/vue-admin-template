@@ -15,7 +15,10 @@
               </el-badge>
             </template>
             <div v-for="(device,deviceIndex) in item.deviceList" :key="'device'+deviceIndex">
-              {{ device.name }}
+              <svg-icon icon-class="yuandian" :class="{greenYuan:device.deviceStatus==1,redYuan:device.deviceStatus==0}" />
+              {{ device.deviceName }}
+              <svg-icon v-if="device.deviceX" icon-class="dianwei" />
+              <svg-icon v-if="isPostiton(device.postiton)" icon-class="luxian" />
             </div>
           </el-collapse-item>
 
@@ -36,18 +39,37 @@
 let canvas
 var boardWidth = '1200'
 var boardHeight = '800'
+var pointR = 6
 let ctx
-var postition = []
+var postition = [{ x: 99, y: 299 }, { x: 299, y: 99 }]
 var fu = ''
 function pointClick(e) { // 触发点位事件
   // console.log(e)
-
+  // console.log(fu._data.company[fu._data.nowComIndex])
   var x = event.clientX - canvas.getBoundingClientRect().left
   var y = event.clientY - canvas.getBoundingClientRect().top
-  console.log('X:', x, 'Y:', y)
-  console.log(isInsideCircle(x, y, 8, 528, 277))
+  let havePoint = false
+  let havePointIndex = 0
+  for (let i = 0; i < fu._data.company[fu._data.nowComIndex].deviceList.length; i++) {
+    const _obj = fu._data.company[fu._data.nowComIndex].deviceList[i]
+    if (_obj.deviceX && _obj.deviceY) {
+      if (isInsideCircle(x, y, pointR, _obj.deviceX, _obj.deviceY)) { // 判断本次点击是否所在点位里触发
+        havePoint = true
+        havePointIndex = i
+      }
+    }
+  }
+  if (havePoint) {
+    console.log('是谁:' + fu._data.company[fu._data.nowComIndex].deviceList[havePointIndex].deviceName)
+    drawLine()
+  } else {
+    console.log('没有点位')
+    fu.handleChange(havePointIndex)
+  }
+  console.log('地图模式下的点击：X:', x, 'Y:', y)
+  // console.log(isInsideCircle(x, y, 8, 528, 277))
 }
-function isInsideCircle(x0, y0, r, x, y) {
+function isInsideCircle(x0, y0, r, x, y) { // X0 Y0 接受的点位 x,y是点位点
   return ((x - x0) * (x - x0) + (y - y0) * (y - y0)) < r * r
 }
 function pointCreate(e) { // 创建编辑点位
@@ -64,16 +86,24 @@ function drawArc(x, y) { // 画圆
   ctx.arc(x, y, 8, 0, Math.PI * 2, true) // 绘制
   ctx.stroke()
   postition.push({ x: x, y: y })
+  console.log(postition)
   drawLine()
 }
 
-function drawCreate(x = 528, y = 277) { // 画点位
-  console.log('画点位')
+function drawCreate(x = 528, y = 277, name = 'test', status = 1) { // 画点位
+  if (status === 0) {
+    // console.log('red')
+    ctx.fillStyle = 'red'
+  } else {
+    // console.log('green')
+    ctx.fillStyle = 'green'
+  }
+
   ctx.beginPath()
-  ctx.arc(x, y, 6, 0, 2 * Math.PI)
-  ctx.fillStyle = 'red'
+  ctx.arc(x, y, pointR, 0, 2 * Math.PI)
+
   ctx.font = '30px'
-  ctx.fillText('Hello World!', x + 10, y + 4)
+  ctx.fillText(name, x + 10, y + 4)
   ctx.closePath()
   ctx.fill()
   console.log(fu)
@@ -91,18 +121,24 @@ function drawLine() { // 画路径
   ctx.stroke()
 }
 function init(imgsrc) {
-  canvas.width = boardWidth
-  canvas.height = boardHeight
-  ctx.fillStyle = '#ddd'
-  ctx.fillRect(0, 0, boardWidth, boardHeight)
-  var img = new Image()
-  img.src = imgsrc
-
-  img.onload = function(e) {
-    // 将图片画到canvas上面上去！
-    console.log('图片的宽' + img.width, '图片的高' + img.height)
-    ctx.drawImage(img, (boardWidth - img.width) / 2, (boardHeight - img.height) / 2, img.width, img.height)
-  }
+  return new Promise(
+    /* 执行器 executor */
+    function(resolve, reject) { // 一段耗时很长的异步操作
+      canvas.width = boardWidth
+      canvas.height = boardHeight
+      ctx.fillStyle = '#ddd'
+      ctx.fillRect(0, 0, boardWidth, boardHeight)
+      var img = new Image()
+      img.src = imgsrc
+      img.onload = function(e) {
+        // 将图片画到canvas上面上去！
+        console.log('图片的宽' + img.width, '图片的高' + img.height)
+        ctx.drawImage(img, (boardWidth - img.width) / 2, (boardHeight - img.height) / 2, img.width, img.height)
+        resolve() // 数据处理完成
+      }
+      // reject() // 数据处理出错
+    }
+  )
 }
 function boardClear() {
   ctx.clearRect(0, 0, boardWidth, boardHeight)
@@ -113,42 +149,32 @@ export default {
   name: 'Canvas',
   data() {
     return {
+      nowComIndex: 0, // 当前显示的公司index
       company: [
         {
           name: '模拟公司1',
           img: require('@img/company.jpg'),
           deviceList: [
             {
-              name: '生产1',
-              status: 1,
-              x: 100,
-              y: 200
+              deviceName: '生产1',
+              deviceStatus: 1
             },
             {
-              name: '生产2',
-              status: 0
+              deviceName: '生产2',
+              deviceStatus: 0,
+              deviceX: 300,
+              deviceY: 100,
+              postiton: [
+                {
+                  x: 100, y: 300
+                }
+              ]
             },
             {
-              name: '治理1',
-              status: 1
-            }
-          ]
-        },
-        {
-          name: '模拟公司2',
-          img: require('@img/comImgNull.png'),
-          deviceList: [
-            {
-              name: '生产1',
-              status: 1
-            },
-            {
-              name: '生产2',
-              status: 0
-            },
-            {
-              name: '治理1',
-              status: 1
+              deviceName: '治理1',
+              deviceStatus: 1,
+              deviceX: 350,
+              deviceY: 20
             }
           ]
         }
@@ -157,10 +183,16 @@ export default {
   },
   mounted() {
     fu = this
-    postition = []
     this.initCanvas()
   },
   methods: {
+    isPostiton(arr) {
+      if (arr !== undefined && arr.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    },
     initCanvas() {
       canvas = document.getElementById('Canvas')
       ctx = canvas.getContext('2d')
@@ -178,21 +210,26 @@ export default {
     drawLine() {
       drawLine()
     },
-    drawCreate() {
-      drawCreate()
+    drawCreate(x, y, name, status) {
+      drawCreate(x, y, name, status)
     },
     boardClear() {
       boardClear()
     },
     handleChange(val) {
-      console.log('当前公司的index' + val)
-      try {
-        init(this.company[val].img)
-        setTimeout(() => {
-          this.drawCreate()
-        }, 1000)
-      } catch (error) {
-        console.log(new Error('折叠后没有对象属性,图片无法加载,无需修复'))
+      this.nowComIndex = val
+      console.log('当前公司的index：' + this.nowComIndex)
+      if (this.nowComIndex !== '') {
+        // console.dir('查看：' + this.company[this.nowComIndex])
+        init(this.company[this.nowComIndex].img).then(() => { // 图加载好，生成点位
+          for (let i = 0; i < this.company[this.nowComIndex].deviceList.length; i++) {
+            const obj = this.company[this.nowComIndex].deviceList[i]
+            if (obj.deviceX && obj.deviceY) {
+              this.drawCreate(obj.deviceX, obj.deviceY, obj.deviceName, obj.deviceStatus)
+            }
+          }
+          canvas.addEventListener('click', pointClick, false) // 侦听点位的点击事件
+        })
       }
     }
   }
@@ -214,5 +251,11 @@ export default {
 }
 .box-card{
   margin-bottom: 50px;
+}
+.greenYuan{
+  fill: green;
+}
+.redYuan{
+  fill: red;
 }
 </style>

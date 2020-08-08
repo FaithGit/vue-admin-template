@@ -128,11 +128,14 @@ export default {
     })
   },
   methods: {
-    handleSizeChange() {
-
+    handleSizeChange(val) {
+      this.pageIndex = 1
+      this.pageSize = val
+      this.findLoginLog()
     },
-    handleCurrentChange() {
-
+    handleCurrentChange(val) {
+      this.pageIndex = val
+      this.findLoginLog()
     },
     searchClick() {
       this.pageIndex = 1
