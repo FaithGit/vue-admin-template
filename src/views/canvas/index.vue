@@ -1,11 +1,25 @@
 <template>
-  <div>
-    <canvas id="Canvas" />
+  <div class="app-container">
+    <div class="leftButton">
+      <canvas id="Canvas" />
+    </div>
+
     <div class="rightButton">
       <el-card class="box-card">
-        <div v-for="o in 4" :key="o" class="text item">
-          {{ '列表内容 ' + o }}
-        </div>
+        <el-collapse accordion @change="handleChange">
+          <el-collapse-item v-for="(item,itemIndex) in company" :key="'company'+itemIndex" :name="itemIndex">
+            <template slot="title">
+              {{ item.name }}
+              <el-badge :value="200" :max="99" class="item">
+                <i class="header-icon el-icon-info" />
+              </el-badge>
+            </template>
+            <div v-for="(device,deviceIndex) in item.deviceList" :key="'device'+deviceIndex">
+              {{ device.name }}
+            </div>
+          </el-collapse-item>
+
+        </el-collapse>
       </el-card>
       <el-button @click="addPointCreate">编辑事件</el-button>
       <el-button @click="removePointCreate">去除编辑事件</el-button>
@@ -54,6 +68,7 @@ function drawArc(x, y) { // 画圆
 }
 
 function drawCreate(x = 528, y = 277) { // 画点位
+  console.log('画点位')
   ctx.beginPath()
   ctx.arc(x, y, 6, 0, 2 * Math.PI)
   ctx.fillStyle = 'red'
@@ -75,13 +90,13 @@ function drawLine() { // 画路径
 
   ctx.stroke()
 }
-function init() {
+function init(imgsrc) {
   canvas.width = boardWidth
   canvas.height = boardHeight
   ctx.fillStyle = '#ddd'
   ctx.fillRect(0, 0, boardWidth, boardHeight)
   var img = new Image()
-  img.src = require('@img/company.jpg')
+  img.src = imgsrc
 
   img.onload = function(e) {
     // 将图片画到canvas上面上去！
@@ -96,6 +111,50 @@ function boardClear() {
 export default {
 
   name: 'Canvas',
+  data() {
+    return {
+      company: [
+        {
+          name: '模拟公司1',
+          img: require('@img/company.jpg'),
+          deviceList: [
+            {
+              name: '生产1',
+              status: 1,
+              x: 100,
+              y: 200
+            },
+            {
+              name: '生产2',
+              status: 0
+            },
+            {
+              name: '治理1',
+              status: 1
+            }
+          ]
+        },
+        {
+          name: '模拟公司2',
+          img: require('@img/comImgNull.png'),
+          deviceList: [
+            {
+              name: '生产1',
+              status: 1
+            },
+            {
+              name: '生产2',
+              status: 0
+            },
+            {
+              name: '治理1',
+              status: 1
+            }
+          ]
+        }
+      ]
+    }
+  },
   mounted() {
     fu = this
     postition = []
@@ -105,7 +164,6 @@ export default {
     initCanvas() {
       canvas = document.getElementById('Canvas')
       ctx = canvas.getContext('2d')
-
       init()
     },
     addPointCreate() {
@@ -125,16 +183,36 @@ export default {
     },
     boardClear() {
       boardClear()
+    },
+    handleChange(val) {
+      console.log('当前公司的index' + val)
+      try {
+        init(this.company[val].img)
+        setTimeout(() => {
+          this.drawCreate()
+        }, 1000)
+      } catch (error) {
+        console.log(new Error('折叠后没有对象属性,图片无法加载,无需修复'))
+      }
     }
   }
 }
 </script>
 <style scoped>
-#Canvas{
-  margin: 50px 20px 50px 50px;
+.app-container{
+  padding: 20px;
+  overflow: auto;
+}
+.leftButton{
+  margin: 50px 20px 50px 20px;
   float: left;
+  width: 1200px;
+  height: 800px;
 }
 .rightButton{
   margin-top: 50px;
+}
+.box-card{
+  margin-bottom: 50px;
 }
 </style>
