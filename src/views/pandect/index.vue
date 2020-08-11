@@ -64,11 +64,10 @@
                 </div>
                 <swiper ref="swiperList1" :options="swiperOption" style="width:100%;height:100%;">
                   <swiper-slide v-for="(itemList,index) in list" :key="'itemList'+index">
-                    <el-row style="color:white">
-                      <el-col :span="2" style="padding-left:5px"> {{ index+1 }}</el-col>
-                      <el-col :span="8"> {{ itemList.name }}</el-col>
-                      <el-col :span="7"> {{ itemList.dataTime }}</el-col>
-                      <el-col :span="7" style="text-align:center"> {{ itemList.logName }}</el-col>
+                    <el-row :class="{whiteColor:itemList.status==0,redColor:itemList.status==1}">
+                      <el-col :span="3"> {{ index+1 }}</el-col>
+                      <el-col :span="9"> {{ itemList.name }}</el-col>
+                      <el-col :span="12"> {{ itemList.dataTime }}</el-col>
                     </el-row>
                   </swiper-slide>
                   <div slot="scrollbar" class="swiper-scrollbar" />
@@ -413,13 +412,34 @@ export default {
     findPictureDynamicInfo({
       token: getToken()
     }).then(res => {
-      this.list = res.retData
+      var _arr = this.group(res.retData, 50)
+      console.log('_arr.length', _arr.length)
+      var i = 0
+      var timer = setInterval(() => {
+        if (i < _arr.length) {
+          console.log(_arr[i])
+          this.list = this.list.concat(_arr[i])
+          i++
+        } else {
+          clearInterval(timer)
+        }
+      }, 2000, i)
     })
   },
   destroyed() {
     this.map = null
   },
   methods: {
+    group(array, subGroupLength) {
+      var index = 0
+      var newArray = []
+
+      while (index < array.length) {
+        newArray.push(array.slice(index, index += subGroupLength))
+      }
+
+      return newArray
+    },
     gotoHome() {
       this.$router.push('/')
     },
@@ -706,5 +726,13 @@ padding: 40px 0px 30px 0px;
      background: #01bfff;
      top: -1px;
      right: 15%;
+  }
+  .whiteColor{
+    color:white;text-align:center;
+  }
+  .redColor{
+       color: #ec0a3e;
+    text-align: center;
+    font-weight: 700;
   }
 </style>
