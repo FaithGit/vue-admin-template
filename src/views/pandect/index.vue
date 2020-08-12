@@ -55,19 +55,20 @@
           <div class="kuang kuangMiddle">
             <div class="kuang-content">
               <div class="left-title futitle">
-                今日异常动态栏
+                实时状态动态栏
               </div>
               <div class="kuang-body">
                 <div v-show="!list.length>0" style="display:flex;justify-content: center;align-items: center;width: 100%;height: 100%;">
                   <div><img src="@img/goodList.png" style="width:180px"></div>
                   <div style="color:white;position: absolute;bottom: 8%;">无异常</div>
                 </div>
-                <swiper ref="swiperList1" :options="swiperOption" style="width:100%;height:100%;">
+                <swiper v-if="list.length> 0" ref="swiperList1" :options="swiperOption" style="width:100%;height:100%;">
                   <swiper-slide v-for="(itemList,index) in list" :key="'itemList'+index">
-                    <el-row :class="{whiteColor:itemList.status==0,redColor:itemList.status==1}">
-                      <el-col :span="3"> {{ index+1 }}</el-col>
-                      <el-col :span="9"> {{ itemList.name }}</el-col>
-                      <el-col :span="12"> {{ itemList.dataTime }}</el-col>
+                    <el-row class="fuColor">
+                      <el-col :span="2"> {{ index+1 }}</el-col>
+                      <el-col :span="8"> {{ itemList.name }}</el-col>
+                      <el-col :span="10"> {{ itemList.dataTime }}</el-col>
+                      <el-col :span="4" :class="{greenColor:itemList.status==0,redColor:itemList.status==1}"> {{ itemList.status==1?"异常":"正常" }}</el-col>
                     </el-row>
                   </swiper-slide>
                   <div slot="scrollbar" class="swiper-scrollbar" />
@@ -422,6 +423,7 @@ export default {
           i++
         } else {
           clearInterval(timer)
+          console.log(this.$refs.swiperList1)
         }
       }, 2000, i)
     })
@@ -727,12 +729,16 @@ padding: 40px 0px 30px 0px;
      top: -1px;
      right: 15%;
   }
-  .whiteColor{
-    color:white;text-align:center;
+  .fuColor{
+    text-align:center;
+       color:white;
   }
   .redColor{
-       color: #ec0a3e;
-    text-align: center;
+    color: #ec0a3e;
+    font-weight: 700;
+  }
+  .greenColor{
+    color: #42cc59;
     font-weight: 700;
   }
 </style>
