@@ -81,8 +81,16 @@
       </el-col>
       <el-col :span="8" style="margin-top:20px;">
         <div class="comBlock" style="height:400px;background:#ffffff">
-          <div class="comTitle" style="text-align:left;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常分布及处理率</span><br></div>
-          <fenbulv style="height:345px" />
+          <div class="comTitle" style="text-align:left;position: absolute;"> <svg-icon icon-class="powers" style="margin:0 5px;font-size:16px" /><span style="font-size:16px;color:#000">异常分布及处理率</span><br></div>
+
+          <el-tabs v-model="activeName3">
+            <el-tab-pane label="近7日" name="first3" style="height:345px;color:#000">
+              <fenbulv v-if="activeName3=='first3'&&fenbulvlist5.length!=0" style="height:345px" :fenbulvlist="fenbulvlist5" />
+            </el-tab-pane>
+            <el-tab-pane label="今日" name="second3" style="height:345px;color:#000;">
+              <fenbulv v-if="activeName3=='second3'&&fenbulvlist6.length!=0" style="height:345px" :fenbulvlist="fenbulvlist6" />
+            </el-tab-pane>
+          </el-tabs>
         </div>
       </el-col>
 
@@ -92,7 +100,7 @@
 
 <script>
 
-import { findDeviceNumByProcess, findMonthSmsNum, findHbjBasicData, findComNumBusDstbt, findDeviceWarRange, findComWarRange } from '@/api/table'
+import { findDeviceNumByProcess, findMonthSmsNum, findHbjBasicData, findComNumBusDstbt, findDeviceWarRange, findComWarRange, findWarTypeNum } from '@/api/table'
 import { getToken } from '@/utils/auth'
 import hangye from './components/hangye'
 import shengchan from './components/shengchan'
@@ -101,6 +109,7 @@ import month from './components/month'
 import fenbulv from './components/fenbulv'
 import paihang from './components/paihang'
 import { mapGetters } from 'vuex'
+import { DateHandle } from '@/utils/validate'
 
 export default {
   name: 'Dashboard',
@@ -131,10 +140,13 @@ export default {
       zlNum1: 0,
       activeName1: 'first1',
       activeName2: 'first2',
+      activeName3: 'first3',
       phList: [],
       phList2: [],
       phList3: [],
-      phList4: []
+      phList4: [],
+      fenbulvlist5: [],
+      fenbulvlist6: []
     }
   },
   computed: {
@@ -221,6 +233,28 @@ export default {
         arr.push(value.name)
       })
       this.phList4 = arr
+    })
+
+    findWarTypeNum({ // 今7日
+      token: getToken(),
+      startTime: DateHandle(new Date() - 3600 * 1000 * 24 * 7),
+      endTime: DateHandle(new Date())
+
+    }).then(res => {
+      this.fenbulvlist5 = res.retData
+    })
+    var date = new Date()
+    // 2. 时分秒归零
+    date.setHours(0)
+    date.setMinutes(0)
+    date.setSeconds(0)
+    findWarTypeNum({ // 今日
+      token: getToken(),
+      startTime: DateHandle(date),
+      endTime: DateHandle(new Date())
+
+    }).then(res => {
+      this.fenbulvlist6 = res.retData
     })
   },
   destroyed() {

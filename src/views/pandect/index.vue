@@ -216,6 +216,7 @@ import { findComMap, findMapDataDetail, findIndexTotalData, warMonthSort, findPi
 import { getToken } from '@/utils/auth'
 import { mapGetters } from 'vuex'
 import screenfull from 'screenfull'
+import { DateHandle } from '@/utils/validate'
 export default {
   name: 'Pandect',
   components: {
@@ -388,7 +389,13 @@ export default {
       this.susComNum = res.retData.susComNum
       this.comNum = res.retData.comNum
     })
-    findWarTypeNum({ token: getToken() }).then(res => {
+    var d = new Date()
+    d.setMonth(d.getMonth() - 1)
+    findWarTypeNum({
+      token: getToken(),
+      startTime: DateHandle(d),
+      endTime: DateHandle(new Date())
+    }).then(res => {
       this.echartData = res.retData
     })
 

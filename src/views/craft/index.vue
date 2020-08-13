@@ -25,7 +25,7 @@
           <div class="createLineTime">时间：{{ item.dataTime }}</div>
 
           <div class="imgBody">
-            <div :class="{imgBlock:item.zlData.length<=1,imgBlock2:item.zlData.length==2,imgBlock3:item.zlData.length==3}">
+            <div :class="{imgBlock:item.zlData.length<=1,imgBlock2:item.zlData.length==2&&item.scData.length<4,imgBlock3:item.zlData.length==3,imgBlock24:item.zlData.length==2&&item.scData.length>4}">
               <div v-if="item.scData.length==0" class="zhanwei335">123</div>
               <div v-if="item.scData.length==1" class="zhanwei">123</div>
               <div v-for="(_item,_index) in item.scData" :key="'xxxxxx'+_index" class="leftIMG">
@@ -294,6 +294,10 @@ to {
 .imgBlock2{
   position: relative;
   margin: 575px 0 0 100px;
+}
+.imgBlock24{   //scData 长度大于4
+  position: relative;
+  margin: 100px 0 0 100px;
 }
 .imgBlock3{
   position: relative;
