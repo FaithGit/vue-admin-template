@@ -3,17 +3,17 @@
     <div class="form-head">工况采集仪信息配置</div>
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-row>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="mn号" prop="mn" label-width="60px">
             <el-input v-model="form.mn" placeholder="20位数字不能为空" :disabled="sprot==2" />
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <!-- <el-col :span="8">
           <el-form-item label="卡号" prop="physicalLinkCard" label-width="60px">
             <el-input v-model="form.physicalLinkCard" placeholder="13位数字不能为空" :disabled="sprot==2" />
           </el-form-item>
-        </el-col>
-        <el-col :span="8">
+        </el-col> -->
+        <el-col :span="12">
           <el-form-item label="企业名称" prop="comId">
             <el-select v-model="form.comId" placeholder="请选择企业名称" style="width:100%" :disabled="sprot==2" @change="changeLine">
               <el-option v-for="com in com_list" :key="com.id" :label="com.com_name" :value="com.id" />
@@ -1490,26 +1490,45 @@ export default {
       this.form.sysConditions.push(_obj)
     },
     DelDeviceList(index) {
-      this.form.sysDevices.splice(index, 1)
+      this.$confirm('此操作将永久删除该配置, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.form.sysDevices.splice(index, 1)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+      })
+
       // this.$forceUpdate()
     },
     DelDeviceListCloud(item, index) {
-      if (item.id) {
-        deleteSysdevice({
-          deviceId: item.deviceId
-        }).then(res => {
-          console.log(res)
-          if (res.retData === 1) {
-            this.$message({
-              type: 'success',
-              message: '已从服务器中删除'
-            })
-            this.DelDeviceList(index)
-          }
+      this.$confirm('此操作将永久删除该配置, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (item.id) {
+          deleteSysdevice({
+            deviceId: item.deviceId
+          }).then(res => {
+            console.log(res)
+            if (res.retData === 1) {
+              this.form.sysDevices.splice(index, 1)
+            }
+          })
+        } else {
+          this.form.sysDevices.splice(index, 1)
+        }
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
         })
-      } else {
-        this.DelDeviceList(index)
-      }
+      }).catch(() => {
+      })
     },
     // saveOrUp(item, index) {
     //   item.mn = this.form.mn
@@ -1533,18 +1552,27 @@ export default {
     //   }
     // },
     DelModelList(index, item) {
-      if (item.id) {
-        item.mn = this.form.mn
-        deleteSysCondition(item).then(res => {
-          this.form.sysConditions.splice(index, 1)
-          this.$message({
-            type: 'success',
-            message: '工况信息已经从服务器中删除'
+      this.$confirm('此操作将永久删除该配置, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (item.id) {
+          item.mn = this.form.mn
+          deleteSysCondition(item).then(res => {
+            this.form.sysConditions.splice(index, 1)
           })
+        } else {
+          this.form.sysConditions.splice(index, 1)
+        }
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
         })
-      } else {
-        this.form.sysConditions.splice(index, 1)
-      }
+      }).catch(() => {
+
+      })
+
       // this.$forceUpdate()
     },
     changeWorkStatus(workindex, value1, value2) {
