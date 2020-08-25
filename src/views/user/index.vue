@@ -236,6 +236,9 @@ export default {
     },
     handleEdit(index, row) {
       this.form = row
+      this.form.comId = {
+        id: row.comId
+      }
       delete this.form.userPwd
       delete this.form.userPwd2
       delete this.form.createTime
@@ -321,6 +324,7 @@ export default {
       this.$refs['userForm'].validate((valid) => {
         if (valid) {
           delete this.form.userPwd2
+          this.form.comId = this.form.comId.id
           addUser(this.form).then(res => {
             this.addVisible = false
             this.selectUserList()
@@ -337,6 +341,7 @@ export default {
     upDataSubmit() {
       this.$refs['userForm'].validate((valid) => {
         if (valid) {
+          this.form.comId = this.form.comId.id
           updateUser(this.form).then(res => {
             this.addVisible = false
             this.selectUserList()
